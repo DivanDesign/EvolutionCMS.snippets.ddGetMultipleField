@@ -249,8 +249,13 @@ if (isset($string) && strlen($string) > 0){
 								}
 							}
 						}
-						
-						$resTemp[$rowNumber] = $modx->parseChunk($rowTpl, $resTemp[$rowNumber], '[+', '+]');
+						if(substr($rowTpl, 0, 6) == "@CODE:") {
+                        				$out = substr($rowTpl, 6);
+							$resTemp[$rowNumber] = $modx->parseText($out, $resTemp[$rowNumber], '[+', '+]');			
+
+						}else{
+							$resTemp[$rowNumber] = $modx->parseChunk($rowTpl, $resTemp[$rowNumber], '[+', '+]');
+						}
 					}
 				}else{
 					foreach ($data as $rowNumber => $row){
