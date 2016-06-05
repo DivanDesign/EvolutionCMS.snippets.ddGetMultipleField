@@ -350,4 +350,6 @@ if (isset($resultToPlaceholder)){
 }else{
 	return $result;
 }
+// выдать пустой результат, еслы ранее не было завершения сниппета.
+return '';
 ?>
