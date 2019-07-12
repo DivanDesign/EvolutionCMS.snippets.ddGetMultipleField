@@ -19,7 +19,7 @@
  * @param $startRow {integer} — The index of the initial row (indexes start at 0). Default: 0.
  * @param $totalRows {integer|'all'} — The maximum number of rows to return. All rows will be returned if “totalRows” == 'all'. Default: 'all'.
  * @param $columns {string_commaSeparated|'all'} — The indexes of columns to return (indexes start at 0). All columns will be returned if “columns” == 'all'. Default: 'all'.
- * @param $filter {string_separated} — Filter clause for columns. Thus, '0::a||0::b||1::1' makes the columns with either 'a' or 'b' in the 0 column and with 1 in the 1 column to be returned. Default: ''.
+ * @param $filter {string_separated} — Filter clause for columns. Thus, '0::a||0::b&&1::1' makes the columns with either 'a' in the 0 column or 'b' in the 0 column and with 1 in the 1 column to be returned. Default: ''.
  * @param $removeEmptyRows {0|1} — Is it required to remove empty rows? Default: 1.
  * @param $removeEmptyCols {0|1} — Is it required to remove empty columns? Default: 1.
  * @param $sortBy {string_commaSeparated} — The index of the column to sort by (indexes start at 0). The parameter also takes comma-separated values for multiple sort, e.g. '0,1'. Default: '0'.
