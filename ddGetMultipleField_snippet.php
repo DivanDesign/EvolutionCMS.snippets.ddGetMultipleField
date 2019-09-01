@@ -19,7 +19,7 @@
  * @param $startRow {integer} — The index of the initial row (indexes start at 0). Default: 0.
  * @param $totalRows {integer|'all'} — The maximum number of rows to return. All rows will be returned if “totalRows” == 'all'. Default: 'all'.
  * @param $columns {string_commaSeparated|'all'} — The indexes of columns to return (indexes start at 0). All columns will be returned if “columns” == 'all'. Default: 'all'.
- * @param $filter {string_separated} — Filter clause for columns. Thus, '0::a||0::b&&1::1' makes the columns with either 'a' in the 0 column or 'b' in the 0 column and with 1 in the 1 column to be returned. Default: ''.
+ * @param $filter {string_separated} — Filter clause for columns. Thus, '0::a||0::b&&1::1&&2<>' makes the columns with either 'a' in the 0 column or 'b' in the 0 column and with 1 in the 1 and not '' in the 2 column to be returned. Default: ''.
  * @param $removeEmptyRows {0|1} — Is it required to remove empty rows? Default: 1.
  * @param $removeEmptyCols {0|1} — Is it required to remove empty columns? Default: 1.
  * @param $sortBy {string_commaSeparated} — The index of the column to sort by (indexes start at 0). The parameter also takes comma-separated values for multiple sort, e.g. '0,1'. Default: '0'.
@@ -129,13 +129,25 @@ if (
 				$and_array as 
 				$andKey => $andValue
 			){
-				//Разбиваем по колонке/значению
-				$value = explode(
-					'::',
-					$andValue
-				);
+				if (strpos($andValue, '::')===false){
+					//Разбиваем по колонке/значению
+					$value = explode(
+						'<>',
+						$andValue
+					);
+					//Добавляем вид сравнения для колонки
+					$filter[$orKey][$andKey]['eqal'] = false;
+				}else{
+					//Разбиваем по колонке/значению
+					$value = explode(
+						'::',
+						$andValue
+						);
+					//Добавляем вид сравнения для колонки
+					$filter[$orKey][$andKey]['eqal'] = true;
+				}
 				//Добавляем правило для соответствующей колонки
-				$filter[$orKey][$andKey][$value[0]] = $value[1];
+				$filter[$orKey][$andKey]['value'][$value[0]] = $value[1];
 			}
 		}
 	}else{
@@ -231,11 +243,17 @@ if (
 				){
 					//Здесь не более одного значения! фактически получаем колонку и значение
 					foreach (
-						$andValue as 
+						$andValue['value'] as 
 						$colKey => $colValue
 					){
-						//Выясняем, соответствует ли значение колонки в строке текущему условию нашего фильтра и присваиваем флагу результат
-						$isFound = $data[$rowNumber][$colKey] == $colValue;
+						//В зависимости от того, должно или нет значение в колонке быть равно фильтру, присваиваем флагу результат
+						if ($andValue['eqal']){
+							//Если должно быть равно
+							$isFound = $data[$rowNumber][$colKey] == $colValue;
+						}else{
+							//Если не должно быть равно 
+							$isFound = $data[$rowNumber][$colKey] != $colValue;
+						}
 					}
 					//Если условие сменилось на ложь, значит переходим к следующему условию `or`
 					if (!$isFound){
