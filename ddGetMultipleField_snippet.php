@@ -65,6 +65,9 @@ if (!file_exists($ddToolsPath)){
 //Include (MODX)EvolutionCMS.libraries.ddTools
 require_once($ddToolsPath);
 
+//The snippet must return an empty string even if result is absent
+$snippetResult = '';
+
 //Backward compatibility
 extract(\ddTools::verifyRenamedParams(
 	$params,
@@ -85,8 +88,6 @@ if (isset($inputString_docField)){
 	);
 	$inputString = $inputString[$inputString_docField];
 }
-
-$result = '';
 
 //Если задано значение поля
 if (
@@ -288,19 +289,19 @@ if (
 	//Перебираем строки, разбиваем на колонки
 	foreach (
 		$data as
-		$rowNumber =>
-		$row
+		$rowKey =>
+		$rowValue
 	){
-		if (!is_array($row)){
-			$data[$rowNumber] =
+		if (!is_array($rowValue)){
+			$data[$rowKey] =
 				$inputString_colDelimiterIsRegexp ?
 				preg_split(
 					$inputString_colDelimiter,
-					$row
+					$rowValue
 				) :
 				explode(
 					$inputString_colDelimiter,
-					$row
+					$rowValue
 				)
 			;
 		}
@@ -330,10 +331,10 @@ if (
 						//В зависимости от того, должно или нет значение в колонке быть равно фильтру, присваиваем флагу результат
 						if ($andValue['eqal']){
 							//Если должно быть равно
-							$isFound = $data[$rowNumber][$colKey] == $colValue;
+							$isFound = $data[$rowKey][$colKey] == $colValue;
 						}else{
 							//Если не должно быть равно 
-							$isFound = $data[$rowNumber][$colKey] != $colValue;
+							$isFound = $data[$rowKey][$colKey] != $colValue;
 						}
 					}
 					
@@ -351,7 +352,7 @@ if (
 			
 			//если на выходе из цикла мы видим, что ни одно из условий не выполнено, сносим строку нафиг
 			if (!$isFound){
-				unset($data[$rowNumber]);
+				unset($data[$rowKey]);
 			}
 		}
 		
@@ -359,11 +360,11 @@ if (
 		if (
 			$columns != 'all' &&
 			//Также проверяем на то, что строка вообще существует, т.к. она могла быть уже удалена ранее
-			isset($data[$rowNumber])
+			isset($data[$rowKey])
 		){
 			//Выбираем только необходимые колонки + Сбрасываем ключи массива
-			$data[$rowNumber] = array_values(array_intersect_key(
-				$data[$rowNumber],
+			$data[$rowKey] = array_values(array_intersect_key(
+				$data[$rowKey],
 				$columns
 			));
 		}
@@ -372,16 +373,16 @@ if (
 		if (
 			$removeEmptyRows &&
 			//Также проверяем на то, что строка вообще существует, т.к. она могла быть уже удалена ранее
-			isset($data[$rowNumber])
+			isset($data[$rowKey])
 		){
 			//Если строка пустая, удаляем
 			if (
 				strlen(implode(
 					'',
-					$data[$rowNumber]
+					$data[$rowKey]
 				)) == 0
 			){
-				unset($data[$rowNumber]);
+				unset($data[$rowKey]);
 			}
 		}
 	}
@@ -477,20 +478,20 @@ if (
 			//Придётся ещё раз перебрать результат
 			foreach (
 				$data as
-				$rowNumber =>
-				$row
+				$rowKey =>
+				$rowValue
 			){
 				//Перебираем колонки, заданные для типографирования
 				foreach (
 					$typography as
-					$v
+					$colKey
 				){
 					//Если такая колонка существует, типографируем
-					if (isset($data[$rowNumber][$v])){
-						$data[$rowNumber][$v] = $modx->runSnippet(
+					if (isset($data[$rowKey][$colKey])){
+						$data[$rowKey][$colKey] = $modx->runSnippet(
 							'ddTypograph',
 							[
-								'text' => $data[$rowNumber][$v]
+								'text' => $data[$rowKey][$colKey]
 							]
 						);
 					}
@@ -500,7 +501,7 @@ if (
 		
 		//Если вывод в массив
 		if ($outputFormat == 'array'){
-			$result = $data;
+			$snippetResult = $data;
 		}else{
 			$resTemp = [];
 			
@@ -576,13 +577,13 @@ if (
 					//Перебираем строки
 					foreach (
 						$data as
-						$rowNumber =>
-						$row
+						$rowKey =>
+						$rowValue
 					){
-						$resTemp[$rowNumber] = [
+						$resTemp[$rowKey] = [
 							//Запишем номер строки
-							'rowNumber.zeroBased' => $rowNumber,
-							'rowNumber' => $rowNumber + 1,
+							'rowNumber.zeroBased' => $rowKey,
+							'rowNumber' => $rowKey + 1,
 							//И общее количество элементов
 							'total' => $total,
 							'resultTotal' => $resultTotal
@@ -590,43 +591,43 @@ if (
 						
 						//Перебираем колонки
 						foreach (
-							$row as
-							$columnNumber =>
-							$column
+							$rowValue as
+							$colKey =>
+							$colValue
 						){
 							//Если нужно удалять пустые значения
 							if (
 								$removeEmptyCols &&
-								!strlen($column)
+								!strlen($colValue)
 							){
-								$resTemp[$rowNumber]['col' . $columnNumber] = '';
+								$resTemp[$rowKey]['col' . $colKey] = '';
 							}else{
 								//Если есть шаблоны значений колонок
 								if (
 									$colTpl !== false &&
-									strlen($colTpl[$columnNumber]) > 0
+									strlen($colTpl[$colKey]) > 0
 								){
-									$resTemp[$rowNumber]['col'.$columnNumber] = $modx->parseText(
-										$colTpl[$columnNumber],
+									$resTemp[$rowKey]['col'.$colKey] = $modx->parseText(
+										$colTpl[$colKey],
 										array_merge(
 											[
-												'val' => $column,
-												'rowNumber.zeroBased' => $resTemp[$rowNumber]['rowNumber.zeroBased'],
-												'rowNumber' => $resTemp[$rowNumber]['rowNumber']
+												'val' => $colValue,
+												'rowNumber.zeroBased' => $resTemp[$rowKey]['rowNumber.zeroBased'],
+												'rowNumber' => $resTemp[$rowKey]['rowNumber']
 											],
 											$placeholders
 										)
 									);
 								}else{
-									$resTemp[$rowNumber]['col' . $columnNumber] = $column;
+									$resTemp[$rowKey]['col' . $colKey] = $colValue;
 								}
 							}
 						}
 						
-						$resTemp[$rowNumber] = $modx->parseText(
+						$resTemp[$rowKey] = $modx->parseText(
 							$rowTpl,
 							array_merge(
-								$resTemp[$rowNumber],
+								$resTemp[$rowKey],
 								$placeholders
 							)
 						);
@@ -634,29 +635,29 @@ if (
 				}else{
 					foreach (
 						$data as
-						$rowNumber =>
-						$row
+						$rowKey =>
+						$rowValue
 					){
 						//Если есть шаблоны значений колонок
 						if ($colTpl !== false){
 							foreach (
-								$row as
-								$columnNumber =>
-								$column
+								$rowValue as
+								$colKey =>
+								$colValue
 							){
 								if (
 									$removeEmptyCols &&
-									!strlen($column)
+									!strlen($colValue)
 								){
-									unset($row[$columnNumber]);
-								}else if (strlen($colTpl[$columnNumber]) > 0){
-									$row[$columnNumber] = $modx->parseText(
-										$colTpl[$columnNumber],
+									unset($rowValue[$colKey]);
+								}else if (strlen($colTpl[$colKey]) > 0){
+									$rowValue[$colKey] = $modx->parseText(
+										$colTpl[$colKey],
 										array_merge(
 											[
-												'val' => $column,
-												'rowNumber.zeroBased' => $rowNumber,
-												'rowNumber' => $rowNumber + 1
+												'val' => $colValue,
+												'rowNumber.zeroBased' => $rowKey,
+												'rowNumber' => $rowKey + 1
 											],
 											$placeholders
 										)
@@ -664,20 +665,20 @@ if (
 								}
 							}
 						}
-						$resTemp[$rowNumber] = implode(
+						$resTemp[$rowKey] = implode(
 							$colGlue,
-							$row
+							$rowValue
 						);
 					}
 				}
 				
 				if ($outputFormat == 'html'){
-					$result = implode(
+					$snippetResult = implode(
 						$rowGlue,
 						$resTemp
 					);
 				}else{
-					$result = $resTemp;
+					$snippetResult = $resTemp;
 				}
 			//Если вывод в формате JSON
 			}else if ($outputFormat == 'json'){
@@ -696,14 +697,14 @@ if (
 				
 				//Если нужно получить какой-то конкретный элемент, а не все
 				if ($totalRows == '1'){
-					$result = json_encode($resTemp[$startRow]);
+					$snippetResult = json_encode($resTemp[$startRow]);
 				}else{
-					$result = json_encode($resTemp);
+					$snippetResult = json_encode($resTemp);
 				}
 				
 				//Это чтобы MODX не воспринимал как вызов сниппета
-				$result = strtr(
-					$result,
+				$snippetResult = strtr(
+					$snippetResult,
 					[
 						'[[' => '[ [',
 						']]' => '] ]'
@@ -719,7 +720,7 @@ if (
 				$resTemp = [];
 				
 				//Элемент массива 'result' должен находиться самым первым, иначе дополнительные переданные плэйсхолдеры в тексте не найдутся! 
-				$resTemp['result'] = $result;
+				$resTemp['result'] = $snippetResult;
 				
 				//Преобразуем результат в одномерный массив
 				$data = \ddTools::unfoldArray($data);
@@ -727,14 +728,14 @@ if (
 				//Добавляем 'row' и 'val' к ключам
 				foreach (
 					$data as
-					$rowNumber =>
-					$row
+					$rowKey =>
+					$rowValue
 				){
 					 $resTemp[preg_replace(
 					 	'/(\d)\.(\d)/',
 					 	'row$1.col$2',
-					 	$rowNumber
-					 )] = $row;
+					 	$rowKey
+					 )] = $rowValue;
 				}
 				
 				$resTemp = array_merge(
@@ -745,7 +746,7 @@ if (
 				$resTemp['total'] = $total;
 				$resTemp['resultTotal'] = $resultTotal;
 				
-				$result = $modx->parseText(
+				$snippetResult = $modx->parseText(
 					$outerTpl,
 					$resTemp
 				);
@@ -753,7 +754,7 @@ if (
 			
 			//Если нужно URL-кодировать строку
 			if ($urlencode){
-				$result = rawurlencode($result);
+				$snippetResult = rawurlencode($snippetResult);
 			}
 		}
 	}
@@ -763,11 +764,11 @@ if (
 if (isset($resultToPlaceholder)){
 	$modx->setPlaceholder(
 		$resultToPlaceholder,
-		$result
+		$snippetResult
 	);
 	
-	$result = '';
+	$snippetResult = '';
 }
 
-return $result;
+return $snippetResult;
 ?>
