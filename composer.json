@@ -1,0 +1,55 @@
+{
+	"name": "dd/evolutioncms-snippets-ddgetmultiplefield",
+	"type": "modxevo-snippet",
+	"version": "3.4.0",
+	"description": "A snippet for processing, manipulations and custom output structured data (JSON or separated by delimiters strings).",
+	"keywords": [
+		"modx",
+		"modx evo",
+		"modx evolution",
+		"evo",
+		"evo cms",
+		"evolutioncms",
+		"evolution cms",
+		"dd group",
+		"dd studio",
+		"divandesign",
+		"ddgetmultiplefield",
+		"mm_ddMultipleFields",
+		"multiple fields",
+		"get multiple field"
+	],
+	"homepage": "https://code.divandesign.biz/modx/ddgetmultiplefield",
+	"authors": [
+		{
+			"name": "DD Group",
+			"email": "code@DivanDesign.biz",
+			"homepage": "https://code.divandesign.biz",
+			"role": "Owner"
+		},
+		{
+			"name": "Ilyas Ronef",
+			"email": "ilyas@DivanDesign.ru",
+			"homepage": "https://ronef.ru",
+			"role": "Developer"
+		},
+		{
+			"name": "Alexey Davydov",
+			"email": "davalemic@DivanDesign.ru",
+			"role": "Developer"
+		},
+		{
+			"name": "Andrey Dunaev",
+			"role": "Developer"
+		},
+		{
+			"name": "Sergey Kuzminykh",
+			"role": "Developer"
+		}
+	],
+	"require": {
+		"php": ">=5.4.0",
+		"dd/evolutioncms-libraries-ddtools": ">=0.18.0",
+		"dd/evolutioncms-snippets-ddtypograph": ">=1.4.3"
+	}
+}
