@@ -11,7 +11,7 @@
  * @uses (MODX)EvolutionCMS.libraries.ddTools >= 0.18.
  * @uses (MODX)EvolutionCMS.snippets.ddTypograph >= 1.4.3 (if typography is required).
  * 
- * @param $inputString {stirngJsonArray|stringSeparated} — The input string containing values in JSON (https://en.wikipedia.org/wiki/JSON) or separated by `$inputString_rowDelimiter` and `$inputString_colDelimiter`. @required
+ * @param $inputString {stirngJsonArray|stirngJsonObject|stringSeparated} — The input string containing values in JSON (https://en.wikipedia.org/wiki/JSON) or separated by `$inputString_rowDelimiter` and `$inputString_colDelimiter`. @required
  * @param $inputString_docField {string} — The name of the document field/TV which value is required to get. If the parameter is passed then the input string will be taken from the field/TV and `inputString` will be ignored. Default: —.
  * @param $inputString_docId {integer} — ID of the document which field/TV value is required to get. `inputString_docId` equals the current document id since `inputString_docId` is unset. Default: —.
  * @param $inputString_rowDelimiter {string|regexp} — The input string row delimiter (if not JSON). Default: '||'.
@@ -242,13 +242,19 @@ if (
 		'html'
 	;
 	
-	//JSON
+	//JSON (first letter is “{” or “[”)
 	if (
-		substr(
-			ltrim($inputString),
-			0,
-			1
-		) == '['
+		in_array(
+			substr(
+				ltrim($inputString),
+				0,
+				1
+			),
+			[
+				'{',
+				'['
+			]
+		)
 	){
 		try {
 			$data = json_decode(
