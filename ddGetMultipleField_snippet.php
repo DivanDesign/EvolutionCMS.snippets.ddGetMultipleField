@@ -136,55 +136,58 @@ if (
 	
 	//Если заданы условия фильтрации
 	if (isset($filter)){
-		//Разбиваем по условию или
-		$temp = explode(
+		//Разбиваем по условию «или»
+		$filterSource = explode(
 			'||',
 			$filter
 		);
 		
+		//Clear
 		$filter = [];
 		
-		//Перебираем по условию или
+		//Перебираем по условию «или»
 		foreach (
-			$temp as 
-			$orKey =>
-			$orValue
+			$filterSource as
+			$orIndex =>
+			$orCondition
 		){
-			//Разбиваем по условию и
-			$and_array = explode(
-				'&&',
-				$orValue
-			);
-			//Перебираем по условию и
+			$filter[$orIndex] = [];
+			
+			//Перебираем по условию «и»
 			foreach (
-				$and_array as 
-				$andKey =>
-				$andValue
+				//Разбиваем по условию «и»
+				explode(
+					'&&',
+					$orCondition
+				) as 
+				$andIndex =>
+				$andCondition
 			){
-				if (
-					strpos(
-						$andValue,
-						'::'
-					) === false
-				){
-					//Разбиваем по колонке/значению
-					$value = explode(
-						'<>',
-						$andValue
-					);
-					//Добавляем вид сравнения для колонки
-					$filter[$orKey][$andKey]['eqal'] = false;
-				}else{
-					//Разбиваем по колонке/значению
-					$value = explode(
-						'::',
-						$andValue
-					);
-					//Добавляем вид сравнения для колонки
-					$filter[$orKey][$andKey]['eqal'] = true;
-				}
+				//Добавляем вид сравнения для колонки
+				$filter[$orIndex][$andIndex] = [
+					'isEqual' =>
+						strpos(
+							$andCondition,
+							'::'
+						) !== false
+					,
+					'columnKey' => '',
+					'columnValue' => ''
+				];
+				
+				//Разбиваем по колонке/значению
+				$andCondition = explode(
+					(
+						$filter[$orIndex][$andIndex]['isEqual'] ?
+						'::' :
+						'<>'
+					),
+					$andCondition
+				);
+				
 				//Добавляем правило для соответствующей колонки
-				$filter[$orKey][$andKey]['value'][$value[0]] = $value[1];
+				$filter[$orIndex][$andIndex]['columnKey'] = $andCondition[0];
+				$filter[$orIndex][$andIndex]['columnValue'] = $andCondition[1];
 			}
 		}
 	}else{
@@ -311,31 +314,25 @@ if (
 			//Перебираем условия `or`
 			foreach (
 				$filter as
-				$orKey =>
-				$orValue
+				$orIndex =>
+				$orCondition
 			){
 				//Считаем, что вариант проходит, если не доказано обратное
 				$isFound = true;
+				
 				//Перебираем условия `and`
 				foreach (
-					$orValue as
-					$andKey =>
-					$andValue
+					$orCondition as
+					$andIndex =>
+					$andCondition
 				){
-					//Здесь не более одного значения! фактически получаем колонку и значение
-					foreach (
-						$andValue['value'] as 
-						$colKey =>
-						$colValue
-					){
-						//В зависимости от того, должно или нет значение в колонке быть равно фильтру, присваиваем флагу результат
-						if ($andValue['eqal']){
-							//Если должно быть равно
-							$isFound = $data[$rowKey][$colKey] == $colValue;
-						}else{
-							//Если не должно быть равно 
-							$isFound = $data[$rowKey][$colKey] != $colValue;
-						}
+					//В зависимости от того, должно или нет значение в колонке быть равно фильтру, присваиваем флагу результат
+					if ($andCondition['isEqual']){
+						//Если должно быть равно
+						$isFound = $data[$rowKey][$andCondition['columnKey']] == $andCondition['columnValue'];
+					}else{
+						//Если не должно быть равно 
+						$isFound = $data[$rowKey][$andCondition['columnKey']] != $andCondition['columnValue'];
 					}
 					
 					//Если условие сменилось на ложь, значит переходим к следующему условию `or`
@@ -344,13 +341,13 @@ if (
 					}
 				}
 				
-				//если все условия `and` прошли проверку, выходим из цикла `or`
+				//Если все условия `and` прошли проверку, выходим из цикла `or`
 				if ($isFound){
 					break;
 				}
 			}
 			
-			//если на выходе из цикла мы видим, что ни одно из условий не выполнено, сносим строку нафиг
+			//Если на выходе из цикла мы видим, что ни одно из условий не выполнено, сносим строку нафиг
 			if (!$isFound){
 				unset($data[$rowKey]);
 			}
