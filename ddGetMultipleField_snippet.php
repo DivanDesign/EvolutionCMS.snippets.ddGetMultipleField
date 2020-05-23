@@ -3,38 +3,7 @@
  * ddGetMultipleField
  * @version 3.4 (2018-11-14)
  * 
- * @desc A snippet for processing, manipulations and custom output structured data (JSON or separated by delimiters strings).
- * @note The fields formed by the “mm_ddMultipleFields” widget values output gets more convinient with the snippet.
- * 
- * @uses PHP >= 5.4.
- * @uses (MODX)EvolutionCMS >= 1.1.
- * @uses (MODX)EvolutionCMS.libraries.ddTools >= 0.18.
- * @uses (MODX)EvolutionCMS.snippets.ddTypograph >= 1.4.3 (if typography is required).
- * 
- * @param $inputString {stirngJsonArray|stirngJsonObject|stringSeparated} — The input string containing values in JSON (https://en.wikipedia.org/wiki/JSON) or separated by `$inputString_rowDelimiter` and `$inputString_colDelimiter`. @required
- * @param $inputString_docField {string} — The name of the document field/TV which value is required to get. If the parameter is passed then the input string will be taken from the field/TV and `inputString` will be ignored. Default: —.
- * @param $inputString_docId {integer} — ID of the document which field/TV value is required to get. `inputString_docId` equals the current document id since `inputString_docId` is unset. Default: —.
- * @param $inputString_rowDelimiter {string|regexp} — The input string row delimiter (if not JSON). Default: '||'.
- * @param $inputString_colDelimiter {string|regexp} — The input string column delimiter (if not JSON). Default: '::'.
- * @param $startRow {integer} — The index of the initial row (indexes start at 0). Default: 0.
- * @param $totalRows {integer|'all'} — The maximum number of rows to return. All rows will be returned if `totalRows` == 'all'. Default: 'all'.
- * @param $columns {stringCommaSeparated|'all'} — The indexes of columns to return (indexes start at 0). All columns will be returned if `columns` == 'all'. Default: 'all'.
- * @param $filter {stringSeparated} — Filter clause for columns. Thus, '0::a||0::b&&1::1&&2<>' makes the columns with either 'a' in the 0 column or 'b' in the 0 column and with 1 in the 1 and not '' in the 2 column to be returned. Default: ''.
- * @param $removeEmptyRows {0|1} — Is it required to remove empty rows? Default: 1.
- * @param $removeEmptyCols {0|1} — Is it required to remove empty columns? Default: 1.
- * @param $sortBy {stringCommaSeparated} — The index of the column to sort by (indexes start at 0). The parameter also takes comma-separated values for multiple sort, e.g. '0,1'. Default: '0'.
- * @param $sortDir {'ASC'|'DESC'|'RAND'|'REVERSE'|''} — Rows sorting direction. The rows will be returned in reversed order if `sortDir` == 'REVERSE'. Default: ''.
- * @param $typography {stringCommaSeparated} — The comma separated indexes of the columns which values have to be corrected (indexes start at 0). If unset, there will be no correction. Default: —.
- * @param $outputFormat {'html'|'JSON'|'array'|'htmlarray'} — Result output format. Default: 'html'.
- * @param $rowGlue {string} — The string that combines rows while rendering. It can be used along with `rowTpl`. Default: ''.
- * @param $colGlue {string} — The string that combines columns while rendering. It can be used along with `colTpl`, but not with `rowTpl` for obvious reasons. Default: ''.
- * @param $rowTpl {stringChunkName|string} — The template for row rendering (`outputFormat` has to be == 'html'). Use inline templates starting with `@CODE:`. Available placeholders: [+rowNumber+] (index of current row, starts at 1), [+rowNumber.zeroBased+] (index of current row, starts at 0), [+total+] (total number of rows), [+resultTotal+] (total number of returned rows), [+col0+],[+col1+],… (column values). Default: ''.
- * @param $colTpl {stringCommaSeparated_chunkName|string|'null'} — The comma-separated list of templates for column rendering (`outputFormat` has to be == 'html'). Use inline templates starting with `@CODE:`. If the number of templates is lesser than the number of columns then the last passed template will be used to render the rest of the columns. 'null' specifies rendering without a template. Available placeholders: [+val+], [+rowNumber+] (index of current row, starts at 1), [+rowNumber.zeroBased+] (index of current row, starts at 0). Default: ''.
- * @param $outerTpl {stringChunkName|string} — Wrapper template (`outputFormat` has to be != 'array'). Use inline templates starting with `@CODE:`. Available placeholders: [+result+], [+total+] (total number of rows), [+resultTotal+] (total number of returned rows), [+rowY.colX+] (`Y` — row number, `X` — column number). Default: ''.
- * @param $placeholders {stirngJsonObject|stringQueryFormated} — Additional data as JSON (https://en.wikipedia.org/wiki/JSON) or Query string (https://en.wikipedia.org/wiki/Query_string) has to be passed into `outerTpl`, `rowTpl` and `colTpl`. E. g. `{"pladeholder1": "value1", "pagetitle": "My awesome pagetitle!"}` or `pladeholder1=value1&pagetitle=My awesome pagetitle!`. Arrays are supported too: `some[a]=one&some[b]=two` => `[+some.a+]`, `[+some.b+]`; `some[]=one&some[]=two` => `[+some.0+]`, `[some.1]`. Default: ''.
- * @param $urlencode {0|1} — Is it required to URL encode the result? `outputFormat` has to be != 'array'. URL encoding is used according to RFC 3986. Default: 0.
- * @param $totalRowsToPlaceholder {string} — The name of the global MODX placeholder that holds the total number of rows. The placeholder won't be set if `totalRowsToPlaceholder` is empty. Default: ''.
- * @param $resultToPlaceholder {string} — The name of the global MODX placeholder that holds the snippet result. The result will be returned in a regular manner if the parameter is empty. Default: ''.
+ * @see README.md
  * 
  * @link https://code.divandesign.biz/modx/ddgetmultiplefield
  * 
