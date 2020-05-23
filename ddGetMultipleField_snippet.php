@@ -105,6 +105,19 @@ if (
 	
 	//Если заданы условия фильтрации
 	if (isset($filter)){
+		//Backward compatibility
+		$filter = str_replace(
+			[
+				'::',
+				'<>'
+			],
+			[
+				'==',
+				'!='
+			],
+			$filter
+		);
+		
 		//Разбиваем по условию «или»
 		$filterSource = explode(
 			'||',
@@ -137,7 +150,7 @@ if (
 					'isEqual' =>
 						strpos(
 							$andCondition,
-							'::'
+							'=='
 						) !== false
 					,
 					'columnKey' => '',
@@ -148,8 +161,8 @@ if (
 				$andCondition = explode(
 					(
 						$filter[$orIndex][$andIndex]['isEqual'] ?
-						'::' :
-						'<>'
+						'==' :
+						'!='
 					),
 					$andCondition
 				);

@@ -98,7 +98,7 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	
 * `filter`
 	* Desctription: Filter clause for columns.  
-		Thus, `'0::a||0::b&&1::some&&2<>'` returns the rows where:
+		Thus, `'0==a||0==b&&1==some&&2!='` returns the rows where:
 		* `0` column is equal to `'a'` **or**
 		* `0` column is equal to `'b'` **and**
 		* `1` column is equal to `some` **and**
