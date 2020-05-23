@@ -98,11 +98,33 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	
 * `filter`
 	* Desctription: Filter clause for columns.  
-		Thus, `'0==a||0==b&&1==some&&2!='` returns the rows where:
-		* `0` column is equal to `'a'` **or**
-		* `0` column is equal to `'b'` **and**
-		* `1` column is equal to `some` **and**
-		* `2` column is not equal to `''`.
+		* Thus,
+			```
+			0 == 'a' ||
+			0 =='b' &&
+			1 == 'some' &&
+			2 != ''
+			```
+			returns the rows where:
+			* `0` column is equal to `'a'` **or**
+			* `0` column is equal to `'b'` **and**
+			* `1` column is equal to `some` **and**
+			* `2` column is not equal to `''`.
+		* Quoted values are optional, this is valid too:
+			```
+			0 == a ||
+			0 == b &&
+			1 == some &&
+			2 != 
+			```
+		* Double quotes are also supported as single quotes:
+			```
+			0 == "a" ||
+			0 == "b" &&
+			1 == "some" &&
+			2 != ""
+			```
+		* Spaces, tabs and line breaks are optional, this is valid too: `0==a||0==b&&1==some&&2!=`.
 	* Valid values: `stringSeparated`
 	* Default value: —
 	
@@ -423,6 +445,69 @@ Returns:
 	<p>1. <span title="He has a nice thick coat.">Grey</span>, 8 kg, loves meat — <i>not for sale</i>.</p>
 	<p>2. <span title="He has a nice thick coat.">Red</span>, 6 kg, vegetarian — <i>not for sale</i>.</p>
 </div>
+```
+
+
+#### Filter by column value (the `filter` parameter)
+
+```
+[[ddGetMultipleField?
+	&inputString=`[
+		[
+			"John Bon Jovi",
+			"musician",
+			"Bon Jovi"
+		],
+		[
+			"Steve Jobs",
+			"businessman",
+			"Apple"
+		],
+		[
+			"Roger Waters",
+			"musician",
+			"Pink Floyd"
+		],
+		[
+			"Robbie Williams",
+			"musician",
+			""
+		],
+		[
+			"Hugh Laurie",
+			"actor",
+			""
+		]
+	]`
+	&filter=`
+		1 == 'musician' &&
+		2 != '' ||
+		0 == 'Hugh Laurie'
+	`
+	&outputFormat=`json`
+]]
+```
+
+Returns:
+
+```json
+[
+	[
+		"John Bon Jovi",
+		"musician",
+		"Bon Jovi"
+	],
+	[
+		"Roger Waters",
+		"musician",
+		"Pink Floyd"
+	],
+	[
+		"Hugh Laurie",
+		"actor",
+		""
+	]
+]
 ```
 
 

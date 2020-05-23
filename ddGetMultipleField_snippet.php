@@ -168,8 +168,12 @@ if (
 				);
 				
 				//Добавляем правило для соответствующей колонки
-				$filter[$orIndex][$andIndex]['columnKey'] = $andCondition[0];
-				$filter[$orIndex][$andIndex]['columnValue'] = $andCondition[1];
+				$filter[$orIndex][$andIndex]['columnKey'] = trim($andCondition[0]);
+				$filter[$orIndex][$andIndex]['columnValue'] = trim(
+					$andCondition[1],
+					//Trim whitespaces and quotes
+					" \t\n\r\0\x0B\"'"
+				);
 			}
 		}
 	}else{
