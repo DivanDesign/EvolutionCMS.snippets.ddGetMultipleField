@@ -511,6 +511,76 @@ Returns:
 ```
 
 
+#### Sort a JSON object by multiple columns (parameters → `sortBy`, `sortDir`)
+
+```
+[[ddGetMultipleField?
+	&inputString=`{
+		"Albert Einstein": {
+			"number": "18",
+			"born": "1879.03.14",
+			"died": "1955.04.18"
+		},
+		"Alan Turing": {
+			"number": "42",
+			"born": "1912.06.23",
+			"died": "1954.06.07"
+		},
+		"Nikola Tesla": {
+			"number": "7",
+			"born": "1856.07.10",
+			"died": "1943.01.07"
+		},
+		"Marie Curie": {
+			"number": "42",
+			"born": "1867.11.07",
+			"died": "1934.07.04"
+		},
+		"Dmitri Mendeleev": {
+			"number": "7",
+			"born": "1834.02.08",
+			"died": "1907.02.02"
+		}
+	}`
+	&sortDir=`ASC`
+	&sortBy=`number,born`
+	&outputFormat=`json`
+]]
+```
+
+Returns:
+
+```json
+{
+	"Dmitri Mendeleev": {
+		"number": "7",
+		"born": "1834.02.08",
+		"died": "1907.02.02"
+	},
+	"Nikola Tesla": {
+		"number": "7",
+		"born": "1856.07.10",
+		"died": "1943.01.07"
+	},
+	"Albert Einstein": {
+		"number": "18",
+		"born": "1879.03.14",
+		"died": "1955.04.18"
+	},
+	"Marie Curie": {
+		"number": "42",
+		"born": "1867.11.07",
+		"died": "1934.07.04"
+	},
+	"Alan Turing": {
+		"number": "42",
+		"born": "1912.06.23",
+		"died": "1954.06.07"
+	}
+}
+```
+
+
 _It is hard to write here all possible examples so if here is something that you do not completely understand, please ask us._
 
 
