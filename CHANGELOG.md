@@ -1,6 +1,21 @@
 # (MODX)EvolutionCMS.snippets.ddGetMultipleField changelog
 
 
+## Version 3.5 (2020-05-25)
+* \+ Parameters → `inputString`: Can also be a JSON object, not just an array.
+* \* Parameters → `filter`:
+	* \* “Is equal” operator changed to `==` from `::` (with backward compatibility).
+	* \+ Added “is not equal” operator (`!=`).
+	* \+ Added “and” condition (`&&`).
+	* \+ Values can be quoted.
+	* \+ Spaces, tabs and line breaks are allowed.
+* \+ Composer.json.
+* \+ README.
+* \+ README_ru.
+* \+ CHANGELOG.
+* \+ CHANGELOG_ru.
+
+
 ## Version 3.4 (2018-11-14)
 * \+ Parameters → `placeholders`:
 	* \+ Added arrays support.
