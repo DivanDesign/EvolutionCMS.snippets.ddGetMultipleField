@@ -272,6 +272,9 @@ if (
 		;
 	}
 	
+	//Convert data to array for code simplification
+	$data = (array) $data;
+	
 	//Общее количество строк
 	$total = count($data);
 	
@@ -370,9 +373,6 @@ if (
 		}
 	}
 	
-	//Сбрасываем ключи массива (пригодится для выборки конкретного значения)
-	$data = array_values($data);
-	
 	//Если что-то есть (могло ничего не остаться после удаления пустых и/или получения по значениям)
 	if (count($data) > 0){
 		//Если надо сортировать
@@ -385,7 +385,16 @@ if (
 			
 			//Если надо в случайном порядке - шафлим
 			if ($sortDir == 'RAND'){
-				shuffle($data);
+				//Shuffle array preserve keys
+				uksort(
+					$data,
+					function(){
+						return rand(
+							-1,
+							1
+						);
+					}
+				);
 			//Если надо просто в обратном порядке
 			}else if ($sortDir == 'REVERSE'){
 				$data = array_reverse($data);
@@ -414,7 +423,7 @@ if (
 		}
 		
 		//Обрабатываем слишком большой индекс
-		if (!isset($data[$startRow])){
+		if ($startRow > count($data) - 1){
 			$startRow = count($data) - 1;
 		}
 		
@@ -530,7 +539,7 @@ if (
 					if (
 						(
 							$temp =
-								count($data[0]) -
+								count(array_values($data)[0]) -
 								count($colTpl)
 						) > 0
 					){
