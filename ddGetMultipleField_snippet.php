@@ -1,7 +1,7 @@
 <?php
 /**
  * ddGetMultipleField
- * @version 3.5 (2020-05-25)
+ * @version 3.5.1 (2020-06-22)
  * 
  * @see README.md
  * 
@@ -38,16 +38,16 @@ require_once($ddToolsPath);
 $snippetResult = '';
 
 //Backward compatibility
-extract(\ddTools::verifyRenamedParams(
-	$params,
-	[
+extract(\ddTools::verifyRenamedParams([
+	'params' => $params,
+	'compliance' => [
 		'inputString' => 'string',
 		'inputString_docField' => 'docField',
 		'inputString_docId' => 'docId',
 		'inputString_rowDelimiter' => 'rowDelimiter',
 		'inputString_colDelimiter' => 'colDelimiter'
 	]
-));
+]));
 
 //Если задано имя поля, которое необходимо получить
 if (isset($inputString_docField)){

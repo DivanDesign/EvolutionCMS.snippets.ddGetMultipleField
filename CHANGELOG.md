@@ -1,6 +1,10 @@
 # (MODX)EvolutionCMS.snippets.ddGetMultipleField changelog
 
 
+## Version 3.5.1 (2020-06-22)
+* \* Improved compatibility with new versions of (MODX)EvolutionCMS.libraries.ddTools.
+
+
 ## Version 3.5 (2020-05-25)
 * \+ Parameters → `inputString`: Can also be a JSON object, not just an array.
 * \* Parameters → `filter`:
