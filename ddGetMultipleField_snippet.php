@@ -396,7 +396,7 @@ if (
 					}
 				);
 			//Если надо просто в обратном порядке
-			}else if ($sortDir == 'REVERSE'){
+			}elseif ($sortDir == 'REVERSE'){
 				$data = array_reverse($data);
 			}else{
 				//Сортируем результаты
@@ -642,7 +642,7 @@ if (
 									!strlen($colValue)
 								){
 									unset($rowValue[$colKey]);
-								}else if (strlen($colTpl[$colKey]) > 0){
+								}elseif (strlen($colTpl[$colKey]) > 0){
 									$rowValue[$colKey] = $modx->parseText(
 										$colTpl[$colKey],
 										array_merge(
@@ -673,7 +673,7 @@ if (
 					$snippetResult = $resTemp;
 				}
 			//Если вывод в формате JSON
-			}else if ($outputFormat == 'json'){
+			}elseif ($outputFormat == 'json'){
 				$resTemp = $data;
 				
 				//Если нужно выводить только одну колонку
