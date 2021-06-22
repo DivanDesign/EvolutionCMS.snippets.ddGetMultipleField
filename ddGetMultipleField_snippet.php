@@ -12,6 +12,8 @@
 
 global $modx;
 
+
+//# Include
 $ddToolsPath =
 	$modx->getConfig('base_path') .
 	'assets/libs/ddTools/modx.ddtools.class.php'
@@ -34,11 +36,10 @@ if (!file_exists($ddToolsPath)){
 //Include (MODX)EvolutionCMS.libraries.ddTools
 require_once($ddToolsPath);
 
-//The snippet must return an empty string even if result is absent
-$snippetResult = '';
 
+//# Prepare params
 //Backward compatibility
-extract(\ddTools::verifyRenamedParams([
+$params = \ddTools::verifyRenamedParams([
 	'params' => $params,
 	'compliance' => [
 		'inputString' => 'string',
@@ -46,35 +47,236 @@ extract(\ddTools::verifyRenamedParams([
 		'inputString_docId' => 'docId',
 		'inputString_rowDelimiter' => 'rowDelimiter',
 		'inputString_colDelimiter' => 'colDelimiter'
-	]
-]));
+	],
+	'returnCorrectedOnly' => false
+]);
 
-//Если задано имя поля, которое необходимо получить
-if (isset($inputString_docField)){
-	$inputString = \ddTools::getTemplateVarOutput(
-		[$inputString_docField],
-		$inputString_docId
-	);
-	$inputString = $inputString[$inputString_docField];
+$params = \DDTools\ObjectTools::extend([
+	'objects' => [
+		//Defaults
+		(object) [
+			'inputString' => '',
+			'inputString_docField' => null,
+			'inputString_docId' => null,
+			'inputString_rowDelimiter' => '||',
+			'inputString_colDelimiter' => '::',
+			'startRow' => 0,
+			'totalRows' => 'all',
+			'columns' => 'all',
+			'filter' => null,
+			'removeEmptyRows' => true,
+			'removeEmptyCols' => true,
+			'sortBy' => '0',
+			'sortDir' => null,
+			'typography' => null,
+			'outputFormat' => 'html',
+			'rowGlue' => '',
+			'colGlue' => '',
+			'rowTpl' => null,
+			'colTpl' => null,
+			'outerTpl' => null,
+			'placeholders' => [],
+			'urlencode' => false,
+			'totalRowsToPlaceholder' => null,
+			'resultToPlaceholder' => null
+		],
+		$params
+	]
+]);
+
+//Boolean
+foreach (
+	[
+		'removeEmptyRows',
+		'removeEmptyCols',
+		'urlencode'
+	] as
+	$paramName
+){
+	$params->{$paramName} = boolval($params->{$paramName});
 }
 
-//Если задано значение поля
-if (
-	isset($inputString) &&
-	strlen($inputString) > 0
+//Integer
+$params->startRow = intval($params->startRow);
+
+//Comma separated string
+foreach (
+	[
+		'sortBy',
+		'typography',
+		'colTpl'
+	] as
+	$paramName
 ){
-	if (!isset($inputString_rowDelimiter)){
-		$inputString_rowDelimiter = '||';
+	if (
+		//Zero indexes for `sortBy` and `typography` must be used
+		$params->{$paramName} === '0' ||
+		!empty($params->{$paramName})
+	){
+		$params->{$paramName} = explode(
+			',',
+			$params->{$paramName}
+		);
 	}
-	if (!isset($inputString_colDelimiter)){
-		$inputString_colDelimiter = '::';
+}
+
+if (!is_numeric($params->totalRows)){
+	$params->totalRows = 'all';
+}
+
+if ($params->columns != 'all'){
+	$params->columns = explode(
+		',',
+		$params->columns
+	);
+}
+
+//Хитро-мудро для array_intersect_key
+if (is_array($params->columns)){
+	$params->columns = array_combine(
+		$params->columns,
+		$params->columns
+	);
+}
+
+if (!empty($params->sortDir)){
+	$params->sortDir = strtoupper($params->sortDir);
+}
+
+$params->outputFormat = strtolower($params->outputFormat);
+
+//Prepare templates
+foreach (
+	[
+		'rowTpl',
+		'outerTpl'
+	] as
+	$paramName
+){
+	//Chunk content or inline template
+	$params->{$paramName} = $modx->getTpl($params->{$paramName});
+}
+
+if (!empty($params->colTpl)){
+	//Получим содержимое шаблонов
+	foreach (
+		$params->colTpl as
+		$colTpl_itemNumber =>
+		$colTpl_itemValue
+	){
+		//Chunk content or inline template
+		$params->colTpl[$colTpl_itemNumber] = $modx->getTpl($params->colTpl[$colTpl_itemNumber]);
 	}
 	
+	$params->colTpl = str_replace(
+		'null',
+		'',
+		$params->colTpl
+	);
+}
+
+//Дополнительные данные
+$params->placeholders = \ddTools::encodedStringToArray($params->placeholders);
+//Unfold for arrays support (e. g. `{"somePlaceholder1": "test", "somePlaceholder2": {"a": "one", "b": "two"} }` => `[+somePlaceholder1+]`, `[+somePlaceholder2.a+]`, `[+somePlaceholder2.b+]`; `{"somePlaceholder1": "test", "somePlaceholder2": ["one", "two"] }` => `[+somePlaceholder1+]`, `[+somePlaceholder2.0+]`, `[somePlaceholder2.1]`)
+$params->placeholders = \ddTools::unfoldArray($params->placeholders);
+
+//Если задано имя поля, которое необходимо получить
+if (!empty($params->inputString_docField)){
+	$params->inputString = \ddTools::getTemplateVarOutput(
+		[$params->inputString_docField],
+		$params->inputString_docId
+	);
+	
+	$params->inputString = $params->inputString[$params->inputString_docField];
+}
+
+//Если заданы условия фильтрации
+if (!empty($params->filter)){
+	//Backward compatibility
+	$params->filter = str_replace(
+		[
+			'::',
+			'<>'
+		],
+		[
+			'==',
+			'!='
+		],
+		$params->filter
+	);
+	
+	//Разбиваем по условию «или»
+	$filterSource = explode(
+		'||',
+		$params->filter
+	);
+	
+	//Clear
+	$params->filter = [];
+	
+	//Перебираем по условию «или»
+	foreach (
+		$filterSource as
+		$orIndex =>
+		$orCondition
+	){
+		$params->filter[$orIndex] = [];
+		
+		//Перебираем по условию «и»
+		foreach (
+			//Разбиваем по условию «и»
+			explode(
+				'&&',
+				$orCondition
+			) as
+			$andIndex =>
+			$andCondition
+		){
+			//Добавляем вид сравнения для колонки
+			$params->filter[$orIndex][$andIndex] = [
+				'isEqual' =>
+					strpos(
+						$andCondition,
+						'=='
+					) !== false
+				,
+				'columnKey' => '',
+				'columnValue' => ''
+			];
+			
+			//Разбиваем по колонке/значению
+			$andCondition = explode(
+				(
+					$params->filter[$orIndex][$andIndex]['isEqual'] ?
+					'==' :
+					'!='
+				),
+				$andCondition
+			);
+			
+			//Добавляем правило для соответствующей колонки
+			$params->filter[$orIndex][$andIndex]['columnKey'] = trim($andCondition[0]);
+			$params->filter[$orIndex][$andIndex]['columnValue'] = trim(
+				$andCondition[1],
+				//Trim whitespaces and quotes
+				" \t\n\r\0\x0B\"'"
+			);
+		}
+	}
+}
+
+
+//# Run
+//The snippet must return an empty string even if result is absent
+$snippetResult = '';
+
+//Если задано значение поля
+if (strlen($params->inputString) > 0){
 	//Являются ли разделители регулярками
 	$inputString_rowDelimiterIsRegexp =
 		(
 			filter_var(
-				$inputString_rowDelimiter,
+				$params->inputString_rowDelimiter,
 				FILTER_VALIDATE_REGEXP,
 				[
 					'options' => [
@@ -90,7 +292,7 @@ if (
 	$inputString_colDelimiterIsRegexp =
 		(
 			filter_var(
-				$inputString_colDelimiter,
+				$params->inputString_colDelimiter,
 				FILTER_VALIDATE_REGEXP,
 				[
 					'options' => [
@@ -103,140 +305,11 @@ if (
 		false
 	;
 	
-	//Если заданы условия фильтрации
-	if (isset($filter)){
-		//Backward compatibility
-		$filter = str_replace(
-			[
-				'::',
-				'<>'
-			],
-			[
-				'==',
-				'!='
-			],
-			$filter
-		);
-		
-		//Разбиваем по условию «или»
-		$filterSource = explode(
-			'||',
-			$filter
-		);
-		
-		//Clear
-		$filter = [];
-		
-		//Перебираем по условию «или»
-		foreach (
-			$filterSource as
-			$orIndex =>
-			$orCondition
-		){
-			$filter[$orIndex] = [];
-			
-			//Перебираем по условию «и»
-			foreach (
-				//Разбиваем по условию «и»
-				explode(
-					'&&',
-					$orCondition
-				) as 
-				$andIndex =>
-				$andCondition
-			){
-				//Добавляем вид сравнения для колонки
-				$filter[$orIndex][$andIndex] = [
-					'isEqual' =>
-						strpos(
-							$andCondition,
-							'=='
-						) !== false
-					,
-					'columnKey' => '',
-					'columnValue' => ''
-				];
-				
-				//Разбиваем по колонке/значению
-				$andCondition = explode(
-					(
-						$filter[$orIndex][$andIndex]['isEqual'] ?
-						'==' :
-						'!='
-					),
-					$andCondition
-				);
-				
-				//Добавляем правило для соответствующей колонки
-				$filter[$orIndex][$andIndex]['columnKey'] = trim($andCondition[0]);
-				$filter[$orIndex][$andIndex]['columnValue'] = trim(
-					$andCondition[1],
-					//Trim whitespaces and quotes
-					" \t\n\r\0\x0B\"'"
-				);
-			}
-		}
-	}else{
-		$filter = false;
-	}
-	
-	$columns =
-		isset($columns) ?
-		explode(
-			',',
-			$columns
-		) :
-		'all'
-	;
-	//Хитро-мудро для array_intersect_key
-	if (is_array($columns)){
-		$columns = array_combine(
-			$columns,
-			$columns
-		);
-	}
-	if (!isset($rowGlue)){
-		$rowGlue = '';
-	}
-	if (!isset($colGlue)){
-		$colGlue = '';
-	}
-	
-	$removeEmptyRows =
-		(
-			isset($removeEmptyRows) &&
-			$removeEmptyRows == '0'
-		) ?
-		false :
-		true
-	;
-	$removeEmptyCols =
-		(
-			isset($removeEmptyCols) &&
-			$removeEmptyCols == '0'
-		) ?
-		false :
-		true
-	;
-	$urlencode =
-		(
-			isset($urlencode) &&
-			$urlencode == '1'
-		) ?
-		true :
-		false
-	;
-	$outputFormat =
-		isset($outputFormat) ?
-		strtolower($outputFormat) :
-		'html'
-	;
-	
 	//JSON (first letter is “{” or “[”)
 	if (
 		in_array(
 			substr(
-				ltrim($inputString),
+				ltrim($params->inputString),
 				0,
 				1
 			),
@@ -248,7 +321,7 @@ if (
 	){
 		try {
 			$data = json_decode(
-				$inputString,
+				$params->inputString,
 				true
 			);
 		}catch (\Exception $e){
@@ -262,12 +335,12 @@ if (
 		$data =
 			$inputString_rowDelimiterIsRegexp ?
 			preg_split(
-				$inputString_rowDelimiter,
-				$inputString
+				$params->inputString_rowDelimiter,
+				$params->inputString
 			) :
 			explode(
-				$inputString_rowDelimiter,
-				$inputString
+				$params->inputString_rowDelimiter,
+				$params->inputString
 			)
 		;
 	}
@@ -288,21 +361,21 @@ if (
 			$data[$rowKey] =
 				$inputString_colDelimiterIsRegexp ?
 				preg_split(
-					$inputString_colDelimiter,
+					$params->inputString_colDelimiter,
 					$rowValue
 				) :
 				explode(
-					$inputString_colDelimiter,
+					$params->inputString_colDelimiter,
 					$rowValue
 				)
 			;
 		}
 		
 		//Если необходимо получить какие-то конкретные значения
-		if ($filter !== false){
+		if (!empty($params->filter)){
 			//Перебираем условия `or`
 			foreach (
-				$filter as
+				$params->filter as
 				$orIndex =>
 				$orCondition
 			){
@@ -344,20 +417,20 @@ if (
 		
 		//Если нужно получить какую-то конкретную колонку
 		if (
-			$columns != 'all' &&
+			$params->columns != 'all' &&
 			//Также проверяем на то, что строка вообще существует, т.к. она могла быть уже удалена ранее
 			isset($data[$rowKey])
 		){
 			//Выбираем только необходимые колонки + Сбрасываем ключи массива
 			$data[$rowKey] = array_values(array_intersect_key(
 				$data[$rowKey],
-				$columns
+				$params->columns
 			));
 		}
 		
 		//Если нужно удалять пустые строки
 		if (
-			$removeEmptyRows &&
+			$params->removeEmptyRows &&
 			//Также проверяем на то, что строка вообще существует, т.к. она могла быть уже удалена ранее
 			isset($data[$rowKey])
 		){
@@ -376,15 +449,9 @@ if (
 	//Если что-то есть (могло ничего не остаться после удаления пустых и/или получения по значениям)
 	if (count($data) > 0){
 		//Если надо сортировать
-		if (isset($sortDir)){
-			$sortDir = strtoupper($sortDir);
-			
-			if (!isset($sortBy)){
-				$sortBy = '0';
-			}
-			
+		if (!empty($params->sortDir)){
 			//Если надо в случайном порядке - шафлим
-			if ($sortDir == 'RAND'){
+			if ($params->sortDir == 'RAND'){
 				//Shuffle array preserve keys
 				uksort(
 					$data,
@@ -396,18 +463,15 @@ if (
 					}
 				);
 			//Если надо просто в обратном порядке
-			}elseif ($sortDir == 'REVERSE'){
+			}elseif ($params->sortDir == 'REVERSE'){
 				$data = array_reverse($data);
 			}else{
 				//Сортируем результаты
 				$data = \ddTools::sort2dArray(
 					$data,
-					explode(
-						',',
-						$sortBy
-					),
+					$params->sortBy,
 					(
-						$sortDir == 'ASC' ?
+						$params->sortDir == 'ASC' ?
 						1 :
 						-1
 					)
@@ -415,37 +479,22 @@ if (
 			}
 		}
 		
-		if (
-			!isset($startRow) ||
-			!is_numeric($startRow)
-		){
-			$startRow = '0';
-		}
-		
 		//Обрабатываем слишком большой индекс
-		if ($startRow > count($data) - 1){
-			$startRow = count($data) - 1;
-		}
-		
-		//Если общее количество элементов не задано или задано плохо, читаем, что нужны все
-		if (
-			!isset($totalRows) ||
-			!is_numeric($totalRows)
-		){
-			$totalRows = 'all';
+		if ($params->startRow > count($data) - 1){
+			$params->startRow = count($data) - 1;
 		}
 		
 		//Если нужны все элементы
-		if ($totalRows == 'all'){
+		if ($params->totalRows == 'all'){
 			$data = array_slice(
 				$data,
-				$startRow
+				$params->startRow
 			);
 		}else{
 			$data = array_slice(
 				$data,
-				$startRow,
-				$totalRows
+				$params->startRow,
+				$params->totalRows
 			);
 		}
 		
@@ -453,20 +502,15 @@ if (
 		$resultTotal = count($data);
 		
 		//Плэйсхолдер с общим количеством
-		if (isset($totalRowsToPlaceholder)){
+		if (!empty($params->totalRowsToPlaceholder)){
 			$modx->setPlaceholder(
-				$totalRowsToPlaceholder,
+				$params->totalRowsToPlaceholder,
 				$resultTotal
 			);
 		}
 		
 		//Если нужно типографировать
-		if (isset($typography)){
-			$typography = explode(
-				',',
-				$typography
-			);
-			
+		if (!empty($params->typography)){
 			//Придётся ещё раз перебрать результат
 			foreach (
 				$data as
@@ -475,7 +519,7 @@ if (
 			){
 				//Перебираем колонки, заданные для типографирования
 				foreach (
-					$typography as
+					$params->typography as
 					$colKey
 				){
 					//Если такая колонка существует, типографируем
@@ -492,80 +536,39 @@ if (
 		}
 		
 		//Если вывод в массив
-		if ($outputFormat == 'array'){
+		if ($params->outputFormat == 'array'){
 			$snippetResult = $data;
 		}else{
 			$resTemp = [];
 			
-			//Дополнительные данные
-			if (
-				isset($placeholders) &&
-				trim($placeholders) != ''
-			){
-				$placeholders = \ddTools::encodedStringToArray($placeholders);
-				//Unfold for arrays support (e. g. `{"somePlaceholder1": "test", "somePlaceholder2": {"a": "one", "b": "two"} }` => `[+somePlaceholder1+]`, `[+somePlaceholder2.a+]`, `[+somePlaceholder2.b+]`; `{"somePlaceholder1": "test", "somePlaceholder2": ["one", "two"] }` => `[+somePlaceholder1+]`, `[+somePlaceholder2.0+]`, `[somePlaceholder2.1]`)
-				$placeholders = \ddTools::unfoldArray($placeholders);
-			}else{
-				$placeholders = [];
-			}
-			
 			//Если вывод просто в формате html
 			if (
-				$outputFormat == 'html' ||
-				$outputFormat == 'htmlarray'
+				$params->outputFormat == 'html' ||
+				$params->outputFormat == 'htmlarray'
 			){
-				//Шаблоны колонок
-				$colTpl =
-					isset($colTpl) ?
-					explode(
-						',',
-						$colTpl
-					) :
-					false
-				;
-				
-				//Если шаблоны колонок заданы, но их не хватает
-				if ($colTpl !== false){
-					//Получим содержимое шаблонов
-					foreach (
-						$colTpl as
-						$colTpl_itemNumber =>
-						$colTpl_itemValue
-					){
-						//Chunk content or inline template
-						$colTpl[$colTpl_itemNumber] = $modx->getTpl($colTpl[$colTpl_itemNumber]);
-					}
-					
-					if (
-						(
-							$temp =
-								count(array_values($data)[0]) -
-								count($colTpl)
-						) > 0
-					){
-						//Дозабьём недостающие последним
-						$colTpl = array_merge(
-							$colTpl,
-							array_fill(
-								$temp - 1,
-								$temp,
-								$colTpl[count($colTpl) - 1]
-							)
-						);
-					}
-					
-					$colTpl = str_replace(
-						'null',
-						'',
-						$colTpl
+				if (
+					//Если шаблоны колонок заданы
+					!empty($params->colTpl) &&
+					//Но их не хватает
+					(
+						$temp =
+							count(array_values($data)[0]) -
+							count($params->colTpl)
+					) > 0
+				){
+					//Дозабьём недостающие последним
+					$params->colTpl = array_merge(
+						$params->colTpl,
+						array_fill(
+							$temp - 1,
+							$temp,
+							$params->colTpl[count($params->colTpl) - 1]
+						)
 					);
 				}
 				
 				//Если задан шаблон строки
-				if (isset($rowTpl)){
-					//Chunk content or inline template
-					$rowTpl = $modx->getTpl($rowTpl);
-					
+				if (!empty($params->rowTpl)){
 					//Перебираем строки
 					foreach (
 						$data as
@@ -589,25 +592,25 @@ if (
 						){
 							//Если нужно удалять пустые значения
 							if (
-								$removeEmptyCols &&
+								$params->removeEmptyCols &&
 								!strlen($colValue)
 							){
 								$resTemp[$rowKey]['col' . $colKey] = '';
 							}else{
 								//Если есть шаблоны значений колонок
 								if (
-									$colTpl !== false &&
-									strlen($colTpl[$colKey]) > 0
+									!empty($params->colTpl) &&
+									strlen($params->colTpl[$colKey]) > 0
 								){
-									$resTemp[$rowKey]['col'.$colKey] = $modx->parseText(
-										$colTpl[$colKey],
+									$resTemp[$rowKey]['col' . $colKey] = $modx->parseText(
+										$params->colTpl[$colKey],
 										array_merge(
 											[
 												'val' => $colValue,
 												'rowNumber.zeroBased' => $resTemp[$rowKey]['rowNumber.zeroBased'],
 												'rowNumber' => $resTemp[$rowKey]['rowNumber']
 											],
-											$placeholders
+											$params->placeholders
 										)
 									);
 								}else{
@@ -617,10 +620,10 @@ if (
 						}
 						
 						$resTemp[$rowKey] = $modx->parseText(
-							$rowTpl,
+							$params->rowTpl,
 							array_merge(
 								$resTemp[$rowKey],
-								$placeholders
+								$params->placeholders
 							)
 						);
 					}
@@ -631,55 +634,56 @@ if (
 						$rowValue
 					){
 						//Если есть шаблоны значений колонок
-						if ($colTpl !== false){
+						if (!empty($params->colTpl)){
 							foreach (
 								$rowValue as
 								$colKey =>
 								$colValue
 							){
 								if (
-									$removeEmptyCols &&
+									$params->removeEmptyCols &&
 									!strlen($colValue)
 								){
 									unset($rowValue[$colKey]);
-								}elseif (strlen($colTpl[$colKey]) > 0){
+								}elseif (strlen($params->colTpl[$colKey]) > 0){
 									$rowValue[$colKey] = $modx->parseText(
-										$colTpl[$colKey],
+										$params->colTpl[$colKey],
 										array_merge(
 											[
 												'val' => $colValue,
 												'rowNumber.zeroBased' => $rowKey,
 												'rowNumber' => $rowKey + 1
 											],
-											$placeholders
+											$params->placeholders
 										)
 									);
 								}
 							}
 						}
+						
 						$resTemp[$rowKey] = implode(
-							$colGlue,
+							$params->colGlue,
 							$rowValue
 						);
 					}
 				}
 				
-				if ($outputFormat == 'html'){
+				if ($params->outputFormat == 'html'){
 					$snippetResult = implode(
-						$rowGlue,
+						$params->rowGlue,
 						$resTemp
 					);
 				}else{
 					$snippetResult = $resTemp;
 				}
 			//Если вывод в формате JSON
-			}elseif ($outputFormat == 'json'){
+			}elseif ($params->outputFormat == 'json'){
 				$resTemp = $data;
 				
 				//Если нужно выводить только одну колонку
 				if (
-					$columns != 'all' &&
-					count($columns) == 1
+					$params->columns != 'all' &&
+					count($params->columns) == 1
 				){
 					$resTemp = array_map(
 						'implode',
@@ -688,8 +692,8 @@ if (
 				}
 				
 				//Если нужно получить какой-то конкретный элемент, а не все
-				if ($totalRows == '1'){
-					$snippetResult = json_encode($resTemp[$startRow]);
+				if ($params->totalRows == '1'){
+					$snippetResult = json_encode($resTemp[$params->startRow]);
 				}else{
 					$snippetResult = json_encode($resTemp);
 				}
@@ -705,10 +709,7 @@ if (
 			}
 			
 			//Если оборачивающий шаблон задан (и вывод не в массив), парсим его
-			if (isset($outerTpl)){
-				//Chunk content or inline template
-				$outerTpl = $modx->getTpl($outerTpl);
-				
+			if (!empty($params->outerTpl)){
 				$resTemp = [];
 				
 				//Элемент массива 'result' должен находиться самым первым, иначе дополнительные переданные плэйсхолдеры в тексте не найдутся! 
@@ -732,20 +733,20 @@ if (
 				
 				$resTemp = array_merge(
 					$resTemp,
-					$placeholders
+					$params->placeholders
 				);
 				
 				$resTemp['total'] = $total;
 				$resTemp['resultTotal'] = $resultTotal;
 				
 				$snippetResult = $modx->parseText(
-					$outerTpl,
+					$params->outerTpl,
 					$resTemp
 				);
 			}
 			
 			//Если нужно URL-кодировать строку
-			if ($urlencode){
+			if ($params->urlencode){
 				$snippetResult = rawurlencode($snippetResult);
 			}
 		}
@@ -753,9 +754,9 @@ if (
 }
 
 //Если надо, выводим в плэйсхолдер
-if (isset($resultToPlaceholder)){
+if (!empty($params->resultToPlaceholder)){
 	$modx->setPlaceholder(
-		$resultToPlaceholder,
+		$params->resultToPlaceholder,
 		$snippetResult
 	);
 	
