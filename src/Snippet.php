@@ -229,7 +229,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.0.1 (2021-06-28)
+	 * @version 1.0.2 (2021-06-28)
 	 * 
 	 * @return {string}
 	 */
@@ -489,12 +489,12 @@ class Snippet extends \DDTools\Snippet {
 						){
 							//Если такая колонка существует, типографируем
 							if (isset($data[$rowKey][$colKey])){
-								$data[$rowKey][$colKey] = \ddTools::$modx->runSnippet(
-									'ddTypograph',
-									[
+								$data[$rowKey][$colKey] = \DDTools\Snippet::runSnippet([
+									'name' => 'ddTypograph',
+									'params' => [
 										'text' => $data[$rowKey][$colKey]
 									]
-								);
+								]);
 							}
 						}
 					}
