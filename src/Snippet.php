@@ -229,7 +229,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.0.2 (2021-06-28)
+	 * @version 1.0.3 (2021-06-28)
 	 * 
 	 * @return {string}
 	 */
@@ -567,30 +567,31 @@ class Snippet extends \DDTools\Snippet {
 											!empty($this->params->colTpl) &&
 											strlen($this->params->colTpl[$colKey]) > 0
 										){
-											$resTemp[$rowKey]['col' . $colKey] = \ddTools::$modx->parseText(
-												$this->params->colTpl[$colKey],
-												array_merge(
+											$resTemp[$rowKey]['col' . $colKey] = \ddTools::parseText([
+												'text' => $this->params->colTpl[$colKey],
+												'data' => array_merge(
 													[
 														'val' => $colValue,
 														'rowNumber.zeroBased' => $resTemp[$rowKey]['rowNumber.zeroBased'],
 														'rowNumber' => $resTemp[$rowKey]['rowNumber']
 													],
 													$this->params->placeholders
-												)
-											);
+												),
+												'mergeAll' => false
+											]);
 										}else{
 											$resTemp[$rowKey]['col' . $colKey] = $colValue;
 										}
 									}
 								}
 								
-								$resTemp[$rowKey] = \ddTools::$modx->parseText(
-									$this->params->rowTpl,
-									array_merge(
+								$resTemp[$rowKey] = \ddTools::parseText([
+									'text' => $this->params->rowTpl,
+									'data' => array_merge(
 										$resTemp[$rowKey],
 										$this->params->placeholders
 									)
-								);
+								]);
 							}
 						}else{
 							foreach (
@@ -611,9 +612,9 @@ class Snippet extends \DDTools\Snippet {
 										){
 											unset($rowValue[$colKey]);
 										}elseif (strlen($this->params->colTpl[$colKey]) > 0){
-											$rowValue[$colKey] = \ddTools::$modx->parseText(
-												$this->params->colTpl[$colKey],
-												array_merge(
+											$rowValue[$colKey] = \ddTools::parseText([
+												'text' => $this->params->colTpl[$colKey],
+												'data' => array_merge(
 													[
 														'val' => $colValue,
 														'rowNumber.zeroBased' => $rowKey,
@@ -621,7 +622,7 @@ class Snippet extends \DDTools\Snippet {
 													],
 													$this->params->placeholders
 												)
-											);
+											]);
 										}
 									}
 								}
@@ -704,10 +705,10 @@ class Snippet extends \DDTools\Snippet {
 						$resTemp['total'] = $total;
 						$resTemp['resultTotal'] = $resultTotal;
 						
-						$result = \ddTools::$modx->parseText(
-							$this->params->outerTpl,
-							$resTemp
-						);
+						$result = \ddTools::parseText([
+							'text' => $this->params->outerTpl,
+							'data' => $resTemp
+						]);
 					}
 					
 					//Если нужно URL-кодировать строку
