@@ -40,14 +40,17 @@
 		{
 			"name": "Alexey Davydov",
 			"email": "davalemic@DivanDesign.ru",
+			"homepage": "https://github.com/davalemic",
 			"role": "Developer"
 		},
 		{
 			"name": "Andrey Dunaev",
+			"homepage": "https://github.com/svolochev",
 			"role": "Developer"
 		},
 		{
 			"name": "Sergey Kuzminykh",
+			"homepage": "https://github.com/Aranen",
 			"role": "Developer"
 		}
 	],
