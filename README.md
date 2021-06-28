@@ -19,10 +19,10 @@ Features:
 
 ## Requires
 
-* PHP >= 5.4
+* PHP >= 5.6
 * [(MODX)EvolutionCMS](https://github.com/evolution-cms/evolution) >= 1.1
-* [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.biz/modx/ddtools) >= 0.37
-* [(MODX)EvolutionCMS.snippets.ddTypograph](https://code.divandesign.biz/modx/ddtypograph) >= 1.4.3 (if typography is required)
+* [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.biz/modx/ddtools) >= 0.50
+* [(MODX)EvolutionCMS.snippets.ddTypograph](https://code.divandesign.biz/modx/ddtypograph) >= 2.5 (if typography is required)
 
 
 ## Documentation
@@ -30,14 +30,45 @@ Features:
 
 ### Installation
 
-Elements → Snippets: Create a new snippet with the following data:
+
+#### Manually
+
+
+##### 1. Elements → Snippets: Create a new snippet with the following data
 
 1. Snippet name: `ddGetMultipleField`.
-2. Description: `<b>3.5.1</b> A snippet for processing, manipulations and custom output structured data (JSON or separated by delimiters strings).`.
+2. Description: `<b>3.6</b> A snippet for processing, manipulations and custom output structured data (JSON or separated by delimiters strings).`.
 3. Category: `Core`.
 4. Parse DocBlock: `no`.
 5. Snippet code (php): Insert content of the `ddGetMultipleField_snippet.php` file from the archive.
 
+
+##### 2. Elements → Manage Files
+
+1. Create a new folder `assets/snippets/ddGetMultipleField/`.
+2. Extract the archive to the folder (except `ddGetMultipleField_snippet.php`).
+
+
+#### Using [(MODX)EvolutionCMS.libraries.ddInstaller](https://github.com/DivanDesign/EvolutionCMS.libraries.ddInstaller)
+
+Just run the following PHP code in your sources or [Console](https://github.com/vanchelo/MODX-Evolution-Ajax-Console):
+
+```php
+//Include (MODX)EvolutionCMS.libraries.ddInstaller
+require_once(
+	$modx->getConfig('base_path') .
+	'assets/libs/ddInstaller/require.php'
+);
+
+//Install (MODX)EvolutionCMS.snippets.ddGetMultipleField
+\DDInstaller::install([
+	'url' => 'https://github.com/DivanDesign/EvolutionCMS.snippets.ddGetMultipleField',
+	'type' => 'snippet'
+]);
+```
+
+* If `ddGetMultipleField` is not exist on your site, `ddInstaller` will just install it.
+* If `ddGetMultipleField` is already exist on your site, `ddInstaller` will check it version and update it if needed.
 
 
 ### Parameters description
@@ -93,6 +124,7 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Desctription: The indexes of columns to return (indexes start at `0`).
 	* Valid values:
 		* `stringCommaSeparated`
+		* `array`
 		* `'all'` — all columns will be returned
 	* Default value: `'all'`
 	
@@ -145,7 +177,9 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 * `sortBy`
 	* Desctription: The index of the column to sort by (indexes start at `0`).  
 		The parameter also takes comma-separated values for multiple sort, e.g. `'0,1'`.
-	* Valid values: `stringCommaSeparated`
+	* Valid values:
+		* `stringCommaSeparated`
+		* `array`
 	* Default value: `'0'`
 	
 * `sortDir`
@@ -161,7 +195,9 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 * `typography`
 	* Desctription: The comma separated indexes of the columns which values have to be corrected (indexes start at `0`).  
 		If unset, there will be no correction.
-	* Valid values: `stringCommaSeparated`
+	* Valid values:
+		* `stringCommaSeparated`
+		* `array`
 	* Default value: —
 	
 * `outputFormat`
@@ -201,7 +237,9 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 * `colTpl`
 	* Desctription: The comma-separated list of templates for column rendering (`outputFormat` has to be == `'html'`).  
 		If the number of templates is lesser than the number of columns then the last passed template will be used to render the rest of the columns.
-	* Valid values: `stringCommaSeparated`
+	* Valid values:
+		* `stringCommaSeparated`
+		* `array`
 	* Default value: —
 	
 * `colTpl[i]`
@@ -237,7 +275,11 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 		* `{"some": ["one", "two"] }` => `[+some.0+]`, `[+some.1+]`.
 	* Valid values:
 		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
+		* `stringHjsonObject` — as [HJSON](https://hjson.github.io/)
 		* `stringQueryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
+		* It can also be set as a native PHP object or array (e. g. for calls through `$modx->runSnippet`):
+			* `arrayAssociative`
+			* `object`
 	* Default value: —
 	
 * `urlencode`
@@ -581,10 +623,43 @@ Returns:
 ```
 
 
+#### Run the snippet through `\DDTools\Snippet::runSnippet` without DB and eval
+
+```php
+//Include (MODX)EvolutionCMS.libraries.ddTools
+require_once(
+	$modx->getConfig('base_path') .
+	'assets/libs/ddTools/modx.ddtools.class.php'
+);
+
+//Run (MODX)EvolutionCMS.snippets.ddGetMultipleField
+\DDTools\Snippet::runSnippet([
+	'name' => 'ddGetMultipleField',
+	'params' => [
+		'inputString' => '[
+			[
+				"assets/images/example1.png",
+				"Example image 1"
+			],
+			[
+				"assets/images/example2.png",
+				"Example image 2"
+			]
+		]',
+		'rowTpl' => '@CODE:<img src="[+col0+]" alt="[+col1+]" />'
+	]
+]);
+```
+
+
 _It is hard to write here all possible examples so if here is something that you do not completely understand, please ask us._
 
 
-## [Home page →](https://code.divandesign.biz/modx/ddgetmultiplefield)
+## Links
+
+* [Home page](https://code.divandesign.biz/modx/ddgetmultiplefield)
+* [Telegram chat](https://t.me/dd_code)
+* [Packagist](https://packagist.org/packages/dd/evolutioncms-snippets-ddgetmultiplefield)
 
 
 <link rel="stylesheet" type="text/css" href="https://DivanDesign.ru/assets/files/ddMarkdown.css" />

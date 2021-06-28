@@ -1,6 +1,25 @@
 # (MODX)EvolutionCMS.snippets.ddGetMultipleField changelog
 
 
+## Version 3.6 (2021-06-28)
+* \* Attention! PHP >= 5.6 is required.
+* \* Attention! (MODX)EvolutionCMS.libraries.ddTools >= 0.50 is required.
+* \* Attention! (MODX)EvolutionCMS.snippets.ddTypograph >= 2.5 is required.
+* \+ Parameters:
+	* \+ `placeholders`: Can also be set as [HJSON](https://hjson.github.io/) or as a native PHP object or array (e. g. for calls through `$modx->runSnippet`).
+	* \+ `columns`, `sortBy`, `typography`, `colTpl`: Can also be set as a native PHP array (e. g. for calls through `$modx->runSnippet`).
+* \+ You can just call `\DDTools\Snippet::runSnippet` to run the snippet without DB and eval (see README → Examples).
+* \+ `\ddGetMultipleField\Snippet`: The new class. All snippet code was moved here.
+* \* `\DDTools\Snippet::runSnippet` is used instead of `$modx->runSnippet` to run (MODX)EvolutionCMS.snippets.ddTypograph without DB and eval.
+* \- Removed compatibility with ancient versions of (MODX)EvolutionCMS.libraries.ddTools.
+* \+ README:
+	* \+ Documentation → Installation → Using (MODX)EvolutionCMS.libraries.ddInstaller.
+	* \+ Links.
+* \+ Composer.json:
+	* \+ `support`.
+	* \+ `authors`: Added missed homepages.
+
+
 ## Version 3.5.1 (2020-06-22)
 * \* Improved compatibility with new versions of (MODX)EvolutionCMS.libraries.ddTools.
 

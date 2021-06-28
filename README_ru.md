@@ -19,10 +19,10 @@
 
 ## Использует
 
-* PHP >= 5.4
+* PHP >= 5.6
 * [(MODX)EvolutionCMS](https://github.com/evolution-cms/evolution) >= 1.1
-* [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.biz/modx/ddtools) >= 0.37
-* [(MODX)EvolutionCMS.snippets.ddTypograph](https://code.divandesign.biz/modx/ddtypograph) >= 1.4.3 (if typography is required)
+* [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.biz/modx/ddtools) >= 0.50
+* [(MODX)EvolutionCMS.snippets.ddTypograph](https://code.divandesign.biz/modx/ddtypograph) >= 2.5 (if typography is required)
 
 
 ## Документация
@@ -30,13 +30,45 @@
 
 ### Установка
 
-Элементы → Сниппеты: Создайте новый сниппет со следующими параметрами
+
+#### Вручную
+
+
+##### 1. Элементы → Сниппеты: Создайте новый сниппет со следующими параметрами
 
 1. Название сниппета: `ddGetMultipleField`.
-2. Описание: `<b>3.5.1</b> Сниппет для обработки, изменения и произвольного вывода структурированных данных (JSON или разделённых через определённые разделители).`.
+2. Описание: `<b>3.6</b> Сниппет для обработки, изменения и произвольного вывода структурированных данных (JSON или разделённых через определённые разделители).`.
 3. Категория: `Core`.
 4. Анализировать DocBlock: `no`.
 5. Код сниппета (php): Вставьте содержимое файла `ddGetMultipleField_snippet.php` из архива.
+
+
+##### 2. Элементы → Управление файлами
+
+1. Создайте новую папку `assets/snippets/ddGetMultipleField/`.
+2. Извлеките содержимое архива в неё (кроме файла `ddGetMultipleField_snippet.php`).
+
+
+#### Используя [(MODX)EvolutionCMS.libraries.ddInstaller](https://github.com/DivanDesign/EvolutionCMS.libraries.ddInstaller)
+
+Просто вызовите следующий код в своих исходинках или модуле [Console](https://github.com/vanchelo/MODX-Evolution-Ajax-Console):
+
+```php
+//Подключение (MODX)EvolutionCMS.libraries.ddInstaller
+require_once(
+	$modx->getConfig('base_path') .
+	'assets/libs/ddInstaller/require.php'
+);
+
+//Установка (MODX)EvolutionCMS.snippets.ddGetMultipleField
+\DDInstaller::install([
+	'url' => 'https://github.com/DivanDesign/EvolutionCMS.snippets.ddGetMultipleField',
+	'type' => 'snippet'
+]);
+```
+
+* Если `ddGetMultipleField` отсутствует на вашем сайте, `ddInstaller` просто установит его.
+* Если `ddGetMultipleField` уже есть на вашем сайте, `ddInstaller` проверит его версию и обновит, если нужно. 
 
 
 ### Описание параметров
@@ -77,7 +109,7 @@
 	* Значение по умолчанию: `'::'`
 	
 * `startRow`
-	* Описание: Номер строки, начиная с которой необходимо возвращать (строки нсмертьуются с `0`).
+	* Описание: Номер строки, начиная с которой необходимо возвращать (строки нумеруются с `0`).
 	* Допустимые значения: `integer`
 	* Значение по умолчанию: `0`
 	
@@ -89,9 +121,10 @@
 	* Значение по умолчанию: `'all'`
 	
 * `columns`
-	* Описание: Номера колонк через запятую, которые нужно вернуть (колонки нсмертьуются с `0`).
+	* Описание: Номера колонк через запятую, которые нужно вернуть (колонки нумеруются с `0`).
 	* Допустимые значения:
 		* `stringCommaSeparated`
+		* `array`
 		* `'all'` — будут возвращены все колонки
 	* Значение по умолчанию: `'all'`
 	
@@ -142,9 +175,11 @@
 	* Значение по умолчанию: `1`
 	
 * `sortBy`
-	* Описание: Номер колонки, по которой необходимо сортировать (нсмертьуются с `0`).  
+	* Описание: Номер колонки, по которой необходимо сортировать (нумеруются с `0`).  
 		Для множественной сортировки параметры указываются через запятую (например: `'0,1'`).
-	* Допустимые значения: `stringCommaSeparated`
+	* Допустимые значения:
+		* `stringCommaSeparated`
+		* `array`
 	* Значение по умолчанию: `'0'`
 	
 * `sortDir`
@@ -158,9 +193,11 @@
 	* Значение по умолчанию: `''`
 	
 * `typography`
-	* Описание: Номера колонок через запятую, значения которых нужно типографировать (колонки нсмертьуются с `0`).  
+	* Описание: Номера колонок через запятую, значения которых нужно типографировать (колонки нумеруются с `0`).  
 		Если не задано, ничего не типографируется.
-	* Допустимые значения: `stringCommaSeparated`
+	* Допустимые значения:
+		* `stringCommaSeparated`
+		* `array`
 	* Значение по умолчанию: —
 	
 * `outputFormat`
@@ -200,7 +237,9 @@
 * `colTpl`
 	* Описание: Список шаблонов для вывода колонок, через запятую (при `outputFormat` == `'html'`).  
 		Если шаблонов меньше, чем колонок, для всех недостающих выставляется последний указанный шаблон.
-	* Допустимые значения: `stringCommaSeparated`
+	* Допустимые значения:
+		* `stringCommaSeparated`
+		* `array`
 	* Значение по умолчанию: —
 	
 * `colTpl[i]`
@@ -236,7 +275,11 @@
 		* `{"some": ["one", "two"] }` => `[+some.0+]`, `[+some.1+]`.
 	* Допустимые значения:
 		* `stringJsonObject` — в виде [JSON](https://ru.wikipedia.org/wiki/JSON)
+		* `stringHjsonObject` — в виде [HJSON](https://hjson.github.io/)
 		* `stringQueryFormated` — в виде [Query string](https://en.wikipedia.org/wiki/Query_string)
+		* Также может быть задан, как нативный PHP объект или массив (например, для вызовов через `$modx->runSnippet`).
+			* `arrayAssociative`
+			* `object`
 	* Значение по умолчанию: —
 	
 * `urlencode`
@@ -580,10 +623,43 @@ Returns:
 ```
 
 
+#### Запустить сниппет через `\DDTools\Snippet::runSnippet` без DB и eval
+
+```php
+//Подключение (MODX)EvolutionCMS.libraries.ddTools
+require_once(
+	$modx->getConfig('base_path') .
+	'assets/libs/ddTools/modx.ddtools.class.php'
+);
+
+//Запуск (MODX)EvolutionCMS.snippets.ddGetMultipleField
+\DDTools\Snippet::runSnippet([
+	'name' => 'ddGetMultipleField',
+	'params' => [
+		'inputString' => '[
+			[
+				"assets/images/example1.png",
+				"Пример изображения 1"
+			],
+			[
+				"assets/images/example2.png",
+				"Пример изображения 2"
+			]
+		]',
+		'rowTpl' => '@CODE:<img src="[+col0+]" alt="[+col1+]" />'
+	]
+]);
+```
+
+
 _Примеров здесь можно напридумывать великое множество. Так что, если что не понятно, спрашивайте._
 
 
-## [Home page →](https://code.divandesign.biz/modx/ddgetmultiplefield)
+## Ссылки
+
+* [Home page](https://code.divandesign.ru/modx/ddgetmultiplefield)
+* [Telegram chat](https://t.me/dd_code)
+* [Packagist](https://packagist.org/packages/dd/evolutioncms-snippets-ddgetmultiplefield)
 
 
 <link rel="stylesheet" type="text/css" href="https://DivanDesign.ru/assets/files/ddMarkdown.css" />
