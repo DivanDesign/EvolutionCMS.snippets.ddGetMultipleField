@@ -100,6 +100,7 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Desctription: The indexes of columns to return (indexes start at `0`).
 	* Valid values:
 		* `stringCommaSeparated`
+		* `array`
 		* `'all'` — all columns will be returned
 	* Default value: `'all'`
 	
@@ -152,7 +153,9 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 * `sortBy`
 	* Desctription: The index of the column to sort by (indexes start at `0`).  
 		The parameter also takes comma-separated values for multiple sort, e.g. `'0,1'`.
-	* Valid values: `stringCommaSeparated`
+	* Valid values:
+		* `stringCommaSeparated`
+		* `array`
 	* Default value: `'0'`
 	
 * `sortDir`
@@ -168,7 +171,9 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 * `typography`
 	* Desctription: The comma separated indexes of the columns which values have to be corrected (indexes start at `0`).  
 		If unset, there will be no correction.
-	* Valid values: `stringCommaSeparated`
+	* Valid values:
+		* `stringCommaSeparated`
+		* `array`
 	* Default value: —
 	
 * `outputFormat`
@@ -208,7 +213,9 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 * `colTpl`
 	* Desctription: The comma-separated list of templates for column rendering (`outputFormat` has to be == `'html'`).  
 		If the number of templates is lesser than the number of columns then the last passed template will be used to render the rest of the columns.
-	* Valid values: `stringCommaSeparated`
+	* Valid values:
+		* `stringCommaSeparated`
+		* `array`
 	* Default value: —
 	
 * `colTpl[i]`

@@ -52,7 +52,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * prepareParams
-	 * @version 1.0 (2021-06-28)
+	 * @version 1.1 (2021-06-28)
 	 * 
 	 * @param $params {stdClass|arrayAssociative|stringJsonObject|stringHjsonObject|stringQueryFormatted}
 	 * 
@@ -72,9 +72,13 @@ class Snippet extends \DDTools\Snippet {
 			$paramName
 		){
 			if (
-				//Zero indexes for `sortBy` and `typography` must be used
-				$this->params->{$paramName} === '0' ||
-				!empty($this->params->{$paramName})
+				//Only strings can be exploded
+				!is_array($this->params->{$paramName}) &&
+				(
+					//Zero indexes for `sortBy` and `typography` must be used
+					$this->params->{$paramName} === '0' ||
+					!empty($this->params->{$paramName})
+				)
 			){
 				$this->params->{$paramName} = explode(
 					',',
@@ -87,7 +91,10 @@ class Snippet extends \DDTools\Snippet {
 			$this->params->totalRows = 'all';
 		}
 		
-		if ($this->params->columns != 'all'){
+		if (
+			$this->params->columns != 'all' &&
+			!is_array($this->params->columns)
+		){
 			$this->params->columns = explode(
 				',',
 				$this->params->columns
