@@ -14,27 +14,11 @@ global $modx;
 
 
 //# Include
-$ddToolsPath =
+//Include (MODX)EvolutionCMS.libraries.ddTools
+require_once(
 	$modx->getConfig('base_path') .
 	'assets/libs/ddTools/modx.ddtools.class.php'
-;
-
-if (!file_exists($ddToolsPath)){
-	$ddToolsPath = str_replace(
-		'assets/libs/',
-		'assets/snippets/',
-		$ddToolsPath
-	);
-	$modx->logEvent(
-		1,
-		2,
-		'<p>Please update the “<a href="http://code.divandesign.biz/modx/ddtools">modx.ddTools</a>” library.</p><p>The snippet has been called in the document with id ' . $modx->documentIdentifier . '.</p>',
-		$modx->currentSnippet
-	);
-}
-
-//Include (MODX)EvolutionCMS.libraries.ddTools
-require_once($ddToolsPath);
+);
 
 
 //# Prepare params
