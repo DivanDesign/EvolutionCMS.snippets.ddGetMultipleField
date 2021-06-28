@@ -30,13 +30,20 @@ Features:
 
 ### Installation
 
-Elements → Snippets: Create a new snippet with the following data:
+
+#### 1. Elements → Snippets: Create a new snippet with the following data
 
 1. Snippet name: `ddGetMultipleField`.
 2. Description: `<b>3.5.1</b> A snippet for processing, manipulations and custom output structured data (JSON or separated by delimiters strings).`.
 3. Category: `Core`.
 4. Parse DocBlock: `no`.
 5. Snippet code (php): Insert content of the `ddGetMultipleField_snippet.php` file from the archive.
+
+
+#### 2. Elements → Manage Files
+
+1. Create a new folder `assets/snippets/ddGetMultipleField/`.
+2. Extract the archive to the folder (except `ddGetMultipleField_snippet.php`).
 
 
 
@@ -582,6 +589,35 @@ Returns:
 		"died": "1954.06.07"
 	}
 }
+```
+
+
+#### Run the snippet through `\DDTools\Snippet::runSnippet` without DB and eval
+
+```php
+//Include (MODX)EvolutionCMS.libraries.ddTools
+require_once(
+	$modx->getConfig('base_path') .
+	'assets/libs/ddTools/modx.ddtools.class.php'
+);
+
+//Run (MODX)EvolutionCMS.snippets.ddGetMultipleField
+\DDTools\Snippet::runSnippet([
+	'name' => 'ddGetMultipleField',
+	'params' => [
+		'inputString' => '[
+			[
+				"assets/images/example1.png",
+				"Example image 1"
+			],
+			[
+				"assets/images/example2.png",
+				"Example image 2"
+			]
+		]',
+		'rowTpl' => '@CODE:<img src="[+col0+]" alt="[+col1+]" />'
+	]
+]);
 ```
 
 

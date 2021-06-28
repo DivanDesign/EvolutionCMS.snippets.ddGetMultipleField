@@ -30,13 +30,20 @@
 
 ### Установка
 
-Элементы → Сниппеты: Создайте новый сниппет со следующими параметрами
+
+#### 1. Элементы → Сниппеты: Создайте новый сниппет со следующими параметрами
 
 1. Название сниппета: `ddGetMultipleField`.
 2. Описание: `<b>3.5.1</b> Сниппет для обработки, изменения и произвольного вывода структурированных данных (JSON или разделённых через определённые разделители).`.
 3. Категория: `Core`.
 4. Анализировать DocBlock: `no`.
 5. Код сниппета (php): Вставьте содержимое файла `ddGetMultipleField_snippet.php` из архива.
+
+
+#### 2. Элементы → Управление файлами
+
+1. Создайте новую папку `assets/snippets/ddGetMultipleField/`.
+2. Извлеките содержимое архива в неё (кроме файла `ddGetMultipleField_snippet.php`).
 
 
 ### Описание параметров
@@ -581,6 +588,35 @@ Returns:
 		"смерть": "1954.06.07"
 	}
 }
+```
+
+
+#### Запустить сниппет через `\DDTools\Snippet::runSnippet` без DB и eval
+
+```php
+//Подключение (MODX)EvolutionCMS.libraries.ddTools
+require_once(
+	$modx->getConfig('base_path') .
+	'assets/libs/ddTools/modx.ddtools.class.php'
+);
+
+//Запуск (MODX)EvolutionCMS.snippets.ddGetMultipleField
+\DDTools\Snippet::runSnippet([
+	'name' => 'ddGetMultipleField',
+	'params' => [
+		'inputString' => '[
+			[
+				"assets/images/example1.png",
+				"Пример изображения 1"
+			],
+			[
+				"assets/images/example2.png",
+				"Пример изображения 2"
+			]
+		]',
+		'rowTpl' => '@CODE:<img src="[+col0+]" alt="[+col1+]" />'
+	]
+]);
 ```
 
 
