@@ -630,7 +630,11 @@ require_once(
 _Примеров здесь можно напридумывать великое множество. Так что, если что не понятно, спрашивайте._
 
 
-## [Home page →](https://code.divandesign.biz/modx/ddgetmultiplefield)
+## Ссылки
+
+* [Home page](https://code.divandesign.ru/modx/ddgetmultiplefield)
+* [Telegram chat](https://t.me/dd_code)
+* [Packagist](https://packagist.org/packages/dd/evolutioncms-snippets-ddgetmultiplefield)
 
 
 <link rel="stylesheet" type="text/css" href="https://DivanDesign.ru/assets/files/ddMarkdown.css" />
