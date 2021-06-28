@@ -229,7 +229,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.0 (2021-06-28)
+	 * @version 1.0.1 (2021-06-28)
 	 * 
 	 * @return {string}
 	 */
@@ -400,17 +400,14 @@ class Snippet extends \DDTools\Snippet {
 				if (
 					$this->params->removeEmptyRows &&
 					//Также проверяем на то, что строка вообще существует, т.к. она могла быть уже удалена ранее
-					isset($data[$rowKey])
+					isset($data[$rowKey]) &&
+					//Если строка пустая
+					strlen(implode(
+						'',
+						$data[$rowKey]
+					)) == 0
 				){
-					//Если строка пустая, удаляем
-					if (
-						strlen(implode(
-							'',
-							$data[$rowKey]
-						)) == 0
-					){
-						unset($data[$rowKey]);
-					}
+					unset($data[$rowKey]);
 				}
 			}
 			
