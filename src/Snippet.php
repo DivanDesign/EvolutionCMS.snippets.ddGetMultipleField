@@ -3,7 +3,7 @@ namespace ddGetMultipleField;
 
 class Snippet extends \DDTools\Snippet {
 	protected
-		$version = '3.6.0',
+		$version = '3.7.0',
 		
 		$params = [
 			//Defaults
@@ -236,7 +236,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.0.3 (2021-06-28)
+	 * @version 1.2 (2021-10-05)
 	 * 
 	 * @return {string}
 	 */
@@ -460,13 +460,18 @@ class Snippet extends \DDTools\Snippet {
 				if ($this->params->totalRows == 'all'){
 					$data = array_slice(
 						$data,
-						$this->params->startRow
+						$this->params->startRow,
+						null,
+						//preserve keys
+						true
 					);
 				}else{
 					$data = array_slice(
 						$data,
 						$this->params->startRow,
-						$this->params->totalRows
+						$this->params->totalRows,
+						//preserve keys
+						true
 					);
 				}
 				
@@ -539,22 +544,38 @@ class Snippet extends \DDTools\Snippet {
 							);
 						}
 						
+						$placeholdersGeneral = \DDTools\ObjectTools::extend([
+							'objects' => [
+								[
+									//Количество элементов
+									'total' => $total,
+									'resultTotal' => $resultTotal
+								],
+								$this->params->placeholders
+							]
+						]);
+						
 						//Если задан шаблон строки
 						if (!empty($this->params->rowTpl)){
+							$rowIndex = 0;
+							
 							//Перебираем строки
 							foreach (
 								$data as
 								$rowKey =>
 								$rowValue
 							){
-								$resTemp[$rowKey] = [
-									//Запишем номер строки
-									'rowNumber.zeroBased' => $rowKey,
-									'rowNumber' => $rowKey + 1,
-									//И общее количество элементов
-									'total' => $total,
-									'resultTotal' => $resultTotal
-								];
+								$resTemp[$rowKey] = \DDTools\ObjectTools::extend([
+									'objects' => [
+										[
+											//Запишем номер строки
+											'rowNumber.zeroBased' => $rowIndex,
+											'rowNumber' => $rowIndex + 1,
+											'rowKey' => $rowKey
+										],
+										$placeholdersGeneral
+									]
+								]);
 								
 								//Перебираем колонки
 								foreach (
@@ -576,14 +597,14 @@ class Snippet extends \DDTools\Snippet {
 										){
 											$resTemp[$rowKey]['col' . $colKey] = \ddTools::parseText([
 												'text' => $this->params->colTpl[$colKey],
-												'data' => array_merge(
-													[
-														'val' => $colValue,
-														'rowNumber.zeroBased' => $resTemp[$rowKey]['rowNumber.zeroBased'],
-														'rowNumber' => $resTemp[$rowKey]['rowNumber']
-													],
-													$this->params->placeholders
-												),
+												'data' => \DDTools\ObjectTools::extend([
+													'objects' => [
+														[
+															'val' => $colValue,
+														],
+														$resTemp[$rowKey]
+													]
+												]),
 												'mergeAll' => false
 											]);
 										}else{
@@ -594,13 +615,14 @@ class Snippet extends \DDTools\Snippet {
 								
 								$resTemp[$rowKey] = \ddTools::parseText([
 									'text' => $this->params->rowTpl,
-									'data' => array_merge(
-										$resTemp[$rowKey],
-										$this->params->placeholders
-									)
+									'data' => $resTemp[$rowKey]
 								]);
+								
+								$rowIndex++;
 							}
 						}else{
+							$rowIndex = 0;
+							
 							foreach (
 								$data as
 								$rowKey =>
@@ -621,14 +643,17 @@ class Snippet extends \DDTools\Snippet {
 										}elseif (strlen($this->params->colTpl[$colKey]) > 0){
 											$rowValue[$colKey] = \ddTools::parseText([
 												'text' => $this->params->colTpl[$colKey],
-												'data' => array_merge(
-													[
-														'val' => $colValue,
-														'rowNumber.zeroBased' => $rowKey,
-														'rowNumber' => $rowKey + 1
-													],
-													$this->params->placeholders
-												)
+												'data' => \DDTools\ObjectTools::extend([
+													'objects' => [
+														[
+															'val' => $colValue,
+															'rowNumber.zeroBased' => $rowIndex,
+															'rowNumber' => $rowIndex + 1,
+															'rowKey' => $rowKey
+														],
+														$placeholdersGeneral
+													]
+												])
 											]);
 										}
 									}
@@ -638,6 +663,8 @@ class Snippet extends \DDTools\Snippet {
 									$this->params->colGlue,
 									$rowValue
 								);
+								
+								$rowIndex++;
 							}
 						}
 						
@@ -704,10 +731,12 @@ class Snippet extends \DDTools\Snippet {
 							)] = $rowValue;
 						}
 						
-						$resTemp = array_merge(
-							$resTemp,
-							$this->params->placeholders
-						);
+						$resTemp = \DDTools\ObjectTools::extend([
+							'objects' => [
+								$resTemp,
+								$this->params->placeholders
+							]
+						]);
 						
 						$resTemp['total'] = $total;
 						$resTemp['resultTotal'] = $resultTotal;

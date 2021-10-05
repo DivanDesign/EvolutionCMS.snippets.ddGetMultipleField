@@ -1,7 +1,7 @@
 {
 	"name": "dd/evolutioncms-snippets-ddgetmultiplefield",
 	"type": "modxevo-snippet",
-	"version": "3.6.0",
+	"version": "3.7.0",
 	"description": "A snippet for processing, manipulations and custom output structured data (JSON or separated by delimiters strings).",
 	"keywords": [
 		"modx",

@@ -1,6 +1,11 @@
 # (MODX)EvolutionCMS.snippets.ddGetMultipleField changelog
 
 
+## Версия 3.7 (2021-10-05)
+* \+ Параметры → `rowTpl`, `colTpl[i]`: Добавлен новый плейсхолдер `[+rowKey+]` (см. README).
+* \+ Параметры → `colTpl[i]`: Добавлены новые плейсхолдеры `[+total+]` и `[+resultTotal+]` (см. README).
+
+
 ## Версия 3.6 (2021-06-28)
 * \* Внимание! Требуется PHP >= 5.6.
 * \* Внимание! Требуется (MODX)EvolutionCMS.libraries.ddTools >= 0.50.

@@ -37,7 +37,7 @@ Features:
 ##### 1. Elements → Snippets: Create a new snippet with the following data
 
 1. Snippet name: `ddGetMultipleField`.
-2. Description: `<b>3.6</b> A snippet for processing, manipulations and custom output structured data (JSON or separated by delimiters strings).`.
+2. Description: `<b>3.7</b> A snippet for processing, manipulations and custom output structured data (JSON or separated by delimiters strings).`.
 3. Category: `Core`.
 4. Parse DocBlock: `no`.
 5. Snippet code (php): Insert content of the `ddGetMultipleField_snippet.php` file from the archive.
@@ -226,6 +226,7 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 		Available placeholders:
 		* `[+rowNumber+]` — index of current row, starts at `1`
 		* `[+rowNumber.zeroBased+]` — index of current row, starts at `0`
+		* `[+rowKey+]` — key of current row, it is usefull for objects or associative arrays in `inputString`, for indexed arrays the placeholder is equal to `[+rowNumber.zeroBased+]`
 		* `[+total+]` — total number of rows
 		* `[+resultTotal+]` — total number of returned rows
 		* `[+col0+]`, `[+col1+]`, etc — column values
@@ -248,6 +249,9 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 		* `[+val+]` — value
 		* `[+rowNumber+]` — index of current row, starts at `1`
 		* `[+rowNumber.zeroBased+]` — index of current row, starts at `0`
+		* `[+rowKey+]` — key of current row, it is usefull for objects or associative arrays in `inputString`, for indexed arrays the placeholder is equal to `[+rowNumber.zeroBased+]`
+		* `[+total+]` — total number of rows
+		* `[+resultTotal+]` — total number of returned rows
 	* Valid values:
 		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`

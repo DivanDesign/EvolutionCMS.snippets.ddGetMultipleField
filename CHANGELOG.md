@@ -1,6 +1,11 @@
 # (MODX)EvolutionCMS.snippets.ddGetMultipleField changelog
 
 
+## Version 3.7 (2021-10-05)
+* \+ Parameters → `rowTpl`, `colTpl[i]`: The new placeholder `[+rowKey+]` has been added (see README).
+* \+ Parameters → `colTpl[i]`: The new placeholders `[+total+]` and `[+resultTotal+]` have beed added (see README).
+
+
 ## Version 3.6 (2021-06-28)
 * \* Attention! PHP >= 5.6 is required.
 * \* Attention! (MODX)EvolutionCMS.libraries.ddTools >= 0.50 is required.
