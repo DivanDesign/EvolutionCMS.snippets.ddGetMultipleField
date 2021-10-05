@@ -236,7 +236,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.0.3 (2021-06-28)
+	 * @version 1.1 (2021-10-05)
 	 * 
 	 * @return {string}
 	 */
@@ -460,13 +460,18 @@ class Snippet extends \DDTools\Snippet {
 				if ($this->params->totalRows == 'all'){
 					$data = array_slice(
 						$data,
-						$this->params->startRow
+						$this->params->startRow,
+						null,
+						//preserve keys
+						true
 					);
 				}else{
 					$data = array_slice(
 						$data,
 						$this->params->startRow,
-						$this->params->totalRows
+						$this->params->totalRows,
+						//preserve keys
+						true
 					);
 				}
 				
@@ -541,6 +546,8 @@ class Snippet extends \DDTools\Snippet {
 						
 						//Если задан шаблон строки
 						if (!empty($this->params->rowTpl)){
+							$rowIndex = 0;
+							
 							//Перебираем строки
 							foreach (
 								$data as
@@ -549,8 +556,9 @@ class Snippet extends \DDTools\Snippet {
 							){
 								$resTemp[$rowKey] = [
 									//Запишем номер строки
-									'rowNumber.zeroBased' => $rowKey,
-									'rowNumber' => $rowKey + 1,
+									'rowNumber.zeroBased' => $rowIndex,
+									'rowNumber' => $rowIndex + 1,
+									'rowKey' => $rowKey,
 									//И общее количество элементов
 									'total' => $total,
 									'resultTotal' => $resultTotal
@@ -580,7 +588,8 @@ class Snippet extends \DDTools\Snippet {
 													[
 														'val' => $colValue,
 														'rowNumber.zeroBased' => $resTemp[$rowKey]['rowNumber.zeroBased'],
-														'rowNumber' => $resTemp[$rowKey]['rowNumber']
+														'rowNumber' => $resTemp[$rowKey]['rowNumber'],
+														'rowKey' => $resTemp[$rowKey]['rowKey']
 													],
 													$this->params->placeholders
 												),
@@ -599,8 +608,12 @@ class Snippet extends \DDTools\Snippet {
 										$this->params->placeholders
 									)
 								]);
+								
+								$rowIndex++;
 							}
 						}else{
+							$rowIndex = 0;
+							
 							foreach (
 								$data as
 								$rowKey =>
@@ -624,8 +637,9 @@ class Snippet extends \DDTools\Snippet {
 												'data' => array_merge(
 													[
 														'val' => $colValue,
-														'rowNumber.zeroBased' => $rowKey,
-														'rowNumber' => $rowKey + 1
+														'rowNumber.zeroBased' => $rowIndex,
+														'rowNumber' => $rowIndex + 1,
+														'rowKey' => $rowKey
 													],
 													$this->params->placeholders
 												)
@@ -638,6 +652,8 @@ class Snippet extends \DDTools\Snippet {
 									$this->params->colGlue,
 									$rowValue
 								);
+								
+								$rowIndex++;
 							}
 						}
 						

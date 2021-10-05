@@ -226,6 +226,7 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 		Available placeholders:
 		* `[+rowNumber+]` — index of current row, starts at `1`
 		* `[+rowNumber.zeroBased+]` — index of current row, starts at `0`
+		* `[+rowKey+]` — key of current row, it is usefull for objects or associative arrays in `inputString`, for indexed arrays the placeholder is equal to `[+rowNumber.zeroBased+]`
 		* `[+total+]` — total number of rows
 		* `[+resultTotal+]` — total number of returned rows
 		* `[+col0+]`, `[+col1+]`, etc — column values
@@ -248,6 +249,7 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 		* `[+val+]` — value
 		* `[+rowNumber+]` — index of current row, starts at `1`
 		* `[+rowNumber.zeroBased+]` — index of current row, starts at `0`
+		* `[+rowKey+]` — key of current row, it is usefull for objects or associative arrays in `inputString`, for indexed arrays the placeholder is equal to `[+rowNumber.zeroBased+]`
 	* Valid values:
 		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
