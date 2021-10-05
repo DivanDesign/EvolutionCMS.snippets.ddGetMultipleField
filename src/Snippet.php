@@ -236,7 +236,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.1.1 (2021-10-05)
+	 * @version 1.2 (2021-10-05)
 	 * 
 	 * @return {string}
 	 */
@@ -544,6 +544,17 @@ class Snippet extends \DDTools\Snippet {
 							);
 						}
 						
+						$placeholdersGeneral = \DDTools\ObjectTools::extend([
+							'objects' => [
+								[
+									//Количество элементов
+									'total' => $total,
+									'resultTotal' => $resultTotal
+								],
+								$this->params->placeholders
+							]
+						]);
+						
 						//Если задан шаблон строки
 						if (!empty($this->params->rowTpl)){
 							$rowIndex = 0;
@@ -554,15 +565,17 @@ class Snippet extends \DDTools\Snippet {
 								$rowKey =>
 								$rowValue
 							){
-								$resTemp[$rowKey] = [
-									//Запишем номер строки
-									'rowNumber.zeroBased' => $rowIndex,
-									'rowNumber' => $rowIndex + 1,
-									'rowKey' => $rowKey,
-									//И общее количество элементов
-									'total' => $total,
-									'resultTotal' => $resultTotal
-								];
+								$resTemp[$rowKey] = \DDTools\ObjectTools::extend([
+									'objects' => [
+										[
+											//Запишем номер строки
+											'rowNumber.zeroBased' => $rowIndex,
+											'rowNumber' => $rowIndex + 1,
+											'rowKey' => $rowKey
+										],
+										$placeholdersGeneral
+									]
+								]);
 								
 								//Перебираем колонки
 								foreach (
@@ -588,11 +601,8 @@ class Snippet extends \DDTools\Snippet {
 													'objects' => [
 														[
 															'val' => $colValue,
-															'rowNumber.zeroBased' => $resTemp[$rowKey]['rowNumber.zeroBased'],
-															'rowNumber' => $resTemp[$rowKey]['rowNumber'],
-															'rowKey' => $resTemp[$rowKey]['rowKey']
 														],
-														$this->params->placeholders
+														$resTemp[$rowKey]
 													]
 												]),
 												'mergeAll' => false
@@ -605,12 +615,7 @@ class Snippet extends \DDTools\Snippet {
 								
 								$resTemp[$rowKey] = \ddTools::parseText([
 									'text' => $this->params->rowTpl,
-									'data' => \DDTools\ObjectTools::extend([
-										'objects' => [
-											$resTemp[$rowKey],
-											$this->params->placeholders
-										]
-									])
+									'data' => $resTemp[$rowKey]
 								]);
 								
 								$rowIndex++;
@@ -646,7 +651,7 @@ class Snippet extends \DDTools\Snippet {
 															'rowNumber' => $rowIndex + 1,
 															'rowKey' => $rowKey
 														],
-														$this->params->placeholders
+														$placeholdersGeneral
 													]
 												])
 											]);
