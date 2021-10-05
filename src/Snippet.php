@@ -236,7 +236,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.1 (2021-10-05)
+	 * @version 1.1.1 (2021-10-05)
 	 * 
 	 * @return {string}
 	 */
@@ -584,15 +584,17 @@ class Snippet extends \DDTools\Snippet {
 										){
 											$resTemp[$rowKey]['col' . $colKey] = \ddTools::parseText([
 												'text' => $this->params->colTpl[$colKey],
-												'data' => array_merge(
-													[
-														'val' => $colValue,
-														'rowNumber.zeroBased' => $resTemp[$rowKey]['rowNumber.zeroBased'],
-														'rowNumber' => $resTemp[$rowKey]['rowNumber'],
-														'rowKey' => $resTemp[$rowKey]['rowKey']
-													],
-													$this->params->placeholders
-												),
+												'data' => \DDTools\ObjectTools::extend([
+													'objects' => [
+														[
+															'val' => $colValue,
+															'rowNumber.zeroBased' => $resTemp[$rowKey]['rowNumber.zeroBased'],
+															'rowNumber' => $resTemp[$rowKey]['rowNumber'],
+															'rowKey' => $resTemp[$rowKey]['rowKey']
+														],
+														$this->params->placeholders
+													]
+												]),
 												'mergeAll' => false
 											]);
 										}else{
@@ -603,10 +605,12 @@ class Snippet extends \DDTools\Snippet {
 								
 								$resTemp[$rowKey] = \ddTools::parseText([
 									'text' => $this->params->rowTpl,
-									'data' => array_merge(
-										$resTemp[$rowKey],
-										$this->params->placeholders
-									)
+									'data' => \DDTools\ObjectTools::extend([
+										'objects' => [
+											$resTemp[$rowKey],
+											$this->params->placeholders
+										]
+									])
 								]);
 								
 								$rowIndex++;
@@ -634,15 +638,17 @@ class Snippet extends \DDTools\Snippet {
 										}elseif (strlen($this->params->colTpl[$colKey]) > 0){
 											$rowValue[$colKey] = \ddTools::parseText([
 												'text' => $this->params->colTpl[$colKey],
-												'data' => array_merge(
-													[
-														'val' => $colValue,
-														'rowNumber.zeroBased' => $rowIndex,
-														'rowNumber' => $rowIndex + 1,
-														'rowKey' => $rowKey
-													],
-													$this->params->placeholders
-												)
+												'data' => \DDTools\ObjectTools::extend([
+													'objects' => [
+														[
+															'val' => $colValue,
+															'rowNumber.zeroBased' => $rowIndex,
+															'rowNumber' => $rowIndex + 1,
+															'rowKey' => $rowKey
+														],
+														$this->params->placeholders
+													]
+												])
 											]);
 										}
 									}
@@ -720,10 +726,12 @@ class Snippet extends \DDTools\Snippet {
 							)] = $rowValue;
 						}
 						
-						$resTemp = array_merge(
-							$resTemp,
-							$this->params->placeholders
-						);
+						$resTemp = \DDTools\ObjectTools::extend([
+							'objects' => [
+								$resTemp,
+								$this->params->placeholders
+							]
+						]);
 						
 						$resTemp['total'] = $total;
 						$resTemp['resultTotal'] = $resultTotal;
