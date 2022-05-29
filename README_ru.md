@@ -25,16 +25,13 @@
 * [(MODX)EvolutionCMS.snippets.ddTypograph](https://code.divandesign.biz/modx/ddtypograph) >= 2.5 (if typography is required)
 
 
-## Документация
+## Установка
 
 
-### Установка
+### Вручную
 
 
-#### Вручную
-
-
-##### 1. Элементы → Сниппеты: Создайте новый сниппет со следующими параметрами
+#### 1. Элементы → Сниппеты: Создайте новый сниппет со следующими параметрами
 
 1. Название сниппета: `ddGetMultipleField`.
 2. Описание: `<b>3.7</b> Сниппет для обработки, изменения и произвольного вывода структурированных данных (JSON или разделённых через определённые разделители).`.
@@ -43,13 +40,13 @@
 5. Код сниппета (php): Вставьте содержимое файла `ddGetMultipleField_snippet.php` из архива.
 
 
-##### 2. Элементы → Управление файлами
+#### 2. Элементы → Управление файлами
 
 1. Создайте новую папку `assets/snippets/ddGetMultipleField/`.
 2. Извлеките содержимое архива в неё (кроме файла `ddGetMultipleField_snippet.php`).
 
 
-#### Используя [(MODX)EvolutionCMS.libraries.ddInstaller](https://github.com/DivanDesign/EvolutionCMS.libraries.ddInstaller)
+### Используя [(MODX)EvolutionCMS.libraries.ddInstaller](https://github.com/DivanDesign/EvolutionCMS.libraries.ddInstaller)
 
 Просто вызовите следующий код в своих исходинках или модуле [Console](https://github.com/vanchelo/MODX-Evolution-Ajax-Console):
 
@@ -71,7 +68,7 @@ require_once(
 * Если `ddGetMultipleField` уже есть на вашем сайте, `ddInstaller` проверит его версию и обновит, если нужно. 
 
 
-### Описание параметров
+## Описание параметров
 
 Из пары параметров `inputString` / `inputString_docField` необходимо передавать лишь один.
 
@@ -305,10 +302,10 @@ require_once(
 	* Значение по умолчанию: —
 
 
-### Примеры
+## Примеры
 
 
-#### Вывод изображений `images` с описаниями
+### Вывод изображений `images` с описаниями
 
 Исходная строка (пусть находится в TV документа `images`):
 
@@ -342,7 +339,7 @@ assets/images/some_img1.jpg::Изображение 1||assets/images/some_img2.j
 ```
 
 
-#### Вывод изображений из JSON используя оригинальные ключи колонок в шаблоне строки
+### Вывод изображений из JSON используя оригинальные ключи колонок в шаблоне строки
 
 ```
 [[ddGetMultipleField?
@@ -368,7 +365,7 @@ assets/images/some_img1.jpg::Изображение 1||assets/images/some_img2.j
 ```
 
 
-#### Получение и вывод данных из поля (TV) `prices` документа с ID = `25` в виде таблицы, если что-то есть и ничего, если нету
+### Получение и вывод данных из поля (TV) `prices` документа с ID = `25` в виде таблицы, если что-то есть и ничего, если нету
 
 Исходное значение поля:
 
@@ -430,7 +427,7 @@ assets/images/some_img1.jpg::Изображение 1||assets/images/some_img2.j
 ```
 
 
-#### Вывод тегов документа через запятую с использованием регулярного выражения в `inputString_rowDelimiter`
+### Вывод тегов документа через запятую с использованием регулярного выражения в `inputString_rowDelimiter`
 
 Пусть теги документа у нас хранятся в TV `tags` и к этой TV у нас применён виджет [(MODX)EvolutionCMS.plugins.ManagerManager.mm_widget_tags](https://code.divandesign.biz/modx/mm_widget_tags).
 Пользователь заполняет теги через запятую, при этом, может заполняться как с пробелами по краям, так и без них.
@@ -469,7 +466,7 @@ Returns:
 ```
 
 
-#### Передача дополнительных данных через параметр `placeholders`
+### Передача дополнительных данных через параметр `placeholders`
 
 ```
 [[ddGetMultipleField?
@@ -517,7 +514,7 @@ Returns:
 ```
 
 
-#### Фильтрация значению колонки (параметр `filter`)
+### Фильтрация значению колонки (параметр `filter`)
 
 ```
 [[ddGetMultipleField?
@@ -580,7 +577,7 @@ Returns:
 ```
 
 
-#### Сортировка JSON-объекта по нескольким колонкам (параметры → `sortBy`, `sortDir`)
+### Сортировка JSON-объекта по нескольким колонкам (параметры → `sortBy`, `sortDir`)
 
 ```
 [[ddGetMultipleField?
@@ -650,7 +647,7 @@ Returns:
 ```
 
 
-#### Запустить сниппет через `\DDTools\Snippet::runSnippet` без DB и eval
+### Запустить сниппет через `\DDTools\Snippet::runSnippet` без DB и eval
 
 ```php
 //Подключение (MODX)EvolutionCMS.libraries.ddTools
