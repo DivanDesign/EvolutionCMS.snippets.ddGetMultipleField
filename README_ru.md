@@ -229,6 +229,7 @@ require_once(
 		* `[+total+]` — бщее количество строк
 		* `[+resultTotal+]` — количество возвращаемых строк
 		* `[+col0+]`, `[+col1+]` и т. п. — значения соответствующих колонок
+		* `[+`_columnKey_`+]` — значения колонок, где _columnKey_ — оригинальный ключ колонки (см. примеры ниже)
 	* Допустимые значения:
 		* `stringChunkName`
 		* `string` — передавать код напрямую без чанка можно начиная значение с `@CODE:`
@@ -337,6 +338,32 @@ assets/images/some_img1.jpg::Изображение 1||assets/images/some_img2.j
 Изображение 1:
 <img src="assets/images/some_img1.jpg" alt="Изображение 1" />
 Изображение 2:
+<img src="assets/images/some_img2.jpg" alt="Изображение 2" />
+```
+
+
+#### Вывод изображений из JSON используя оригинальные ключи колонок в шаблоне строки
+
+```
+[[ddGetMultipleField?
+	&inputString=`[
+		{
+			"src": "assets/images/some_img1.jpg",
+			"alt": "Изображение 1"
+		},
+		{
+			"src": "assets/images/some_img2.jpg",
+			"alt": "Изображение 2"
+		}
+	]`
+	&rowTpl=`@CODE:<img src="[+src+]" alt="[+alt+]" />`
+]]
+```
+
+Вернёт:
+
+```html
+<img src="assets/images/some_img1.jpg" alt="Изображение 1" />
 <img src="assets/images/some_img2.jpg" alt="Изображение 2" />
 ```
 

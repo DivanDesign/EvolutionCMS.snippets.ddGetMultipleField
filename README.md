@@ -230,6 +230,7 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 		* `[+total+]` — total number of rows
 		* `[+resultTotal+]` — total number of returned rows
 		* `[+col0+]`, `[+col1+]`, etc — column values
+		* `[+`_columnKey_`+]` — column values, when _columnKey_ is original column key (see examples below)
 	* Valid values:
 		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
@@ -341,6 +342,32 @@ Returns:
 Image 1:
 <img src="assets/images/some_img1.jpg" alt="Image 1" />
 Image 2:
+<img src="assets/images/some_img2.jpg" alt="Image 2" />
+```
+
+
+#### Output images from JSON using original column keys in row template
+
+```
+[[ddGetMultipleField?
+	&inputString=`[
+		{
+			"src": "assets/images/some_img1.jpg",
+			"alt": "Image 1"
+		},
+		{
+			"src": "assets/images/some_img2.jpg",
+			"alt": "Image 2"
+		}
+	]`
+	&rowTpl=`@CODE:<img src="[+src+]" alt="[+alt+]" />`
+]]
+```
+
+Returns:
+
+```html
+<img src="assets/images/some_img1.jpg" alt="Image 1" />
 <img src="assets/images/some_img2.jpg" alt="Image 2" />
 ```
 

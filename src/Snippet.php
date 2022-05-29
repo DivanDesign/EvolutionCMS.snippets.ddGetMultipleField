@@ -236,7 +236,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.2 (2021-10-05)
+	 * @version 1.3 (2022-05-29)
 	 * 
 	 * @return {string}
 	 */
@@ -577,6 +577,8 @@ class Snippet extends \DDTools\Snippet {
 									]
 								]);
 								
+								$colIndex = 0;
+								
 								//Перебираем колонки
 								foreach (
 									$rowValue as
@@ -588,15 +590,15 @@ class Snippet extends \DDTools\Snippet {
 										$this->params->removeEmptyCols &&
 										!strlen($colValue)
 									){
-										$resTemp[$rowKey]['col' . $colKey] = '';
+										$resTemp[$rowKey]['col' . $colIndex] = '';
 									}else{
 										//Если есть шаблоны значений колонок
 										if (
 											!empty($this->params->colTpl) &&
-											strlen($this->params->colTpl[$colKey]) > 0
+											strlen($this->params->colTpl[$colIndex]) > 0
 										){
-											$resTemp[$rowKey]['col' . $colKey] = \ddTools::parseText([
-												'text' => $this->params->colTpl[$colKey],
+											$resTemp[$rowKey]['col' . $colIndex] = \ddTools::parseText([
+												'text' => $this->params->colTpl[$colIndex],
 												'data' => \DDTools\ObjectTools::extend([
 													'objects' => [
 														[
@@ -608,9 +610,13 @@ class Snippet extends \DDTools\Snippet {
 												'mergeAll' => false
 											]);
 										}else{
-											$resTemp[$rowKey]['col' . $colKey] = $colValue;
+											$resTemp[$rowKey]['col' . $colIndex] = $colValue;
 										}
 									}
+									
+									$resTemp[$rowKey][$colKey] = $resTemp[$rowKey]['col' . $colIndex];
+									
+									$colIndex++;
 								}
 								
 								$resTemp[$rowKey] = \ddTools::parseText([
@@ -630,6 +636,8 @@ class Snippet extends \DDTools\Snippet {
 							){
 								//Если есть шаблоны значений колонок
 								if (!empty($this->params->colTpl)){
+									$colIndex = 0;
+									
 									foreach (
 										$rowValue as
 										$colKey =>
@@ -640,9 +648,9 @@ class Snippet extends \DDTools\Snippet {
 											!strlen($colValue)
 										){
 											unset($rowValue[$colKey]);
-										}elseif (strlen($this->params->colTpl[$colKey]) > 0){
+										}elseif (strlen($this->params->colTpl[$colIndex]) > 0){
 											$rowValue[$colKey] = \ddTools::parseText([
-												'text' => $this->params->colTpl[$colKey],
+												'text' => $this->params->colTpl[$colIndex],
 												'data' => \DDTools\ObjectTools::extend([
 													'objects' => [
 														[
@@ -656,6 +664,8 @@ class Snippet extends \DDTools\Snippet {
 												])
 											]);
 										}
+										
+										$colIndex++;
 									}
 								}
 								
