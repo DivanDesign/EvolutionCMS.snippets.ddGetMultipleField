@@ -236,7 +236,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.5.6 (2022-06-03)
+	 * @version 1.5.7 (2022-06-03)
 	 * 
 	 * @return {string}
 	 */
@@ -585,13 +585,10 @@ class Snippet extends \DDTools\Snippet {
 									$colKey =>
 									$colValue
 								){
-									//Remove empty columns
 									if (
-										$this->params->removeEmptyCols &&
-										empty($colValue)
+										!$this->params->removeEmptyCols ||
+										!empty($colValue)
 									){
-										unset($rowValue[$colKey]);
-									}else{
 										//If template for the column exists
 										if (!empty($this->params->colTpl[$colIndex])){
 											$colValue = \ddTools::parseText([
@@ -610,6 +607,9 @@ class Snippet extends \DDTools\Snippet {
 											//Save for implode later by $this->params->colGlue
 											$rowValue[$colKey] = $colValue;
 										}
+									}else{
+										//Remove empty columns
+										unset($rowValue[$colKey]);
 									}
 									
 									//Save column value by index
@@ -647,13 +647,10 @@ class Snippet extends \DDTools\Snippet {
 									$colKey =>
 									$colValue
 								){
-									//Remove empty columns
 									if (
-										$this->params->removeEmptyCols &&
-										empty($colValue)
+										!$this->params->removeEmptyCols ||
+										!empty($colValue)
 									){
-										unset($rowValue[$colKey]);
-									}else{
 										//If template for the column exists
 										if (!empty($this->params->colTpl[$colIndex])){
 											$rowValue[$colKey] = \ddTools::parseText([
@@ -671,6 +668,9 @@ class Snippet extends \DDTools\Snippet {
 												])
 											]);
 										}
+									}else{
+										//Remove empty columns
+										unset($rowValue[$colKey]);
 									}
 									
 									$colIndex++;
