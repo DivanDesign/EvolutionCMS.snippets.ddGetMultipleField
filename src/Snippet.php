@@ -236,7 +236,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.5.5 (2022-06-03)
+	 * @version 1.5.6 (2022-06-03)
 	 * 
 	 * @return {string}
 	 */
@@ -591,23 +591,25 @@ class Snippet extends \DDTools\Snippet {
 										empty($colValue)
 									){
 										unset($rowValue[$colKey]);
-									//If template for the column exists
-									}elseif (!empty($this->params->colTpl[$colIndex])){
-										$colValue = \ddTools::parseText([
-											'text' => $this->params->colTpl[$colIndex],
-											'data' => \DDTools\ObjectTools::extend([
-												'objects' => [
-													[
-														'val' => $colValue,
-													],
-													$resTemp[$rowKey]
-												]
-											]),
-											'mergeAll' => false
-										]);
-										
-										//Save for implode later by $this->params->colGlue
-										$rowValue[$colKey] = $colValue;
+									}else{
+										//If template for the column exists
+										if (!empty($this->params->colTpl[$colIndex])){
+											$colValue = \ddTools::parseText([
+												'text' => $this->params->colTpl[$colIndex],
+												'data' => \DDTools\ObjectTools::extend([
+													'objects' => [
+														[
+															'val' => $colValue,
+														],
+														$resTemp[$rowKey]
+													]
+												]),
+												'mergeAll' => false
+											]);
+											
+											//Save for implode later by $this->params->colGlue
+											$rowValue[$colKey] = $colValue;
+										}
 									}
 									
 									//Save column value by index
@@ -651,22 +653,24 @@ class Snippet extends \DDTools\Snippet {
 										empty($colValue)
 									){
 										unset($rowValue[$colKey]);
-									//If template for the column exists
-									}elseif (!empty($this->params->colTpl[$colIndex])){
-										$rowValue[$colKey] = \ddTools::parseText([
-											'text' => $this->params->colTpl[$colIndex],
-											'data' => \DDTools\ObjectTools::extend([
-												'objects' => [
-													[
-														'val' => $colValue,
-														'rowNumber.zeroBased' => $rowIndex,
-														'rowNumber' => $rowIndex + 1,
-														'rowKey' => $rowKey
-													],
-													$placeholdersGeneral
-												]
-											])
-										]);
+									}else{
+										//If template for the column exists
+										if (!empty($this->params->colTpl[$colIndex])){
+											$rowValue[$colKey] = \ddTools::parseText([
+												'text' => $this->params->colTpl[$colIndex],
+												'data' => \DDTools\ObjectTools::extend([
+													'objects' => [
+														[
+															'val' => $colValue,
+															'rowNumber.zeroBased' => $rowIndex,
+															'rowNumber' => $rowIndex + 1,
+															'rowKey' => $rowKey
+														],
+														$placeholdersGeneral
+													]
+												])
+											]);
+										}
 									}
 									
 									$colIndex++;
