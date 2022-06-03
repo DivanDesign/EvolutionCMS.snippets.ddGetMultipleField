@@ -236,7 +236,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.5.8 (2022-06-03)
+	 * @version 1.5.9 (2022-06-03)
 	 * 
 	 * @return {string}
 	 */
@@ -497,14 +497,14 @@ class Snippet extends \DDTools\Snippet {
 						//Перебираем колонки, заданные для типографирования
 						foreach (
 							$this->params->typography as
-							$colKey
+							$columnKey
 						){
 							//Если такая колонка существует, типографируем
-							if (isset($data[$rowKey][$colKey])){
-								$data[$rowKey][$colKey] = \DDTools\Snippet::runSnippet([
+							if (isset($data[$rowKey][$columnKey])){
+								$data[$rowKey][$columnKey] = \DDTools\Snippet::runSnippet([
 									'name' => 'ddTypograph',
 									'params' => [
-										'text' => $data[$rowKey][$colKey]
+										'text' => $data[$rowKey][$columnKey]
 									]
 								]);
 							}
@@ -577,26 +577,26 @@ class Snippet extends \DDTools\Snippet {
 									]
 								]);
 								
-								$colIndex = 0;
+								$columnIndex = 0;
 								
 								//Перебираем колонки
 								foreach (
 									$rowValue as
-									$colKey =>
-									$colValue
+									$columnKey =>
+									$columnValue
 								){
 									if (
-										!empty($colValue) ||
+										!empty($columnValue) ||
 										!$this->params->removeEmptyCols
 									){
 										//If template for the column exists
-										if (!empty($this->params->colTpl[$colIndex])){
-											$colValue = \ddTools::parseText([
-												'text' => $this->params->colTpl[$colIndex],
+										if (!empty($this->params->colTpl[$columnIndex])){
+											$columnValue = \ddTools::parseText([
+												'text' => $this->params->colTpl[$columnIndex],
 												'data' => \DDTools\ObjectTools::extend([
 													'objects' => [
 														[
-															'val' => $colValue,
+															'val' => $columnValue,
 														],
 														$resTemp[$rowKey]
 													]
@@ -605,19 +605,19 @@ class Snippet extends \DDTools\Snippet {
 											]);
 											
 											//Save for implode later by $this->params->colGlue
-											$rowValue[$colKey] = $colValue;
+											$rowValue[$columnKey] = $columnValue;
 										}
 									}else{
 										//Remove empty columns
-										unset($rowValue[$colKey]);
+										unset($rowValue[$columnKey]);
 									}
 									
 									//Save column value by index
-									$resTemp[$rowKey]['col' . $colIndex] = $colValue;
+									$resTemp[$rowKey]['col' . $columnIndex] = $columnValue;
 									//And by original column key
-									$resTemp[$rowKey][$colKey] = $colValue;
+									$resTemp[$rowKey][$columnKey] = $columnValue;
 									
-									$colIndex++;
+									$columnIndex++;
 								}
 								
 								$resTemp[$rowKey]['allColumnValues'] = implode(
@@ -640,25 +640,25 @@ class Snippet extends \DDTools\Snippet {
 								$rowKey =>
 								$rowValue
 							){
-								$colIndex = 0;
+								$columnIndex = 0;
 								
 								foreach (
 									$rowValue as
-									$colKey =>
-									$colValue
+									$columnKey =>
+									$columnValue
 								){
 									if (
-										!empty($colValue) ||
+										!empty($columnValue) ||
 										!$this->params->removeEmptyCols
 									){
 										//If template for the column exists
-										if (!empty($this->params->colTpl[$colIndex])){
-											$rowValue[$colKey] = \ddTools::parseText([
-												'text' => $this->params->colTpl[$colIndex],
+										if (!empty($this->params->colTpl[$columnIndex])){
+											$rowValue[$columnKey] = \ddTools::parseText([
+												'text' => $this->params->colTpl[$columnIndex],
 												'data' => \DDTools\ObjectTools::extend([
 													'objects' => [
 														[
-															'val' => $colValue,
+															'val' => $columnValue,
 															'rowNumber.zeroBased' => $rowIndex,
 															'rowNumber' => $rowIndex + 1,
 															'rowKey' => $rowKey
@@ -670,10 +670,10 @@ class Snippet extends \DDTools\Snippet {
 										}
 									}else{
 										//Remove empty columns
-										unset($rowValue[$colKey]);
+										unset($rowValue[$columnKey]);
 									}
 									
-									$colIndex++;
+									$columnIndex++;
 								}
 								
 								$resTemp[$rowKey] = implode(
