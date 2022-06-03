@@ -236,7 +236,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.5.3 (2022-06-03)
+	 * @version 1.5.4 (2022-06-03)
 	 * 
 	 * @return {string}
 	 */
@@ -638,41 +638,38 @@ class Snippet extends \DDTools\Snippet {
 								$rowKey =>
 								$rowValue
 							){
-								//Если есть шаблоны значений колонок
-								if (!empty($this->params->colTpl)){
-									$colIndex = 0;
-									
-									foreach (
-										$rowValue as
-										$colKey =>
-										$colValue
+								$colIndex = 0;
+								
+								foreach (
+									$rowValue as
+									$colKey =>
+									$colValue
+								){
+									//Remove empty columns
+									if (
+										$this->params->removeEmptyCols &&
+										empty($colValue)
 									){
-										//Remove empty columns
-										if (
-											$this->params->removeEmptyCols &&
-											empty($colValue)
-										){
-											unset($rowValue[$colKey]);
-										//If template for the column exists
-										}elseif (strlen($this->params->colTpl[$colIndex]) > 0){
-											$rowValue[$colKey] = \ddTools::parseText([
-												'text' => $this->params->colTpl[$colIndex],
-												'data' => \DDTools\ObjectTools::extend([
-													'objects' => [
-														[
-															'val' => $colValue,
-															'rowNumber.zeroBased' => $rowIndex,
-															'rowNumber' => $rowIndex + 1,
-															'rowKey' => $rowKey
-														],
-														$placeholdersGeneral
-													]
-												])
-											]);
-										}
-										
-										$colIndex++;
+										unset($rowValue[$colKey]);
+									//If template for the column exists
+									}elseif (strlen($this->params->colTpl[$colIndex]) > 0){
+										$rowValue[$colKey] = \ddTools::parseText([
+											'text' => $this->params->colTpl[$colIndex],
+											'data' => \DDTools\ObjectTools::extend([
+												'objects' => [
+													[
+														'val' => $colValue,
+														'rowNumber.zeroBased' => $rowIndex,
+														'rowNumber' => $rowIndex + 1,
+														'rowKey' => $rowKey
+													],
+													$placeholdersGeneral
+												]
+											])
+										]);
 									}
+									
+									$colIndex++;
 								}
 								
 								$resTemp[$rowKey] = implode(
