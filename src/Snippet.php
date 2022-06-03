@@ -236,7 +236,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.5.4 (2022-06-03)
+	 * @version 1.5.5 (2022-06-03)
 	 * 
 	 * @return {string}
 	 */
@@ -592,7 +592,7 @@ class Snippet extends \DDTools\Snippet {
 									){
 										unset($rowValue[$colKey]);
 									//If template for the column exists
-									}elseif (strlen($this->params->colTpl[$colIndex]) > 0){
+									}elseif (!empty($this->params->colTpl[$colIndex])){
 										$colValue = \ddTools::parseText([
 											'text' => $this->params->colTpl[$colIndex],
 											'data' => \DDTools\ObjectTools::extend([
@@ -652,7 +652,7 @@ class Snippet extends \DDTools\Snippet {
 									){
 										unset($rowValue[$colKey]);
 									//If template for the column exists
-									}elseif (strlen($this->params->colTpl[$colIndex]) > 0){
+									}elseif (!empty($this->params->colTpl[$colIndex])){
 										$rowValue[$colKey] = \ddTools::parseText([
 											'text' => $this->params->colTpl[$colIndex],
 											'data' => \DDTools\ObjectTools::extend([
