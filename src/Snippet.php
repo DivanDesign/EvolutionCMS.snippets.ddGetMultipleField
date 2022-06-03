@@ -236,7 +236,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.3 (2022-05-29)
+	 * @version 1.4 (2022-06-03)
 	 * 
 	 * @return {string}
 	 */
@@ -588,7 +588,7 @@ class Snippet extends \DDTools\Snippet {
 									//Если нужно удалять пустые значения
 									if (
 										$this->params->removeEmptyCols &&
-										!strlen($colValue)
+										empty($colValue)
 									){
 										$resTemp[$rowKey]['col' . $colIndex] = '';
 									}else{
@@ -645,7 +645,7 @@ class Snippet extends \DDTools\Snippet {
 									){
 										if (
 											$this->params->removeEmptyCols &&
-											!strlen($colValue)
+											empty($colValue)
 										){
 											unset($rowValue[$colKey]);
 										}elseif (strlen($this->params->colTpl[$colIndex]) > 0){

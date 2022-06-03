@@ -73,7 +73,8 @@ require_once(
 From the pair of `inputString` / `inputString_docField` parameters one is required.
 
 * `inputString`
-	* Desctription: The input string containing values.
+	* Desctription: The input string containing values.  
+		Also supports JSON with any nesting level.
 	* Valid values:
 		* `stringJsonArray` — as [JSON](https://en.wikipedia.org/wiki/JSON) array
 		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON) object

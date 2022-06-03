@@ -73,7 +73,8 @@ require_once(
 Из пары параметров `inputString` / `inputString_docField` необходимо передавать лишь один.
 
 * `inputString`
-	* Описание: Исходная строка, содержащая значение.
+	* Описание: Исходная строка, содержащая значение.  
+		Также поддерживает JSON с любым уровнем вложенности.
 	* Допустимые значения:
 		* `stringJsonArray` — в виде [JSON](https://ru.wikipedia.org/wiki/JSON) массива
 		* `stringJsonObject` — в виде [JSON](https://ru.wikipedia.org/wiki/JSON) объекта
