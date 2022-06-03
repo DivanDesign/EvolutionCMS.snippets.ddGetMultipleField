@@ -236,7 +236,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.5.16 (2022-06-03)
+	 * @version 1.5.17 (2022-06-03)
 	 * 
 	 * @return {string}
 	 */
@@ -578,7 +578,7 @@ class Snippet extends \DDTools\Snippet {
 								]
 							]);
 							
-							$rowData = [
+							$rowData = (object) [
 								'allColumnValues' => []
 							];
 							
@@ -613,20 +613,20 @@ class Snippet extends \DDTools\Snippet {
 									}
 									
 									//Save for implode later by $this->params->colGlue
-									$rowData['allColumnValues'][] = $columnValue;
+									$rowData->allColumnValues[] = $columnValue;
 								}
 								
 								//Save column value by index
-								$rowData['col' . $columnIndex] = $columnValue;
+								$rowData->{'col' . $columnIndex} = $columnValue;
 								//And by original column key
-								$rowData[$columnKey] = $columnValue;
+								$rowData->{$columnKey} = $columnValue;
 								
 								$columnIndex++;
 							}
 							
-							$rowData['allColumnValues'] = implode(
+							$rowData->allColumnValues = implode(
 								$this->params->colGlue,
-								$rowData['allColumnValues']
+								$rowData->allColumnValues
 							);
 							
 							if (!empty($this->params->rowTpl)){
@@ -641,7 +641,7 @@ class Snippet extends \DDTools\Snippet {
 									])
 								]);
 							}else{
-								$resTemp[$rowKey] = $rowData['allColumnValues'];
+								$resTemp[$rowKey] = $rowData->allColumnValues;
 							}
 							
 							$rowIndex++;
