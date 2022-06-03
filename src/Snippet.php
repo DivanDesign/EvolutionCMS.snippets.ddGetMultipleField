@@ -236,7 +236,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.5.2 (2022-06-03)
+	 * @version 1.5.3 (2022-06-03)
 	 * 
 	 * @return {string}
 	 */
@@ -518,6 +518,17 @@ class Snippet extends \DDTools\Snippet {
 				}else{
 					$resTemp = [];
 					
+					$placeholdersGeneral = \DDTools\ObjectTools::extend([
+						'objects' => [
+							[
+								//Количество элементов
+								'total' => $total,
+								'resultTotal' => $resultTotal
+							],
+							$this->params->placeholders
+						]
+					]);
+					
 					//Если вывод просто в формате html
 					if (
 						$this->params->outputFormat == 'html' ||
@@ -543,17 +554,6 @@ class Snippet extends \DDTools\Snippet {
 								)
 							);
 						}
-						
-						$placeholdersGeneral = \DDTools\ObjectTools::extend([
-							'objects' => [
-								[
-									//Количество элементов
-									'total' => $total,
-									'resultTotal' => $resultTotal
-								],
-								$this->params->placeholders
-							]
-						]);
 						
 						//Если задан шаблон строки
 						if (!empty($this->params->rowTpl)){
@@ -750,12 +750,9 @@ class Snippet extends \DDTools\Snippet {
 						$resTemp = \DDTools\ObjectTools::extend([
 							'objects' => [
 								$resTemp,
-								$this->params->placeholders
+								$placeholdersGeneral
 							]
 						]);
-						
-						$resTemp['total'] = $total;
-						$resTemp['resultTotal'] = $resultTotal;
 						
 						$result = \ddTools::parseText([
 							'text' => $this->params->outerTpl,
