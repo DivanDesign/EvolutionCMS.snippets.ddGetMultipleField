@@ -236,7 +236,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.5.11 (2022-06-03)
+	 * @version 1.5.12 (2022-06-03)
 	 * 
 	 * @return {string}
 	 */
@@ -525,6 +525,7 @@ class Snippet extends \DDTools\Snippet {
 								'total' => $total,
 								'resultTotal' => $resultTotal
 							],
+							//User's placeholders can overwrite original data if needed, so they must be placed at the end
 							$this->params->placeholders
 						]
 					]);
@@ -565,14 +566,16 @@ class Snippet extends \DDTools\Snippet {
 								$rowKey =>
 								$rowValue
 							){
-								$resTemp[$rowKey] = \DDTools\ObjectTools::extend([
+								$rowData = \DDTools\ObjectTools::extend([
 									'objects' => [
+										//Row placeholders
 										[
 											//Запишем номер строки
 											'rowNumber.zeroBased' => $rowIndex,
 											'rowNumber' => $rowIndex + 1,
 											'rowKey' => $rowKey
 										],
+										//User's placeholders can overwrite original data if needed, so they must be placed at the end
 										$placeholdersGeneral
 									]
 								]);
@@ -600,7 +603,8 @@ class Snippet extends \DDTools\Snippet {
 														[
 															'val' => $columnValue,
 														],
-														$resTemp[$rowKey]
+														//User's placeholders can overwrite original data if needed, so they must be placed at the end
+														$rowData
 													]
 												]),
 												'mergeAll' => false
@@ -612,9 +616,9 @@ class Snippet extends \DDTools\Snippet {
 									}
 									
 									//Save column value by index
-									$resTemp[$rowKey]['col' . $columnIndex] = $columnValue;
+									$rowData['col' . $columnIndex] = $columnValue;
 									//And by original column key
-									$resTemp[$rowKey][$columnKey] = $columnValue;
+									$rowData[$columnKey] = $columnValue;
 									
 									$columnIndex++;
 								}
@@ -624,11 +628,11 @@ class Snippet extends \DDTools\Snippet {
 									$allColumnValues
 								);
 								
-								$resTemp[$rowKey]['allColumnValues'] = $allColumnValues;
+								$rowData['allColumnValues'] = $allColumnValues;
 								
 								$resTemp[$rowKey] = \ddTools::parseText([
 									'text' => $this->params->rowTpl,
-									'data' => $resTemp[$rowKey]
+									'data' => $rowData
 								]);
 								
 								$rowIndex++;
@@ -641,6 +645,20 @@ class Snippet extends \DDTools\Snippet {
 								$rowKey =>
 								$rowValue
 							){
+								$rowData = \DDTools\ObjectTools::extend([
+									'objects' => [
+										//Row placeholders
+										[
+											//Запишем номер строки
+											'rowNumber.zeroBased' => $rowIndex,
+											'rowNumber' => $rowIndex + 1,
+											'rowKey' => $rowKey
+										],
+										//User's placeholders can overwrite original data if needed, so they must be placed at the end
+										$placeholdersGeneral
+									]
+								]);
+								
 								$columnIndex = 0;
 								$allColumnValues = [];
 								
@@ -661,12 +679,10 @@ class Snippet extends \DDTools\Snippet {
 												'data' => \DDTools\ObjectTools::extend([
 													'objects' => [
 														[
-															'val' => $columnValue,
-															'rowNumber.zeroBased' => $rowIndex,
-															'rowNumber' => $rowIndex + 1,
-															'rowKey' => $rowKey
+															'val' => $columnValue
 														],
-														$placeholdersGeneral
+														//User's placeholders can overwrite original data if needed, so they must be placed at the end
+														$rowData
 													]
 												])
 											]);
@@ -756,6 +772,7 @@ class Snippet extends \DDTools\Snippet {
 						$resTemp = \DDTools\ObjectTools::extend([
 							'objects' => [
 								$resTemp,
+								//User's placeholders can overwrite original data if needed, so they must be placed at the end
 								$placeholdersGeneral
 							]
 						]);
