@@ -236,7 +236,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.5.14 (2022-06-03)
+	 * @version 1.5.15 (2022-06-03)
 	 * 
 	 * @return {string}
 	 */
@@ -564,7 +564,7 @@ class Snippet extends \DDTools\Snippet {
 							$rowKey =>
 							$rowValue
 						){
-							$rowData = \DDTools\ObjectTools::extend([
+							$rowPlaceholders = \DDTools\ObjectTools::extend([
 								'objects' => [
 									//Row placeholders
 									[
@@ -577,6 +577,8 @@ class Snippet extends \DDTools\Snippet {
 									$placeholdersGeneral
 								]
 							]);
+							
+							$rowData = [];
 							
 							$columnIndex = 0;
 							$allColumnValues = [];
@@ -602,7 +604,7 @@ class Snippet extends \DDTools\Snippet {
 														'val' => $columnValue
 													],
 													//User's placeholders can overwrite original data if needed, so they must be placed at the end
-													$rowData
+													$rowPlaceholders
 												]
 											]),
 											'mergeAll' => false
@@ -631,7 +633,13 @@ class Snippet extends \DDTools\Snippet {
 								
 								$resTemp[$rowKey] = \ddTools::parseText([
 									'text' => $this->params->rowTpl,
-									'data' => $rowData
+									'data' => \DDTools\ObjectTools::extend([
+										'objects' => [
+											$rowData,
+											//User's placeholders can overwrite original data if needed, so they must be placed at the end
+											$rowPlaceholders
+										]
+									])
 								]);
 							}else{
 								$resTemp[$rowKey] = $allColumnValues;
