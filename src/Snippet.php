@@ -236,7 +236,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.5.12 (2022-06-03)
+	 * @version 1.5.13 (2022-06-03)
 	 * 
 	 * @return {string}
 	 */
@@ -556,8 +556,6 @@ class Snippet extends \DDTools\Snippet {
 							);
 						}
 						
-						//Если задан шаблон строки
-						if (!empty($this->params->rowTpl)){
 							$rowIndex = 0;
 							
 							//Перебираем строки
@@ -601,7 +599,7 @@ class Snippet extends \DDTools\Snippet {
 												'data' => \DDTools\ObjectTools::extend([
 													'objects' => [
 														[
-															'val' => $columnValue,
+															'val' => $columnValue
 														],
 														//User's placeholders can overwrite original data if needed, so they must be placed at the end
 														$rowData
@@ -628,83 +626,19 @@ class Snippet extends \DDTools\Snippet {
 									$allColumnValues
 								);
 								
-								$rowData['allColumnValues'] = $allColumnValues;
-								
-								$resTemp[$rowKey] = \ddTools::parseText([
-									'text' => $this->params->rowTpl,
-									'data' => $rowData
-								]);
-								
-								$rowIndex++;
-							}
-						}else{
-							$rowIndex = 0;
-							
-							foreach (
-								$data as
-								$rowKey =>
-								$rowValue
-							){
-								$rowData = \DDTools\ObjectTools::extend([
-									'objects' => [
-										//Row placeholders
-										[
-											//Запишем номер строки
-											'rowNumber.zeroBased' => $rowIndex,
-											'rowNumber' => $rowIndex + 1,
-											'rowKey' => $rowKey
-										],
-										//User's placeholders can overwrite original data if needed, so they must be placed at the end
-										$placeholdersGeneral
-									]
-								]);
-								
-								$columnIndex = 0;
-								$allColumnValues = [];
-								
-								foreach (
-									$rowValue as
-									$columnKey =>
-									$columnValue
-								){
-									//If the column is used
-									if (
-										!empty($columnValue) ||
-										!$this->params->removeEmptyCols
-									){
-										//If template for the column exists
-										if (!empty($this->params->colTpl[$columnIndex])){
-											$columnValue = \ddTools::parseText([
-												'text' => $this->params->colTpl[$columnIndex],
-												'data' => \DDTools\ObjectTools::extend([
-													'objects' => [
-														[
-															'val' => $columnValue
-														],
-														//User's placeholders can overwrite original data if needed, so they must be placed at the end
-														$rowData
-													]
-												])
-											]);
-										}
-										
-										//Save for implode later by $this->params->colGlue
-										$allColumnValues[] = $columnValue;
-									}
+								if (!empty($this->params->rowTpl)){
+									$rowData['allColumnValues'] = $allColumnValues;
 									
-									$columnIndex++;
+									$resTemp[$rowKey] = \ddTools::parseText([
+										'text' => $this->params->rowTpl,
+										'data' => $rowData
+									]);
+								}else{
+									$resTemp[$rowKey] = $allColumnValues;
 								}
 								
-								$allColumnValues = implode(
-									$this->params->colGlue,
-									$allColumnValues
-								);
-								
-								$resTemp[$rowKey] = $allColumnValues;
-								
 								$rowIndex++;
 							}
-						}
 						
 						if ($this->params->outputFormat == 'html'){
 							$result = implode(
