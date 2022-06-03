@@ -25,7 +25,7 @@ class Snippet extends \DDTools\Snippet {
 			'rowGlue' => '',
 			'colGlue' => '',
 			'rowTpl' => null,
-			'colTpl' => null,
+			'colTpl' => [],
 			'outerTpl' => null,
 			'placeholders' => [],
 			'urlencode' => false,
@@ -236,7 +236,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.5 (2022-06-03)
+	 * @version 1.5.1 (2022-06-03)
 	 * 
 	 * @return {string}
 	 */
@@ -593,10 +593,7 @@ class Snippet extends \DDTools\Snippet {
 										unset($rowValue[$colKey]);
 									}else{
 										//Если есть шаблоны значений колонок
-										if (
-											!empty($this->params->colTpl) &&
-											strlen($this->params->colTpl[$colIndex]) > 0
-										){
+										if (strlen($this->params->colTpl[$colIndex]) > 0){
 											$colValue = \ddTools::parseText([
 												'text' => $this->params->colTpl[$colIndex],
 												'data' => \DDTools\ObjectTools::extend([
