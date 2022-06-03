@@ -236,7 +236,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.5.9 (2022-06-03)
+	 * @version 1.5.10 (2022-06-03)
 	 * 
 	 * @return {string}
 	 */
@@ -578,6 +578,7 @@ class Snippet extends \DDTools\Snippet {
 								]);
 								
 								$columnIndex = 0;
+								$allColumnValues = [];
 								
 								//Перебираем колонки
 								foreach (
@@ -585,6 +586,7 @@ class Snippet extends \DDTools\Snippet {
 									$columnKey =>
 									$columnValue
 								){
+									//If the column is used
 									if (
 										!empty($columnValue) ||
 										!$this->params->removeEmptyCols
@@ -603,13 +605,10 @@ class Snippet extends \DDTools\Snippet {
 												]),
 												'mergeAll' => false
 											]);
-											
-											//Save for implode later by $this->params->colGlue
-											$rowValue[$columnKey] = $columnValue;
 										}
-									}else{
-										//Remove empty columns
-										unset($rowValue[$columnKey]);
+										
+										//Save for implode later by $this->params->colGlue
+										$allColumnValues[$columnKey] = $columnValue;
 									}
 									
 									//Save column value by index
@@ -622,7 +621,7 @@ class Snippet extends \DDTools\Snippet {
 								
 								$resTemp[$rowKey]['allColumnValues'] = implode(
 									$this->params->colGlue,
-									$rowValue
+									$allColumnValues
 								);
 								
 								$resTemp[$rowKey] = \ddTools::parseText([
@@ -641,19 +640,21 @@ class Snippet extends \DDTools\Snippet {
 								$rowValue
 							){
 								$columnIndex = 0;
+								$allColumnValues = [];
 								
 								foreach (
 									$rowValue as
 									$columnKey =>
 									$columnValue
 								){
+									//If the column is used
 									if (
 										!empty($columnValue) ||
 										!$this->params->removeEmptyCols
 									){
 										//If template for the column exists
 										if (!empty($this->params->colTpl[$columnIndex])){
-											$rowValue[$columnKey] = \ddTools::parseText([
+											$columnValue = \ddTools::parseText([
 												'text' => $this->params->colTpl[$columnIndex],
 												'data' => \DDTools\ObjectTools::extend([
 													'objects' => [
@@ -668,9 +669,9 @@ class Snippet extends \DDTools\Snippet {
 												])
 											]);
 										}
-									}else{
-										//Remove empty columns
-										unset($rowValue[$columnKey]);
+										
+										//Save for implode later by $this->params->colGlue
+										$allColumnValues[$columnKey] = $columnValue;
 									}
 									
 									$columnIndex++;
@@ -678,7 +679,7 @@ class Snippet extends \DDTools\Snippet {
 								
 								$resTemp[$rowKey] = implode(
 									$this->params->colGlue,
-									$rowValue
+									$allColumnValues
 								);
 								
 								$rowIndex++;
