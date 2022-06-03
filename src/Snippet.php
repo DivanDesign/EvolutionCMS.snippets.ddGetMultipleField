@@ -236,7 +236,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.5.17 (2022-06-03)
+	 * @version 1.6 (2022-06-03)
 	 * 
 	 * @return {string}
 	 */
@@ -602,7 +602,9 @@ class Snippet extends \DDTools\Snippet {
 											'data' => \DDTools\ObjectTools::extend([
 												'objects' => [
 													[
-														'val' => $columnValue
+														'val' => $columnValue,
+														'columnIndex' => $columnIndex,
+														'columnKey' => $columnKey
 													],
 													//User's placeholders can overwrite original data if needed, so they must be placed at the end
 													$rowPlaceholders

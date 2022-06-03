@@ -238,21 +238,17 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 * `colTpl`
 	* Desctription: The comma-separated list of templates for column rendering (`outputFormat` has to be == `'html'`).  
 		If the number of templates is lesser than the number of columns then the last passed template will be used to render the rest of the columns.
-		
-		Available placeholders:
-		* `[+rowNumber+]` — index of current row, starts at `1`
-		* `[+rowNumber.zeroBased+]` — index of current row, starts at `0`
-		* `[+rowKey+]` — key of current row, it is usefull for objects or associative arrays in `inputString`, for indexed arrays the placeholder is equal to `[+rowNumber.zeroBased+]`
-		* `[+val+]` — column value
 	* Valid values:
 		* `stringCommaSeparated`
 		* `array`
 	* Default value: —
 	
-* `colTpl[i]`
+* `colTpl[$i]`
 	* Desctription: The template for column rendering.  
 		Available placeholders:
-		* `[+val+]` — value
+		* `[+val+]` — value of the column
+		* `[+columnIndex+]` — index of the column, starts at `0`
+		* `[+columnKey+]` — key of the column, it is usefull for objects or associative arrays in `inputString`, for indexed arrays the placeholder is equal to `[+columnIndex+]`
 		* `[+rowNumber+]` — index of current row, starts at `1`
 		* `[+rowNumber.zeroBased+]` — index of current row, starts at `0`
 		* `[+rowKey+]` — key of current row, it is usefull for objects or associative arrays in `inputString`, for indexed arrays the placeholder is equal to `[+rowNumber.zeroBased+]`
