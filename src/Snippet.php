@@ -236,7 +236,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.5.7 (2022-06-03)
+	 * @version 1.5.8 (2022-06-03)
 	 * 
 	 * @return {string}
 	 */
@@ -586,8 +586,8 @@ class Snippet extends \DDTools\Snippet {
 									$colValue
 								){
 									if (
-										!$this->params->removeEmptyCols ||
-										!empty($colValue)
+										!empty($colValue) ||
+										!$this->params->removeEmptyCols
 									){
 										//If template for the column exists
 										if (!empty($this->params->colTpl[$colIndex])){
@@ -648,8 +648,8 @@ class Snippet extends \DDTools\Snippet {
 									$colValue
 								){
 									if (
-										!$this->params->removeEmptyCols ||
-										!empty($colValue)
+										!empty($colValue) ||
+										!$this->params->removeEmptyCols
 									){
 										//If template for the column exists
 										if (!empty($this->params->colTpl[$colIndex])){
