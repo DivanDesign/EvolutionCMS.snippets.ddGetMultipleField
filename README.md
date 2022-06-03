@@ -215,7 +215,7 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	
 * `colGlue`
 	* Desctription: The string that combines columns while rendering.  
-		It can be used along with `colTpl`, but not with `rowTpl` for obvious reasons.
+		It can be used along with `colTpl` and `rowTpl`.
 	* Valid values: `string`
 	* Default value: `''`
 	
@@ -229,6 +229,7 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 		* `[+resultTotal+]` — total number of returned rows
 		* `[+col0+]`, `[+col1+]`, etc — column values
 		* `[+`_columnKey_`+]` — column values, when _columnKey_ is original column key (see examples below)
+		* `[+allColumnValues+]` — values of all columns combined by `colGlue`
 	* Valid values:
 		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
@@ -367,6 +368,43 @@ Returns:
 ```html
 <img src="assets/images/some_img1.jpg" alt="Image 1" />
 <img src="assets/images/some_img2.jpg" alt="Image 2" />
+```
+
+
+### Output rows with dynamic number of columns using the `[+allColumnValues+]` placeholder and the `rowTpl`, `colGlue` parameters
+
+Let the first row contains 2 columns, the second — 3, the third — 1:
+
+```
+[[ddGetMultipleField?
+	&inputString=`{
+		"First prices": [
+			"$100",
+			"$120"
+		],
+		"Second prices": [
+			"$300",
+			"$320",
+			"$350"
+		],
+		"Third prices": [
+			"$50"
+		]
+	}`
+	&outerTpl=`@CODE:<ul>[+result+]</ul>`
+	&rowTpl=`@CODE:<li>[+rowKey+]: [+allColumnValues+]</li>`
+	&colGlue=`, `
+]]
+```
+
+Returns:
+
+```html
+<ul>
+	<li>First prices: $100, $120</li>
+	<li>Second prices: $300, $320, $350</li>
+	<li>Third prices: $50</li>
+</ul>
 ```
 
 

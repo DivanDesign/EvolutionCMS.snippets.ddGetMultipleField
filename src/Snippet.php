@@ -236,7 +236,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.4 (2022-06-03)
+	 * @version 1.5 (2022-06-03)
 	 * 
 	 * @return {string}
 	 */
@@ -590,14 +590,14 @@ class Snippet extends \DDTools\Snippet {
 										$this->params->removeEmptyCols &&
 										empty($colValue)
 									){
-										$resTemp[$rowKey]['col' . $colIndex] = '';
+										unset($rowValue[$colKey]);
 									}else{
 										//Если есть шаблоны значений колонок
 										if (
 											!empty($this->params->colTpl) &&
 											strlen($this->params->colTpl[$colIndex]) > 0
 										){
-											$resTemp[$rowKey]['col' . $colIndex] = \ddTools::parseText([
+											$colValue = \ddTools::parseText([
 												'text' => $this->params->colTpl[$colIndex],
 												'data' => \DDTools\ObjectTools::extend([
 													'objects' => [
@@ -609,15 +609,24 @@ class Snippet extends \DDTools\Snippet {
 												]),
 												'mergeAll' => false
 											]);
-										}else{
-											$resTemp[$rowKey]['col' . $colIndex] = $colValue;
+											
+											//Save for implode later by $this->params->colGlue
+											$rowValue[$colKey] = $colValue;
 										}
 									}
 									
-									$resTemp[$rowKey][$colKey] = $resTemp[$rowKey]['col' . $colIndex];
+									//Save column value by index
+									$resTemp[$rowKey]['col' . $colIndex] = $colValue;
+									//And by original column key
+									$resTemp[$rowKey][$colKey] = $colValue;
 									
 									$colIndex++;
 								}
+								
+								$resTemp[$rowKey]['allColumnValues'] = implode(
+									$this->params->colGlue,
+									$rowValue
+								);
 								
 								$resTemp[$rowKey] = \ddTools::parseText([
 									'text' => $this->params->rowTpl,
