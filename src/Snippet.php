@@ -236,7 +236,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.5.1 (2022-06-03)
+	 * @version 1.5.2 (2022-06-03)
 	 * 
 	 * @return {string}
 	 */
@@ -585,31 +585,29 @@ class Snippet extends \DDTools\Snippet {
 									$colKey =>
 									$colValue
 								){
-									//Если нужно удалять пустые значения
+									//Remove empty columns
 									if (
 										$this->params->removeEmptyCols &&
 										empty($colValue)
 									){
 										unset($rowValue[$colKey]);
-									}else{
-										//Если есть шаблоны значений колонок
-										if (strlen($this->params->colTpl[$colIndex]) > 0){
-											$colValue = \ddTools::parseText([
-												'text' => $this->params->colTpl[$colIndex],
-												'data' => \DDTools\ObjectTools::extend([
-													'objects' => [
-														[
-															'val' => $colValue,
-														],
-														$resTemp[$rowKey]
-													]
-												]),
-												'mergeAll' => false
-											]);
-											
-											//Save for implode later by $this->params->colGlue
-											$rowValue[$colKey] = $colValue;
-										}
+									//If template for the column exists
+									}elseif (strlen($this->params->colTpl[$colIndex]) > 0){
+										$colValue = \ddTools::parseText([
+											'text' => $this->params->colTpl[$colIndex],
+											'data' => \DDTools\ObjectTools::extend([
+												'objects' => [
+													[
+														'val' => $colValue,
+													],
+													$resTemp[$rowKey]
+												]
+											]),
+											'mergeAll' => false
+										]);
+										
+										//Save for implode later by $this->params->colGlue
+										$rowValue[$colKey] = $colValue;
 									}
 									
 									//Save column value by index
@@ -649,11 +647,13 @@ class Snippet extends \DDTools\Snippet {
 										$colKey =>
 										$colValue
 									){
+										//Remove empty columns
 										if (
 											$this->params->removeEmptyCols &&
 											empty($colValue)
 										){
 											unset($rowValue[$colKey]);
+										//If template for the column exists
 										}elseif (strlen($this->params->colTpl[$colIndex]) > 0){
 											$rowValue[$colKey] = \ddTools::parseText([
 												'text' => $this->params->colTpl[$colIndex],
