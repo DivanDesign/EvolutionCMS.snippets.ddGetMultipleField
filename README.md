@@ -25,31 +25,28 @@ Features:
 * [(MODX)EvolutionCMS.snippets.ddTypograph](https://code.divandesign.biz/modx/ddtypograph) >= 2.5 (if typography is required)
 
 
-## Documentation
+## Installation
 
 
-### Installation
+### Manually
 
 
-#### Manually
-
-
-##### 1. Elements → Snippets: Create a new snippet with the following data
+#### 1. Elements → Snippets: Create a new snippet with the following data
 
 1. Snippet name: `ddGetMultipleField`.
-2. Description: `<b>3.7</b> A snippet for processing, manipulations and custom output structured data (JSON or separated by delimiters strings).`.
+2. Description: `<b>3.8</b> A snippet for processing, manipulations and custom output structured data (JSON or separated by delimiters strings).`.
 3. Category: `Core`.
 4. Parse DocBlock: `no`.
 5. Snippet code (php): Insert content of the `ddGetMultipleField_snippet.php` file from the archive.
 
 
-##### 2. Elements → Manage Files
+#### 2. Elements → Manage Files
 
 1. Create a new folder `assets/snippets/ddGetMultipleField/`.
 2. Extract the archive to the folder (except `ddGetMultipleField_snippet.php`).
 
 
-#### Using [(MODX)EvolutionCMS.libraries.ddInstaller](https://github.com/DivanDesign/EvolutionCMS.libraries.ddInstaller)
+### Using [(MODX)EvolutionCMS.libraries.ddInstaller](https://github.com/DivanDesign/EvolutionCMS.libraries.ddInstaller)
 
 Just run the following PHP code in your sources or [Console](https://github.com/vanchelo/MODX-Evolution-Ajax-Console):
 
@@ -71,12 +68,13 @@ require_once(
 * If `ddGetMultipleField` is already exist on your site, `ddInstaller` will check it version and update it if needed.
 
 
-### Parameters description
+## Parameters description
 
 From the pair of `inputString` / `inputString_docField` parameters one is required.
 
 * `inputString`
-	* Desctription: The input string containing values.
+	* Desctription: The input string containing values.  
+		Also supports JSON with any nesting level.
 	* Valid values:
 		* `stringJsonArray` — as [JSON](https://en.wikipedia.org/wiki/JSON) array
 		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON) object
@@ -217,7 +215,7 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	
 * `colGlue`
 	* Desctription: The string that combines columns while rendering.  
-		It can be used along with `colTpl`, but not with `rowTpl` for obvious reasons.
+		It can be used along with `colTpl` and `rowTpl`.
 	* Valid values: `string`
 	* Default value: `''`
 	
@@ -230,6 +228,8 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 		* `[+total+]` — total number of rows
 		* `[+resultTotal+]` — total number of returned rows
 		* `[+col0+]`, `[+col1+]`, etc — column values
+		* `[+`_columnKey_`+]` — column values, when _columnKey_ is original column key (see examples below)
+		* `[+allColumnValues+]` — values of all columns combined by `colGlue`
 	* Valid values:
 		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
@@ -243,10 +243,12 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 		* `array`
 	* Default value: —
 	
-* `colTpl[i]`
+* `colTpl[$i]`
 	* Desctription: The template for column rendering.  
 		Available placeholders:
-		* `[+val+]` — value
+		* `[+val+]` — value of the column
+		* `[+columnIndex+]` — index of the column, starts at `0`
+		* `[+columnKey+]` — key of the column, it is usefull for objects or associative arrays in `inputString`, for indexed arrays the placeholder is equal to `[+columnIndex+]`
 		* `[+rowNumber+]` — index of current row, starts at `1`
 		* `[+rowNumber.zeroBased+]` — index of current row, starts at `0`
 		* `[+rowKey+]` — key of current row, it is usefull for objects or associative arrays in `inputString`, for indexed arrays the placeholder is equal to `[+rowNumber.zeroBased+]`
@@ -308,10 +310,10 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Default value: —
 
 
-### Examples
+## Examples
 
 
-#### Output `images` with description
+### Output `images` with description
 
 The initial string (locates in `images` TV):
 
@@ -345,7 +347,70 @@ Image 2:
 ```
 
 
-#### The data getting and output from `prices` TV of the document with ID = `25` in table format if the data is not empty
+### Output images from JSON using original column keys in row template
+
+```
+[[ddGetMultipleField?
+	&inputString=`[
+		{
+			"src": "assets/images/some_img1.jpg",
+			"alt": "Image 1"
+		},
+		{
+			"src": "assets/images/some_img2.jpg",
+			"alt": "Image 2"
+		}
+	]`
+	&rowTpl=`@CODE:<img src="[+src+]" alt="[+alt+]" />`
+]]
+```
+
+Returns:
+
+```html
+<img src="assets/images/some_img1.jpg" alt="Image 1" />
+<img src="assets/images/some_img2.jpg" alt="Image 2" />
+```
+
+
+### Output rows with dynamic number of columns using the `[+allColumnValues+]` placeholder and the `rowTpl`, `colGlue` parameters
+
+Let the first row contains 2 columns, the second — 3, the third — 1:
+
+```
+[[ddGetMultipleField?
+	&inputString=`{
+		"First prices": [
+			"$100",
+			"$120"
+		],
+		"Second prices": [
+			"$300",
+			"$320",
+			"$350"
+		],
+		"Third prices": [
+			"$50"
+		]
+	}`
+	&outerTpl=`@CODE:<ul>[+result+]</ul>`
+	&rowTpl=`@CODE:<li>[+rowKey+]: [+allColumnValues+]</li>`
+	&colGlue=`, `
+]]
+```
+
+Returns:
+
+```html
+<ul>
+	<li>First prices: $100, $120</li>
+	<li>Second prices: $300, $320, $350</li>
+	<li>Third prices: $50</li>
+</ul>
+```
+
+
+### The data getting and output from `prices` TV of the document with ID = `25` in table format if the data is not empty
 
 The initial field value:
 
@@ -407,7 +472,7 @@ Returns:
 ```
 
 
-#### Return document tags separated by commas using a regular expression in `inputString_rowDelimiter`
+### Return document tags separated by commas using a regular expression in `inputString_rowDelimiter`
 
 [(MODX)EvolutionCMS.plugins.ManagerManager.mm_widget_tags](https://code.divandesign.biz/modx/mm_widget_tags) is applied to `tags` TV where document tags are stored in `tags`.
 User fills in the tags separated by commas, while the field may be filled both with spaces on the sides and without them.
@@ -446,7 +511,7 @@ Returns:
 ```
 
 
-#### Passing additional data into templates via `placeholders`
+### Passing additional data into templates via `placeholders`
 
 ```
 [[ddGetMultipleField?
@@ -494,7 +559,7 @@ Returns:
 ```
 
 
-#### Filter by column value (the `filter` parameter)
+### Filter by column value (the `filter` parameter)
 
 ```
 [[ddGetMultipleField?
@@ -557,7 +622,7 @@ Returns:
 ```
 
 
-#### Sort a JSON object by multiple columns (parameters → `sortBy`, `sortDir`)
+### Sort a JSON object by multiple columns (parameters → `sortBy`, `sortDir`)
 
 ```
 [[ddGetMultipleField?
@@ -627,7 +692,7 @@ Returns:
 ```
 
 
-#### Run the snippet through `\DDTools\Snippet::runSnippet` without DB and eval
+### Run the snippet through `\DDTools\Snippet::runSnippet` without DB and eval
 
 ```php
 //Include (MODX)EvolutionCMS.libraries.ddTools

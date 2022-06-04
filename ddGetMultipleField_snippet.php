@@ -1,13 +1,13 @@
 <?php
 /**
  * ddGetMultipleField
- * @version 3.7 (2021-10-05)
+ * @version 3.8 (2022-06-04)
  * 
  * @see README.md
  * 
  * @link https://code.divandesign.biz/modx/ddgetmultiplefield
  * 
- * @copyright 2009–2021 DD Group {@link https://DivanDesign.biz }
+ * @copyright 2009–2022 DD Group {@link https://DivanDesign.biz }
  */
 
 //Include (MODX)EvolutionCMS.libraries.ddTools

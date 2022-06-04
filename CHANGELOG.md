@@ -1,6 +1,19 @@
 # (MODX)EvolutionCMS.snippets.ddGetMultipleField changelog
 
 
+## Version 3.8 (2022-06-04)
+* \* Parameters:
+	* \+ `inputString`: Supports JSON with any nesting level.
+	* \+ `colTpl[$i]` → Placeholders:
+		* \+ `[+columnIndex+]`: The new placeholder. Contains index of the column, starts at `0`.
+		* \+ `[+columnKey+]`: The new placeholder. Contains key of the column. It is usefull for objects or associative arrays in `inputString`, for indexed arrays the placeholder is equal to `[+columnIndex+]`.
+		* \+ `[+val+]`: If a column value is an array/object, it will be converted to a JSON string (it is usefull if `inputString` contains JSON with more than 2 levels of nesting).
+	* \+ `rowTpl` → Placeholders:
+		* \+ `[+allColumnValues+]`: The new placeholder. Contains string values of all columns combined by `colGlue`. See README → Examples.
+		* \+ `[+`_columnKey_`+]`: The new placeholders set, when _columnKey_ is original column key. See README → Examples.
+	* \* `removeEmptyCols`: Works fine even if both `rowTpl` and `colTpl` are not set.
+
+
 ## Version 3.7 (2021-10-05)
 * \+ Parameters → `rowTpl`, `colTpl[i]`: The new placeholder `[+rowKey+]` has been added (see README).
 * \+ Parameters → `colTpl[i]`: The new placeholders `[+total+]` and `[+resultTotal+]` have beed added (see README).
