@@ -236,7 +236,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.6 (2022-06-03)
+	 * @version 1.6.1 (2022-06-04)
 	 * 
 	 * @return {string}
 	 */
@@ -595,6 +595,13 @@ class Snippet extends \DDTools\Snippet {
 									!empty($columnValue) ||
 									!$this->params->removeEmptyCols
 								){
+									if (is_array($columnValue)){
+										$columnValue = \DDTools\ObjectTools::convertType([
+											'object' => $columnValue,
+											'type' => 'stringJsonAuto'
+										]);
+									}
+									
 									//If template for the column exists
 									if (!empty($this->params->colTpl[$columnIndex])){
 										$columnValue = \ddTools::parseText([
