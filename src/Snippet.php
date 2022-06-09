@@ -236,7 +236,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.6.1 (2022-06-04)
+	 * @version 1.6.2 (2022-06-09)
 	 * 
 	 * @return {string}
 	 */
@@ -535,27 +535,6 @@ class Snippet extends \DDTools\Snippet {
 						$this->params->outputFormat == 'html' ||
 						$this->params->outputFormat == 'htmlarray'
 					){
-						if (
-							//Если шаблоны колонок заданы
-							!empty($this->params->colTpl) &&
-							//Но их не хватает
-							(
-								$temp =
-								count(array_values($data)[0]) -
-								count($this->params->colTpl)
-							) > 0
-						){
-							//Дозабьём недостающие последним
-							$this->params->colTpl = array_merge(
-								$this->params->colTpl,
-								array_fill(
-									$temp - 1,
-									$temp,
-									$this->params->colTpl[count($this->params->colTpl) - 1]
-								)
-							);
-						}
-						
 						$rowIndex = 0;
 						
 						//Перебираем строки
@@ -602,7 +581,13 @@ class Snippet extends \DDTools\Snippet {
 										]);
 									}
 									
-									//If template for the column exists
+									//If template for this column is not set
+									if (!isset($this->params->colTpl[$columnIndex])){
+										//Use previous
+										$this->params->colTpl[$columnIndex] = $this->params->colTpl[$columnIndex - 1];
+									}
+									
+									//If template for the column is needed
 									if (!empty($this->params->colTpl[$columnIndex])){
 										$columnValue = \ddTools::parseText([
 											'text' => $this->params->colTpl[$columnIndex],
