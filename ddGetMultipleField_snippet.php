@@ -1,7 +1,7 @@
 <?php
 /**
  * ddGetMultipleField
- * @version 3.8 (2022-06-04)
+ * @version 3.8.1 (2022-06-09)
  * 
  * @see README.md
  * 
