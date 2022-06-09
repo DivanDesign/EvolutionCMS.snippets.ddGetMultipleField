@@ -1,6 +1,10 @@
 # (MODX)EvolutionCMS.snippets.ddGetMultipleField changelog
 
 
+## Version 3.8.1 (2022-06-09)
+* \* Parameters → `colTpl`: Support of various column numbers in different rows has been improved.
+
+
 ## Version 3.8 (2022-06-04)
 * \* Parameters:
 	* \+ `inputString`: Supports JSON with any nesting level.
