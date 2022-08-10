@@ -3,7 +3,7 @@ namespace ddGetMultipleField;
 
 class Snippet extends \DDTools\Snippet {
 	protected
-		$version = '3.8.1',
+		$version = '3.8.2',
 		
 		$params = [
 			//Defaults

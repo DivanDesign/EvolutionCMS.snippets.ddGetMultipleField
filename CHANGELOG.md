@@ -1,6 +1,12 @@
 # (MODX)EvolutionCMS.snippets.ddGetMultipleField changelog
 
 
+## Version 3.8.2 (2022-08-10)
+* \* Parameters:
+	* \* `columns`: Wrong working with the `0` value has been fixed.
+	* \* `colTpl`: Wrong working with the empty value has been fixed.
+
+
 ## Version 3.8.1 (2022-06-09)
 * \* Parameters → `colTpl`: Support of various column numbers in different rows has been improved.
 
