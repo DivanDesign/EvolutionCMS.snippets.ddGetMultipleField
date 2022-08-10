@@ -52,7 +52,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * prepareParams
-	 * @version 1.1 (2021-06-28)
+	 * @version 1.1.1 (2022-08-10)
 	 * 
 	 * @param $params {stdClass|arrayAssociative|stringJsonObject|stringHjsonObject|stringQueryFormatted}
 	 * 
@@ -92,7 +92,7 @@ class Snippet extends \DDTools\Snippet {
 		}
 		
 		if (
-			$this->params->columns != 'all' &&
+			$this->params->columns !== 'all' &&
 			!is_array($this->params->columns)
 		){
 			$this->params->columns = explode(
