@@ -258,7 +258,7 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
 		* `'null'` — specifies rendering without a template
-	* Default value: —
+	* Default value: `'null'`
 	
 * `outerTpl`
 	* Desctription: Wrapper template (`outputFormat` has to be != `'array'`).  

@@ -52,7 +52,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * prepareParams
-	 * @version 1.1.1 (2022-08-10)
+	 * @version 1.1.2 (2022-08-10)
 	 * 
 	 * @param $params {stdClass|arrayAssociative|stringJsonObject|stringHjsonObject|stringQueryFormatted}
 	 * 
@@ -127,7 +127,10 @@ class Snippet extends \DDTools\Snippet {
 			$this->params->{$paramName} = \ddTools::$modx->getTpl($this->params->{$paramName});
 		}
 		
-		if (!empty($this->params->colTpl)){
+		if (empty($this->params->colTpl)){
+			//Without templates by default
+			$this->params->colTpl = [''];
+		}else{
 			//Получим содержимое шаблонов
 			foreach (
 				$this->params->colTpl as
