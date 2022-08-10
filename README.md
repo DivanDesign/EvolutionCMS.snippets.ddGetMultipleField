@@ -34,7 +34,7 @@ Features:
 #### 1. Elements → Snippets: Create a new snippet with the following data
 
 1. Snippet name: `ddGetMultipleField`.
-2. Description: `<b>3.8.1</b> A snippet for processing, manipulations and custom output structured data (JSON or separated by delimiters strings).`.
+2. Description: `<b>3.8.2</b> A snippet for processing, manipulations and custom output structured data (JSON or separated by delimiters strings).`.
 3. Category: `Core`.
 4. Parse DocBlock: `no`.
 5. Snippet code (php): Insert content of the `ddGetMultipleField_snippet.php` file from the archive.
@@ -258,7 +258,7 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
 		* `'null'` — specifies rendering without a template
-	* Default value: —
+	* Default value: `'null'`
 	
 * `outerTpl`
 	* Desctription: Wrapper template (`outputFormat` has to be != `'array'`).  
