@@ -239,7 +239,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.6.2 (2022-06-09)
+	 * @version 1.7 (2023-01-06)
 	 * 
 	 * @return {string}
 	 */
@@ -296,15 +296,10 @@ class Snippet extends \DDTools\Snippet {
 					]
 				)
 			){
-				try {
-					$data = json_decode(
-						$this->params->inputString,
-						true
-					);
-				}catch (\Exception $e){
-					//Flag
-					$data = [];
-				}
+				$data = \DDTools\ObjectTools::convertType([
+					'object' => $this->params->inputString,
+					'type' => 'objectArray'
+				]);
 			}
 			
 			//Not JSON

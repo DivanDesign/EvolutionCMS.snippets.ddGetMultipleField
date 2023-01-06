@@ -76,8 +76,11 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Desctription: The input string containing values.  
 		Also supports JSON with any nesting level.
 	* Valid values:
-		* `stringJsonArray` — as [JSON](https://en.wikipedia.org/wiki/JSON) array
-		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON) object
+		* `stringJsonArray` — [JSON](https://en.wikipedia.org/wiki/JSON) array
+		* `stringJsonObject` — [JSON](https://en.wikipedia.org/wiki/JSON) object
+		* `stringHjsonObject` — [HJSON](https://hjson.github.io/) object
+		* `stringHjsonArray` — [HJSON](https://hjson.github.io/) array
+		* `stringQueryFormatted` — [Query string](https://en.wikipedia.org/wiki/Query_string)
 		* `stringSeparated` — separated by `inputString_rowDelimiter` and `inputString_colDelimiter`
 	* **Required**
 	

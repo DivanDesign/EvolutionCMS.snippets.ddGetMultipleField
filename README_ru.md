@@ -76,8 +76,11 @@ require_once(
 	* Описание: Исходная строка, содержащая значение.  
 		Также поддерживает JSON с любым уровнем вложенности.
 	* Допустимые значения:
-		* `stringJsonArray` — в виде [JSON](https://ru.wikipedia.org/wiki/JSON) массива
-		* `stringJsonObject` — в виде [JSON](https://ru.wikipedia.org/wiki/JSON) объекта
+		* `stringJsonArray` — [JSON](https://ru.wikipedia.org/wiki/JSON) массив
+		* `stringJsonObject` — [JSON](https://ru.wikipedia.org/wiki/JSON) объект
+		* `stringHjsonObject` — [HJSON](https://hjson.github.io/) объект
+		* `stringHjsonArray` — [HJSON](https://hjson.github.io/) массив
+		* `stringQueryFormatted` — в виде [Query string](https://en.wikipedia.org/wiki/Query_string)
 		* `stringSeparated` — разделённая через `inputString_rowDelimiter` и `inputString_colDelimiter`
 	* **Обязателен**
 	
