@@ -1,6 +1,11 @@
 # (MODX)EvolutionCMS.snippets.ddGetMultipleField changelog
 
 
+## Версия 3.9 (2023-01-11)
+* \+ Параметры → `inputString`: Также может быть задан, как [HJSON](https://hjson.github.io/) или [Query formatted string](https://en.wikipedia.org/wiki/Query_string).
+* \* Параметры → `outerTpl`: Плейсхолдеры `[+rowY.colX+]` работают нормально даже если исходный объект имеет произвольные строковые ключи.
+
+
 ## Версия 3.8.2 (2022-08-10)
 * \* Параметры:
 	* \* `columns`: Исправлена некорректная работа со значением `0`.
