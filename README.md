@@ -34,7 +34,7 @@ Features:
 #### 1. Elements → Snippets: Create a new snippet with the following data
 
 1. Snippet name: `ddGetMultipleField`.
-2. Description: `<b>3.8.2</b> A snippet for processing, manipulations and custom output structured data (JSON or separated by delimiters strings).`.
+2. Description: `<b>3.9</b> A snippet for processing, manipulations and custom output structured data (JSON or separated by delimiters strings).`.
 3. Category: `Core`.
 4. Parse DocBlock: `no`.
 5. Snippet code (php): Insert content of the `ddGetMultipleField_snippet.php` file from the archive.
@@ -76,8 +76,11 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Desctription: The input string containing values.  
 		Also supports JSON with any nesting level.
 	* Valid values:
-		* `stringJsonArray` — as [JSON](https://en.wikipedia.org/wiki/JSON) array
-		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON) object
+		* `stringJsonArray` — [JSON](https://en.wikipedia.org/wiki/JSON) array
+		* `stringJsonObject` — [JSON](https://en.wikipedia.org/wiki/JSON) object
+		* `stringHjsonObject` — [HJSON](https://hjson.github.io/) object
+		* `stringHjsonArray` — [HJSON](https://hjson.github.io/) array
+		* `stringQueryFormatted` — [Query string](https://en.wikipedia.org/wiki/Query_string)
 		* `stringSeparated` — separated by `inputString_rowDelimiter` and `inputString_colDelimiter`
 	* **Required**
 	
@@ -267,6 +270,7 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 		* `[+total+]` — total number of rows
 		* `[+resultTotal+]` — total number of returned rows
 		* `[+rowY.colX+]` — value (`Y` — row number, `X` — column number)
+		* `[+rowKey.colX+]` — value (`Key` — row key, `X` — column number)
 	* Valid values:
 		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`

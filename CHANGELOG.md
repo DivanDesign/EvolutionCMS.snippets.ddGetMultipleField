@@ -1,6 +1,11 @@
 # (MODX)EvolutionCMS.snippets.ddGetMultipleField changelog
 
 
+## Version 3.9 (2023-01-11)
+* \+ Parameters → `inputString`: Can also be set as a [HJSON](https://hjson.github.io/) or [Query formatted](https://en.wikipedia.org/wiki/Query_string) string.
+* \* Parameters → `outerTpl`: Placeholders `[+rowY.colX+]` works fine even source object has custom string keys.
+
+
 ## Version 3.8.2 (2022-08-10)
 * \* Parameters:
 	* \* `columns`: Wrong working with the `0` value has been fixed.

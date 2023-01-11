@@ -3,7 +3,7 @@ namespace ddGetMultipleField;
 
 class Snippet extends \DDTools\Snippet {
 	protected
-		$version = '3.8.2',
+		$version = '3.9.0',
 		
 		$params = [
 			//Defaults
@@ -239,7 +239,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.6.2 (2022-06-09)
+	 * @version 1.7.1 (2023-01-11)
 	 * 
 	 * @return {string}
 	 */
@@ -296,15 +296,10 @@ class Snippet extends \DDTools\Snippet {
 					]
 				)
 			){
-				try {
-					$data = json_decode(
-						$this->params->inputString,
-						true
-					);
-				}catch (\Exception $e){
-					//Flag
-					$data = [];
-				}
+				$data = \DDTools\ObjectTools::convertType([
+					'object' => $this->params->inputString,
+					'type' => 'objectArray'
+				]);
 			}
 			
 			//Not JSON
@@ -694,17 +689,32 @@ class Snippet extends \DDTools\Snippet {
 						//Преобразуем результат в одномерный массив
 						$data = \ddTools::unfoldArray($data);
 						
+						$rowIndex = 0;
+						
 						//Добавляем 'row' и 'val' к ключам
 						foreach (
 							$data as
 							$rowKey =>
 							$rowValue
 						){
-							$resTemp[preg_replace(
-								'/(\d)\.(\d)/',
+							$rowKeyNew = preg_replace(
+								'/(.+?)\.(.+?)/',
 								'row$1.col$2',
 								$rowKey
-							)] = $rowValue;
+							);
+							$rowKeyNewIndexed = preg_replace(
+								'/(.+?)\.(.+?)/',
+								'row' . $rowIndex . '.col$2',
+								$rowKey
+							);
+							
+							$resTemp[$rowKeyNew] = $rowValue;
+							
+							if ($rowKeyNewIndexed != $rowKeyNew){
+								$resTemp[$rowKeyNewIndexed] = $rowValue;
+							}
+							
+							$rowIndex++;
 						}
 						
 						$resTemp = \DDTools\ObjectTools::extend([

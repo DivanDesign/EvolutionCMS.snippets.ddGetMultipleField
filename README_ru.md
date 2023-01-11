@@ -34,7 +34,7 @@
 #### 1. Элементы → Сниппеты: Создайте новый сниппет со следующими параметрами
 
 1. Название сниппета: `ddGetMultipleField`.
-2. Описание: `<b>3.8.2</b> Сниппет для обработки, изменения и произвольного вывода структурированных данных (JSON или разделённых через определённые разделители).`.
+2. Описание: `<b>3.9</b> Сниппет для обработки, изменения и произвольного вывода структурированных данных (JSON или разделённых через определённые разделители).`.
 3. Категория: `Core`.
 4. Анализировать DocBlock: `no`.
 5. Код сниппета (php): Вставьте содержимое файла `ddGetMultipleField_snippet.php` из архива.
@@ -76,8 +76,11 @@ require_once(
 	* Описание: Исходная строка, содержащая значение.  
 		Также поддерживает JSON с любым уровнем вложенности.
 	* Допустимые значения:
-		* `stringJsonArray` — в виде [JSON](https://ru.wikipedia.org/wiki/JSON) массива
-		* `stringJsonObject` — в виде [JSON](https://ru.wikipedia.org/wiki/JSON) объекта
+		* `stringJsonArray` — [JSON](https://ru.wikipedia.org/wiki/JSON) массив
+		* `stringJsonObject` — [JSON](https://ru.wikipedia.org/wiki/JSON) объект
+		* `stringHjsonObject` — [HJSON](https://hjson.github.io/) объект
+		* `stringHjsonArray` — [HJSON](https://hjson.github.io/) массив
+		* `stringQueryFormatted` — в виде [Query string](https://en.wikipedia.org/wiki/Query_string)
 		* `stringSeparated` — разделённая через `inputString_rowDelimiter` и `inputString_colDelimiter`
 	* **Обязателен**
 	
