@@ -239,7 +239,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.7 (2023-01-06)
+	 * @version 1.7.1 (2023-01-11)
 	 * 
 	 * @return {string}
 	 */
@@ -689,17 +689,32 @@ class Snippet extends \DDTools\Snippet {
 						//Преобразуем результат в одномерный массив
 						$data = \ddTools::unfoldArray($data);
 						
+						$rowIndex = 0;
+						
 						//Добавляем 'row' и 'val' к ключам
 						foreach (
 							$data as
 							$rowKey =>
 							$rowValue
 						){
-							$resTemp[preg_replace(
-								'/(\d)\.(\d)/',
+							$rowKeyNew = preg_replace(
+								'/(.+?)\.(.+?)/',
 								'row$1.col$2',
 								$rowKey
-							)] = $rowValue;
+							);
+							$rowKeyNewIndexed = preg_replace(
+								'/(.+?)\.(.+?)/',
+								'row' . $rowIndex . '.col$2',
+								$rowKey
+							);
+							
+							$resTemp[$rowKeyNew] = $rowValue;
+							
+							if ($rowKeyNewIndexed != $rowKeyNew){
+								$resTemp[$rowKeyNewIndexed] = $rowValue;
+							}
+							
+							$rowIndex++;
 						}
 						
 						$resTemp = \DDTools\ObjectTools::extend([

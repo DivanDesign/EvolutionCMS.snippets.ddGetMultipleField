@@ -270,6 +270,7 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 		* `[+total+]` — total number of rows
 		* `[+resultTotal+]` — total number of returned rows
 		* `[+rowY.colX+]` — value (`Y` — row number, `X` — column number)
+		* `[+rowKey.colX+]` — value (`Key` — row key, `X` — column number)
 	* Valid values:
 		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
