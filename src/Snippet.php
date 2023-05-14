@@ -52,7 +52,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * prepareParams
-	 * @version 1.1.2 (2022-08-10)
+	 * @version 1.1.3 (2023-05-14)
 	 * 
 	 * @param $params {stdClass|arrayAssociative|stringJsonObject|stringHjsonObject|stringQueryFormatted}
 	 * 
@@ -124,7 +124,7 @@ class Snippet extends \DDTools\Snippet {
 			$paramName
 		){
 			//Chunk content or inline template
-			$this->params->{$paramName} = \ddTools::$modx->getTpl($this->params->{$paramName});
+			$this->params->{$paramName} = \ddTools::getTpl($this->params->{$paramName});
 		}
 		
 		if (empty($this->params->colTpl)){
@@ -138,7 +138,7 @@ class Snippet extends \DDTools\Snippet {
 				$colTpl_itemValue
 			){
 				//Chunk content or inline template
-				$this->params->colTpl[$colTpl_itemNumber] = \ddTools::$modx->getTpl($this->params->colTpl[$colTpl_itemNumber]);
+				$this->params->colTpl[$colTpl_itemNumber] = \ddTools::getTpl($this->params->colTpl[$colTpl_itemNumber]);
 			}
 			
 			$this->params->colTpl = str_replace(
