@@ -239,7 +239,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.8 (2024-03-02)
+	 * @version 1.8.1 (2024-08-06)
 	 * 
 	 * @return {string}
 	 */
@@ -601,7 +601,7 @@ class Snippet extends \DDTools\Snippet {
 													$rowPlaceholders
 												]
 											]),
-											'mergeAll' => false
+											'isCompletelyParsingEnabled' => false
 										]);
 									}
 									
