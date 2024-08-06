@@ -51,13 +51,13 @@ Features:
 Just run the following PHP code in your sources or [Console](https://github.com/vanchelo/MODX-Evolution-Ajax-Console):
 
 ```php
-//Include (MODX)EvolutionCMS.libraries.ddInstaller
+// Include (MODX)EvolutionCMS.libraries.ddInstaller
 require_once(
 	$modx->getConfig('base_path') .
 	'assets/libs/ddInstaller/require.php'
 );
 
-//Install (MODX)EvolutionCMS.snippets.ddGetMultipleField
+// Install (MODX)EvolutionCMS.snippets.ddGetMultipleField
 \DDInstaller::install([
 	'url' => 'https://github.com/DivanDesign/EvolutionCMS.snippets.ddGetMultipleField',
 	'type' => 'snippet'
@@ -700,13 +700,13 @@ Returns:
 ### Run the snippet through `\DDTools\Snippet::runSnippet` without DB and eval
 
 ```php
-//Include (MODX)EvolutionCMS.libraries.ddTools
+// Include (MODX)EvolutionCMS.libraries.ddTools
 require_once(
 	$modx->getConfig('base_path') .
 	'assets/libs/ddTools/modx.ddtools.class.php'
 );
 
-//Run (MODX)EvolutionCMS.snippets.ddGetMultipleField
+// Run (MODX)EvolutionCMS.snippets.ddGetMultipleField
 \DDTools\Snippet::runSnippet([
 	'name' => 'ddGetMultipleField',
 	'params' => [

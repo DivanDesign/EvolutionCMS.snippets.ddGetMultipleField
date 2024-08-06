@@ -10,7 +10,7 @@
  * @copyright 2009–2023 DD Group {@link https://DivanDesign.biz }
  */
 
-//Include (MODX)EvolutionCMS.libraries.ddTools
+// Include (MODX)EvolutionCMS.libraries.ddTools
 require_once(
 	$modx->getConfig('base_path') .
 	'assets/libs/ddTools/modx.ddtools.class.php'
