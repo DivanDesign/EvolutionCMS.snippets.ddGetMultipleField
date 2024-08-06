@@ -239,7 +239,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.7.1 (2023-01-11)
+	 * @version 1.8 (2024-03-02)
 	 * 
 	 * @return {string}
 	 */
@@ -556,7 +556,8 @@ class Snippet extends \DDTools\Snippet {
 							]);
 							
 							$rowData = (object) [
-								'allColumnValues' => []
+								'allColumnValues' => [],
+								'allColumnValuesObjectJson' => new \stdClass(),
 							];
 							
 							$columnIndex = 0;
@@ -612,6 +613,8 @@ class Snippet extends \DDTools\Snippet {
 								$rowData->{'col' . $columnIndex} = $columnValue;
 								//And by original column key
 								$rowData->{$columnKey} = $columnValue;
+								//Row JSON
+								$rowData->allColumnValuesObjectJson->{$columnKey} = $columnValue;
 								
 								$columnIndex++;
 							}
