@@ -1,6 +1,15 @@
 # (MODX)EvolutionCMS.snippets.ddGetMultipleField changelog
 
 
+## Version 3.10 (2024-09-06)
+
+* \+ Parameters → `rowTpl` → Available placeholders:
+	* \+ `[+allColumnValuesObjectJson+]`: The new placeholder. Contains values of all columns as a JSON object, where keys are original column keys, values are values.
+	* \+ `[+`_columnKey_`.`_nestedProperty_`+]`, `[+col`_columnNumber_`.`_nestedProperty_`+]`: The new placeholders. Contain values of nested properties, when a column value is an object.
+* \* `\ddTools::getTpl` is used instead of `$modx->getTpl` (means a bit less bugs).
+* \* Attention! (MODX)EvolutionCMS.libraries.ddTools >= 0.62 is required.
+
+
 ## Version 3.9 (2023-01-11)
 
 * \+ Parameters → `inputString`: Can also be set as a [HJSON](https://hjson.github.io/) or [Query formatted](https://en.wikipedia.org/wiki/Query_string) string.

@@ -1,6 +1,15 @@
 # (MODX)EvolutionCMS.snippets.ddGetMultipleField changelog
 
 
+## Версия 3.10 (2024-09-06)
+
+* \+ Параметры → `rowTpl` → Доступные плейсхолдеры:
+	* \+ `[+allColumnValuesObjectJson+]`: Новый плейсхолдер. Содержит значения всех колонок в виде JSON-объекта, где ключи — исходные ключи колонок, значения — значения.
+	* \+ `[+`_columnKey_`.`_nestedProperty_`+]`, `[+col`_columnNumber_`.`_nestedProperty_`+]`: Новые плейсхолдеры. Содержат значения вложенных свойств, когда значение колонки является объектом.
+* \* `\ddTools::getTpl` используется вместо `$modx->getTpl` (стало чуть меньше багов).
+* \* Внимание! Требуется (MODX)EvolutionCMS.libraries.ddTools >= 0.62.
+
+
 ## Версия 3.9 (2023-01-11)
 
 * \+ Параметры → `inputString`: Также может быть задан, как [HJSON](https://hjson.github.io/) или [Query formatted string](https://en.wikipedia.org/wiki/Query_string).
