@@ -232,6 +232,7 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 		* `[+resultTotal+]` — total number of returned rows
 		* `[+col0+]`, `[+col1+]`, etc — column values
 		* `[+`_columnKey_`+]` — column values, when _columnKey_ is original column key (see examples below)
+		* `[+`_columnKey_`.`_nestedProperty_`+]`, `[+col`_columnNumber_`.`_nestedProperty_`+]` — values of a nested properties, if a column value is an object
 		* `[+allColumnValues+]` — values of all columns combined by `colGlue`
 		* `[+allColumnValuesObjectJson+]` — values of all columns as a JSON object, where keys are original column keys, values are values
 	* Valid values:

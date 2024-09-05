@@ -239,7 +239,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.8.2 (2024-08-06)
+	 * @version 1.9 (2024-09-06)
 	 * 
 	 * @return {string}
 	 */
@@ -573,13 +573,6 @@ class Snippet extends \DDTools\Snippet {
 									!empty($columnValue) ||
 									!$this->params->removeEmptyCols
 								){
-									if (is_array($columnValue)){
-										$columnValue = \DDTools\ObjectTools::convertType([
-											'object' => $columnValue,
-											'type' => 'stringJsonAuto'
-										]);
-									}
-									
 									// If template for this column is not set
 									if (!isset($this->params->colTpl[$columnIndex])){
 										// Use previous
@@ -606,7 +599,14 @@ class Snippet extends \DDTools\Snippet {
 									}
 									
 									// Save for implode later by $this->params->colGlue
-									$rowData->allColumnValues[] = $columnValue;
+									$rowData->allColumnValues[] =
+										! is_array($columnValue)
+										? $columnValue
+										: \DDTools\ObjectTools::convertType([
+											'object' => $columnValue,
+											'type' => 'stringJsonAuto'
+										])
+									;
 								}
 								
 								// Save column value by index
