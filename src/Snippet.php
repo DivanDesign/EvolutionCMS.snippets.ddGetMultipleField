@@ -30,7 +30,7 @@ class Snippet extends \DDTools\Snippet {
 			'placeholders' => [],
 			'urlencode' => false,
 			'totalRowsToPlaceholder' => null,
-			'resultToPlaceholder' => null
+			'resultToPlaceholder' => null,
 		],
 		
 		$paramsTypes = [
@@ -38,7 +38,7 @@ class Snippet extends \DDTools\Snippet {
 			'removeEmptyCols' => 'boolean',
 			'urlencode' => 'boolean',
 			'startRow' => 'integer',
-			'placeholders' => 'objectArray'
+			'placeholders' => 'objectArray',
 		],
 		
 		$renamedParamsCompliance = [
@@ -46,13 +46,13 @@ class Snippet extends \DDTools\Snippet {
 			'inputString_docField' => 'docField',
 			'inputString_docId' => 'docId',
 			'inputString_rowDelimiter' => 'rowDelimiter',
-			'inputString_colDelimiter' => 'colDelimiter'
+			'inputString_colDelimiter' => 'colDelimiter',
 		]
 	;
 	
 	/**
 	 * prepareParams
-	 * @version 1.1.4 (2024-08-06)
+	 * @version 1.1.5 (2024-09-06)
 	 * 
 	 * @param $params {stdClass|arrayAssociative|stringJsonObject|stringHjsonObject|stringQueryFormatted}
 	 * 
@@ -68,16 +68,16 @@ class Snippet extends \DDTools\Snippet {
 				'sortBy',
 				'typography',
 				'colTpl'
-			] as
-			$paramName
+			]
+			as $paramName
 		){
 			if (
 				// Only strings can be exploded
-				!is_array($this->params->{$paramName}) &&
-				(
+				!is_array($this->params->{$paramName})
+				&& (
 					// Zero indexes for `sortBy` and `typography` must be used
-					$this->params->{$paramName} === '0' ||
-					!empty($this->params->{$paramName})
+					$this->params->{$paramName} === '0'
+					|| !empty($this->params->{$paramName})
 				)
 			){
 				$this->params->{$paramName} = explode(
@@ -92,8 +92,8 @@ class Snippet extends \DDTools\Snippet {
 		}
 		
 		if (
-			$this->params->columns !== 'all' &&
-			!is_array($this->params->columns)
+			$this->params->columns !== 'all'
+			&& !is_array($this->params->columns)
 		){
 			$this->params->columns = explode(
 				',',
@@ -120,8 +120,8 @@ class Snippet extends \DDTools\Snippet {
 			[
 				'rowTpl',
 				'outerTpl'
-			] as
-			$paramName
+			]
+			as $paramName
 		){
 			// Chunk content or inline template
 			$this->params->{$paramName} = \ddTools::getTpl($this->params->{$paramName});
@@ -133,9 +133,9 @@ class Snippet extends \DDTools\Snippet {
 		}else{
 			// Получим содержимое шаблонов
 			foreach (
-				$this->params->colTpl as
-				$colTpl_itemNumber =>
-				$colTpl_itemValue
+				$this->params->colTpl
+				as $colTpl_itemNumber
+				=> $colTpl_itemValue
 			){
 				// Chunk content or inline template
 				$this->params->colTpl[$colTpl_itemNumber] = \ddTools::getTpl($this->params->colTpl[$colTpl_itemNumber]);
@@ -167,11 +167,11 @@ class Snippet extends \DDTools\Snippet {
 			$this->params->filter = str_replace(
 				[
 					'::',
-					'<>'
+					'<>',
 				],
 				[
 					'==',
-					'!='
+					'!=',
 				],
 				$this->params->filter
 			);
@@ -187,9 +187,9 @@ class Snippet extends \DDTools\Snippet {
 			
 			// Перебираем по условию «или»
 			foreach (
-				$filterSource as
-				$orIndex =>
-				$orCondition
+				$filterSource
+				as $orIndex
+				=> $orCondition
 			){
 				$this->params->filter[$orIndex] = [];
 				
@@ -199,9 +199,9 @@ class Snippet extends \DDTools\Snippet {
 					explode(
 						'&&',
 						$orCondition
-					) as
-					$andIndex =>
-					$andCondition
+					)
+					as $andIndex
+					=> $andCondition
 				){
 					// Добавляем вид сравнения для колонки
 					$this->params->filter[$orIndex][$andIndex] = [
@@ -209,18 +209,19 @@ class Snippet extends \DDTools\Snippet {
 							strpos(
 								$andCondition,
 								'=='
-							) !== false
+							)
+							!== false
 						,
 						'columnKey' => '',
-						'columnValue' => ''
+						'columnValue' => '',
 					];
 					
 					// Разбиваем по колонке/значению
 					$andCondition = explode(
 						(
-							$this->params->filter[$orIndex][$andIndex]['isEqual'] ?
-							'==' :
-							'!='
+							$this->params->filter[$orIndex][$andIndex]['isEqual']
+							? '=='
+							: '!='
 						),
 						$andCondition
 					);
@@ -239,7 +240,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.9 (2024-09-06)
+	 * @version 1.9.1 (2024-09-06)
 	 * 
 	 * @return {string}
 	 */
@@ -257,13 +258,14 @@ class Snippet extends \DDTools\Snippet {
 						FILTER_VALIDATE_REGEXP,
 						[
 							'options' => [
-								'regexp' => '/^\/.*\/[a-z]*$/'
-							]
+								'regexp' => '/^\/.*\/[a-z]*$/',
+							],
 						]
-					) !== false
-				) ?
-				true :
-				false
+					)
+					!== false
+				)
+				? true
+				: false
 			;
 			
 			$inputString_colDelimiterIsRegexp =
@@ -273,13 +275,14 @@ class Snippet extends \DDTools\Snippet {
 						FILTER_VALIDATE_REGEXP,
 						[
 							'options' => [
-								'regexp' => '/^\/.*\/[a-z]*$/'
-							]
+								'regexp' => '/^\/.*\/[a-z]*$/',
+							],
 						]
-					) !== false
-				) ?
-				true :
-				false
+					)
+					!== false
+				)
+				? true
+				: false
 			;
 			
 			// JSON (first letter is “{” or “[”)
@@ -292,13 +295,13 @@ class Snippet extends \DDTools\Snippet {
 					),
 					[
 						'{',
-						'['
+						'[',
 					]
 				)
 			){
 				$data = \DDTools\ObjectTools::convertType([
 					'object' => $this->params->inputString,
-					'type' => 'objectArray'
+					'type' => 'objectArray',
 				]);
 			}
 			
@@ -306,12 +309,12 @@ class Snippet extends \DDTools\Snippet {
 			if (empty($data)){
 				// Разбиваем на строки
 				$data =
-					$inputString_rowDelimiterIsRegexp ?
-					preg_split(
+					$inputString_rowDelimiterIsRegexp
+					? preg_split(
 						$this->params->inputString_rowDelimiter,
 						$this->params->inputString
-					) :
-					explode(
+					)
+					: explode(
 						$this->params->inputString_rowDelimiter,
 						$this->params->inputString
 					)
@@ -326,18 +329,18 @@ class Snippet extends \DDTools\Snippet {
 			
 			// Перебираем строки, разбиваем на колонки
 			foreach (
-				$data as
-				$rowKey =>
-				$rowValue
+				$data
+				as $rowKey
+				=> $rowValue
 			){
 				if (!is_array($rowValue)){
 					$data[$rowKey] =
-						$inputString_colDelimiterIsRegexp ?
-						preg_split(
+						$inputString_colDelimiterIsRegexp
+						? preg_split(
 							$this->params->inputString_colDelimiter,
 							$rowValue
-						) :
-						explode(
+						)
+						: explode(
 							$this->params->inputString_colDelimiter,
 							$rowValue
 						)
@@ -348,18 +351,18 @@ class Snippet extends \DDTools\Snippet {
 				if (!empty($this->params->filter)){
 					// Перебираем условия `or`
 					foreach (
-						$this->params->filter as
-						$orIndex =>
-						$orCondition
+						$this->params->filter
+						as $orIndex
+						=> $orCondition
 					){
 						// Считаем, что вариант проходит, если не доказано обратное
 						$isFound = true;
 						
 						// Перебираем условия `and`
 						foreach (
-							$orCondition as
-							$andIndex =>
-							$andCondition
+							$orCondition
+							as $andIndex
+							=> $andCondition
 						){
 							// В зависимости от того, должно или нет значение в колонке быть равно фильтру, присваиваем флагу результат
 							if ($andCondition['isEqual']){
@@ -390,9 +393,9 @@ class Snippet extends \DDTools\Snippet {
 				
 				// Если нужно получить какую-то конкретную колонку
 				if (
-					$this->params->columns != 'all' &&
+					$this->params->columns != 'all'
 					// Также проверяем на то, что строка вообще существует, т.к. она могла быть уже удалена ранее
-					isset($data[$rowKey])
+					&& isset($data[$rowKey])
 				){
 					// Выбираем только необходимые колонки + Сбрасываем ключи массива
 					$data[$rowKey] = array_values(array_intersect_key(
@@ -403,14 +406,16 @@ class Snippet extends \DDTools\Snippet {
 				
 				// Если нужно удалять пустые строки
 				if (
-					$this->params->removeEmptyRows &&
+					$this->params->removeEmptyRows
 					// Также проверяем на то, что строка вообще существует, т.к. она могла быть уже удалена ранее
-					isset($data[$rowKey]) &&
+					&& isset($data[$rowKey])
 					// Если строка пустая
-					strlen(implode(
-						'',
-						$data[$rowKey]
-					)) == 0
+					&& strlen(
+						implode(
+							'',
+							$data[$rowKey]
+						)
+					) == 0
 				){
 					unset($data[$rowKey]);
 				}
@@ -441,9 +446,9 @@ class Snippet extends \DDTools\Snippet {
 							$data,
 							$this->params->sortBy,
 							(
-								$this->params->sortDir == 'ASC' ?
-								1 :
-								-1
+								$this->params->sortDir == 'ASC'
+								? 1
+								: -1
 							)
 						);
 					}
@@ -488,22 +493,22 @@ class Snippet extends \DDTools\Snippet {
 				if (!empty($this->params->typography)){
 					// Придётся ещё раз перебрать результат
 					foreach (
-						$data as
-						$rowKey =>
-						$rowValue
+						$data
+						as $rowKey
+						=> $rowValue
 					){
 						// Перебираем колонки, заданные для типографирования
 						foreach (
-							$this->params->typography as
-							$columnKey
+							$this->params->typography
+							as $columnKey
 						){
 							// Если такая колонка существует, типографируем
 							if (isset($data[$rowKey][$columnKey])){
 								$data[$rowKey][$columnKey] = \DDTools\Snippet::runSnippet([
 									'name' => 'ddTypograph',
 									'params' => [
-										'text' => $data[$rowKey][$columnKey]
-									]
+										'text' => $data[$rowKey][$columnKey],
+									],
 								]);
 							}
 						}
@@ -521,25 +526,25 @@ class Snippet extends \DDTools\Snippet {
 							[
 								// Количество элементов
 								'total' => $total,
-								'resultTotal' => $resultTotal
+								'resultTotal' => $resultTotal,
 							],
 							// User's placeholders can overwrite original data if needed, so they must be placed at the end
-							$this->params->placeholders
-						]
+							$this->params->placeholders,
+						],
 					]);
 					
 					// Если вывод просто в формате html
 					if (
-						$this->params->outputFormat == 'html' ||
-						$this->params->outputFormat == 'htmlarray'
+						$this->params->outputFormat == 'html'
+						|| $this->params->outputFormat == 'htmlarray'
 					){
 						$rowIndex = 0;
 						
 						// Перебираем строки
 						foreach (
-							$data as
-							$rowKey =>
-							$rowValue
+							$data
+							as $rowKey
+							=> $rowValue
 						){
 							$rowPlaceholders = \DDTools\ObjectTools::extend([
 								'objects' => [
@@ -548,11 +553,11 @@ class Snippet extends \DDTools\Snippet {
 										// Запишем номер строки
 										'rowNumber.zeroBased' => $rowIndex,
 										'rowNumber' => $rowIndex + 1,
-										'rowKey' => $rowKey
+										'rowKey' => $rowKey,
 									],
 									// User's placeholders can overwrite original data if needed, so they must be placed at the end
-									$placeholdersGeneral
-								]
+									$placeholdersGeneral,
+								],
 							]);
 							
 							$rowData = (object) [
@@ -564,14 +569,14 @@ class Snippet extends \DDTools\Snippet {
 							
 							// Перебираем колонки
 							foreach (
-								$rowValue as
-								$columnKey =>
-								$columnValue
+								$rowValue
+								as $columnKey
+								=> $columnValue
 							){
 								// If the column is used
 								if (
-									!empty($columnValue) ||
-									!$this->params->removeEmptyCols
+									!empty($columnValue)
+									|| !$this->params->removeEmptyCols
 								){
 									// If template for this column is not set
 									if (!isset($this->params->colTpl[$columnIndex])){
@@ -588,13 +593,13 @@ class Snippet extends \DDTools\Snippet {
 													[
 														'val' => $columnValue,
 														'columnIndex' => $columnIndex,
-														'columnKey' => $columnKey
+														'columnKey' => $columnKey,
 													],
 													// User's placeholders can overwrite original data if needed, so they must be placed at the end
-													$rowPlaceholders
-												]
+													$rowPlaceholders,
+												],
 											]),
-											'isCompletelyParsingEnabled' => false
+											'isCompletelyParsingEnabled' => false,
 										]);
 									}
 									
@@ -604,7 +609,7 @@ class Snippet extends \DDTools\Snippet {
 										? $columnValue
 										: \DDTools\ObjectTools::convertType([
 											'object' => $columnValue,
-											'type' => 'stringJsonAuto'
+											'type' => 'stringJsonAuto',
 										])
 									;
 								}
@@ -631,9 +636,9 @@ class Snippet extends \DDTools\Snippet {
 										'objects' => [
 											$rowData,
 											// User's placeholders can overwrite original data if needed, so they must be placed at the end
-											$rowPlaceholders
-										]
-									])
+											$rowPlaceholders,
+										],
+									]),
 								]);
 							}else{
 								$resTemp[$rowKey] = $rowData->allColumnValues;
@@ -656,8 +661,8 @@ class Snippet extends \DDTools\Snippet {
 						
 						// Если нужно выводить только одну колонку
 						if (
-							$this->params->columns != 'all' &&
-							count($this->params->columns) == 1
+							$this->params->columns != 'all'
+							&& count($this->params->columns) == 1
 						){
 							$resTemp = array_map(
 								'implode',
@@ -677,7 +682,7 @@ class Snippet extends \DDTools\Snippet {
 							$result,
 							[
 								'[[' => '[ [',
-								']]' => '] ]'
+								']]' => '] ]',
 							]
 						);
 					}
@@ -696,9 +701,9 @@ class Snippet extends \DDTools\Snippet {
 						
 						// Добавляем 'row' и 'val' к ключам
 						foreach (
-							$data as
-							$rowKey =>
-							$rowValue
+							$data
+							as $rowKey
+							=> $rowValue
 						){
 							$rowKeyNew = preg_replace(
 								'/(.+?)\.(.+?)/',
@@ -724,13 +729,13 @@ class Snippet extends \DDTools\Snippet {
 							'objects' => [
 								$resTemp,
 								// User's placeholders can overwrite original data if needed, so they must be placed at the end
-								$placeholdersGeneral
-							]
+								$placeholdersGeneral,
+							],
 						]);
 						
 						$result = \ddTools::parseText([
 							'text' => $this->params->outerTpl,
-							'data' => $resTemp
+							'data' => $resTemp,
 						]);
 					}
 					
