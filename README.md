@@ -28,24 +28,6 @@ Features:
 ## Installation
 
 
-### Manually
-
-
-#### 1. Elements → Snippets: Create a new snippet with the following data
-
-1. Snippet name: `ddGetMultipleField`.
-2. Description: `<b>3.9</b> A snippet for processing, manipulations and custom output structured data (JSON or separated by delimiters strings).`.
-3. Category: `Core`.
-4. Parse DocBlock: `no`.
-5. Snippet code (php): Insert content of the `ddGetMultipleField_snippet.php` file from the archive.
-
-
-#### 2. Elements → Manage Files
-
-1. Create a new folder `assets/snippets/ddGetMultipleField/`.
-2. Extract the archive to the folder (except `ddGetMultipleField_snippet.php`).
-
-
 ### Using [(MODX)EvolutionCMS.libraries.ddInstaller](https://github.com/DivanDesign/EvolutionCMS.libraries.ddInstaller)
 
 Just run the following PHP code in your sources or [Console](https://github.com/vanchelo/MODX-Evolution-Ajax-Console):
@@ -66,6 +48,24 @@ require_once(
 
 * If `ddGetMultipleField` is not exist on your site, `ddInstaller` will just install it.
 * If `ddGetMultipleField` is already exist on your site, `ddInstaller` will check it version and update it if needed.
+
+
+### Manually
+
+
+#### 1. Elements → Snippets: Create a new snippet with the following data
+
+1. Snippet name: `ddGetMultipleField`.
+2. Description: `<b>3.9</b> A snippet for processing, manipulations and custom output structured data (JSON or separated by delimiters strings).`.
+3. Category: `Core`.
+4. Parse DocBlock: `no`.
+5. Snippet code (php): Insert content of the `ddGetMultipleField_snippet.php` file from the archive.
+
+
+#### 2. Elements → Manage Files
+
+1. Create a new folder `assets/snippets/ddGetMultipleField/`.
+2. Extract the archive to the folder (except `ddGetMultipleField_snippet.php`).
 
 
 ## Parameters description
