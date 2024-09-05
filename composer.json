@@ -1,7 +1,7 @@
 {
 	"name": "dd/evolutioncms-snippets-ddgetmultiplefield",
 	"type": "modxevo-snippet",
-	"version": "3.9.0",
+	"version": "3.10.0",
 	"description": "A snippet for processing, manipulations and custom output structured data (JSON or separated by delimiters strings).",
 	"keywords": [
 		"modx",
@@ -20,22 +20,16 @@
 		"get multiple field",
 		"sort json"
 	],
-	"homepage": "https://code.divandesign.biz/modx/ddgetmultiplefield",
+	"homepage": "https://code.divandesign.ru/modx/ddgetmultiplefield",
 	"support": {
 		"chat": "https://t.me/dd_code"
 	},
 	"authors": [
 		{
-			"name": "DD Group",
-			"email": "code@DivanDesign.biz",
-			"homepage": "https://code.divandesign.biz",
-			"role": "Owner"
-		},
-		{
 			"name": "Ilyas Ronef",
 			"email": "ilyas@DivanDesign.ru",
 			"homepage": "https://ronef.ru",
-			"role": "Developer"
+			"role": "Owner"
 		},
 		{
 			"name": "Alexey Davydov",
@@ -56,7 +50,12 @@
 	],
 	"require": {
 		"php": ">=5.6.0",
-		"dd/evolutioncms-libraries-ddtools": ">=0.50.0",
+		"dd/evolutioncms-libraries-ddtools": ">=0.62.0",
 		"dd/evolutioncms-snippets-ddtypograph": ">=2.5.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"ddGetMultipleField\\": "src/"
+		}
 	}
 }

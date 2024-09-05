@@ -1,7 +1,7 @@
 # (MODX)EvolutionCMS.snippets.ddGetMultipleField
 
 A snippet for processing, manipulations and custom output structured data (JSON or separated by delimiters strings).
-The fields formed by the [mm_ddMultipleFields](https://code.divandesign.biz/modx/mm_ddmultiplefields) widget values output gets more convinient with the snippet.
+The fields formed by the [mm_ddMultipleFields](https://code.divandesign.ru/modx/mm_ddmultiplefields) widget values output gets more convinient with the snippet.
 
 Features:
 * Field value getting of a required document (TV) by its ID. The `inputString_docField` and `inputString_docId` parameters.
@@ -21,11 +21,33 @@ Features:
 
 * PHP >= 5.6
 * [(MODX)EvolutionCMS](https://github.com/evolution-cms/evolution) >= 1.1
-* [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.biz/modx/ddtools) >= 0.50
-* [(MODX)EvolutionCMS.snippets.ddTypograph](https://code.divandesign.biz/modx/ddtypograph) >= 2.5 (if typography is required)
+* [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.ru/modx/ddtools) >= 0.62
+* [(MODX)EvolutionCMS.snippets.ddTypograph](https://code.divandesign.ru/modx/ddtypograph) >= 2.5 (if typography is required)
 
 
 ## Installation
+
+
+### Using [(MODX)EvolutionCMS.libraries.ddInstaller](https://github.com/DivanDesign/EvolutionCMS.libraries.ddInstaller)
+
+Just run the following PHP code in your sources or [Console](https://github.com/vanchelo/MODX-Evolution-Ajax-Console):
+
+```php
+// Include (MODX)EvolutionCMS.libraries.ddInstaller
+require_once(
+	$modx->getConfig('base_path') .
+	'assets/libs/ddInstaller/require.php'
+);
+
+// Install (MODX)EvolutionCMS.snippets.ddGetMultipleField
+\DDInstaller::install([
+	'url' => 'https://github.com/DivanDesign/EvolutionCMS.snippets.ddGetMultipleField',
+	'type' => 'snippet'
+]);
+```
+
+* If `ddGetMultipleField` is not exist on your site, `ddInstaller` will just install it.
+* If `ddGetMultipleField` is already exist on your site, `ddInstaller` will check it version and update it if needed.
 
 
 ### Manually
@@ -34,7 +56,7 @@ Features:
 #### 1. Elements → Snippets: Create a new snippet with the following data
 
 1. Snippet name: `ddGetMultipleField`.
-2. Description: `<b>3.9</b> A snippet for processing, manipulations and custom output structured data (JSON or separated by delimiters strings).`.
+2. Description: `<b>3.10</b> A snippet for processing, manipulations and custom output structured data (JSON or separated by delimiters strings).`.
 3. Category: `Core`.
 4. Parse DocBlock: `no`.
 5. Snippet code (php): Insert content of the `ddGetMultipleField_snippet.php` file from the archive.
@@ -46,35 +68,13 @@ Features:
 2. Extract the archive to the folder (except `ddGetMultipleField_snippet.php`).
 
 
-### Using [(MODX)EvolutionCMS.libraries.ddInstaller](https://github.com/DivanDesign/EvolutionCMS.libraries.ddInstaller)
-
-Just run the following PHP code in your sources or [Console](https://github.com/vanchelo/MODX-Evolution-Ajax-Console):
-
-```php
-//Include (MODX)EvolutionCMS.libraries.ddInstaller
-require_once(
-	$modx->getConfig('base_path') .
-	'assets/libs/ddInstaller/require.php'
-);
-
-//Install (MODX)EvolutionCMS.snippets.ddGetMultipleField
-\DDInstaller::install([
-	'url' => 'https://github.com/DivanDesign/EvolutionCMS.snippets.ddGetMultipleField',
-	'type' => 'snippet'
-]);
-```
-
-* If `ddGetMultipleField` is not exist on your site, `ddInstaller` will just install it.
-* If `ddGetMultipleField` is already exist on your site, `ddInstaller` will check it version and update it if needed.
-
-
 ## Parameters description
 
 From the pair of `inputString` / `inputString_docField` parameters one is required.
 
 * `inputString`
-	* Desctription: The input string containing values.  
-		Also supports JSON with any nesting level.
+	* Description: The input string containing values.
+		* Also supports JSON with any nesting level.
 	* Valid values:
 		* `stringJsonArray` — [JSON](https://en.wikipedia.org/wiki/JSON) array
 		* `stringJsonObject` — [JSON](https://en.wikipedia.org/wiki/JSON) object
@@ -85,44 +85,44 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* **Required**
 	
 * `inputString_docField`
-	* Desctription: The name of the document field/TV which value is required to get.  
-		If the parameter is passed then the input string will be taken from the field / TV and `inputString` will be ignored.
+	* Description: The name of the document field/TV which value is required to get.
+		* If the parameter is passed then the input string will be taken from the field / TV and `inputString` will be ignored.
 	* Valid values: `string`
 	* Default value: —
 	
 * `inputString_docId`
-	* Desctription: ID of the document which field/TV value is required to get.  
+	* Description: ID of the document which field/TV value is required to get.  
 	* Valid values: `integer`
 	* Default value: `$modx->documentIdentifier` (the current document ID)
 	
 * `inputString_rowDelimiter`
-	* Desctription: The input string row delimiter (when `inputString` is not JSON).
+	* Description: The input string row delimiter (when `inputString` is not JSON).
 	* Valid values:
 		* `string`
 		* `regexp`
 	* Default value: `'||'`
 	
 * `inputString_colDelimiter`
-	* Desctription: The input string column delimiter (when `inputString` is not JSON).
+	* Description: The input string column delimiter (when `inputString` is not JSON).
 	* Valid values:
 		* `string`
 		* `regexp`
 	* Default value: `'::'`
 	
 * `startRow`
-	* Desctription: The index of the initial row (indexes start at `0`).
+	* Description: The index of the initial row (indexes start at `0`).
 	* Valid values: `integer`
 	* Default value: `0`
 	
 * `totalRows`
-	* Desctription: The maximum number of rows to return.
+	* Description: The maximum number of rows to return.
 	* Valid values:
 		* `integer`
 		* `'all'` — all rows will be returned
 	* Default value: `'all'`
 	
 * `columns`
-	* Desctription: The indexes of columns to return (indexes start at `0`).
+	* Description: The indexes of columns to return (indexes start at `0`).
 	* Valid values:
 		* `stringCommaSeparated`
 		* `array`
@@ -130,7 +130,7 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Default value: `'all'`
 	
 * `filter`
-	* Desctription: Filter clause for columns.  
+	* Description: Filter clause for columns.  
 		* Thus,
 			```
 			0 == 'a' ||
@@ -162,29 +162,29 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Default value: —
 	
 * `removeEmptyRows`
-	* Desctription: Is it required to remove empty rows?
+	* Description: Is it required to remove empty rows?
 	* Valid values:
 		* `0`
 		* `1`
 	* Default value: `1`
 	
 * `removeEmptyCols`
-	* Desctription: Is it required to remove empty columns?
+	* Description: Is it required to remove empty columns?
 	* Valid values:
 		* `0`
 		* `1`
 	* Default value: `1`
 	
 * `sortBy`
-	* Desctription: The index of the column to sort by (indexes start at `0`).  
-		The parameter also takes comma-separated values for multiple sort, e.g. `'0,1'`.
+	* Description: The index of the column to sort by (indexes start at `0`).
+		* The parameter also takes comma-separated values for multiple sort, e.g. `'0,1'`.
 	* Valid values:
 		* `stringCommaSeparated`
 		* `array`
 	* Default value: `'0'`
 	
 * `sortDir`
-	* Desctription: Rows sorting direction (case insensitive).
+	* Description: Rows sorting direction (case insensitive).
 	* Valid values:
 		* `'ASC'` — the rows will be returned in ascending order
 		* `'DESC'` — the rows will be returned in descending order
@@ -194,15 +194,15 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Default value: `''`
 	
 * `typography`
-	* Desctription: The comma separated indexes of the columns which values have to be corrected (indexes start at `0`).  
-		If unset, there will be no correction.
+	* Description: The comma separated indexes of the columns which values have to be corrected (indexes start at `0`).
+		* If unset, there will be no correction.
 	* Valid values:
 		* `stringCommaSeparated`
 		* `array`
 	* Default value: —
 	
 * `outputFormat`
-	* Desctription: Result output format (case insensitive).
+	* Description: Result output format (case insensitive).
 	* Valid values:
 		* `'html'`
 		* `'json'`
@@ -211,52 +211,54 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Default value: `'html'`
 	
 * `rowGlue`
-	* Desctription: The string that combines rows while rendering.  
-		It can be used along with `rowTpl`.
+	* Description: The string that combines rows while rendering.
+		* It can be used along with `rowTpl`.
 	* Valid values: `string`
 	* Default value: `''`
 	
 * `colGlue`
-	* Desctription: The string that combines columns while rendering.  
-		It can be used along with `colTpl` and `rowTpl`.
+	* Description: The string that combines columns while rendering.
+		* It can be used along with `colTpl` and `rowTpl`.
 	* Valid values: `string`
 	* Default value: `''`
 	
 * `rowTpl`
-	* Desctription: The template for row rendering (`outputFormat` has to be == `'html'`).  
-		Available placeholders:
-		* `[+rowNumber+]` — index of current row, starts at `1`
-		* `[+rowNumber.zeroBased+]` — index of current row, starts at `0`
-		* `[+rowKey+]` — key of current row, it is usefull for objects or associative arrays in `inputString`, for indexed arrays the placeholder is equal to `[+rowNumber.zeroBased+]`
-		* `[+total+]` — total number of rows
-		* `[+resultTotal+]` — total number of returned rows
-		* `[+col0+]`, `[+col1+]`, etc — column values
-		* `[+`_columnKey_`+]` — column values, when _columnKey_ is original column key (see examples below)
-		* `[+allColumnValues+]` — values of all columns combined by `colGlue`
+	* Description: The template for row rendering (`outputFormat` has to be == `'html'`).
+		* Available placeholders:
+			* `[+rowNumber+]` — index of current row, starts at `1`
+			* `[+rowNumber.zeroBased+]` — index of current row, starts at `0`
+			* `[+rowKey+]` — key of current row, it is usefull for objects or associative arrays in `inputString`, for indexed arrays the placeholder is equal to `[+rowNumber.zeroBased+]`
+			* `[+total+]` — total number of rows
+			* `[+resultTotal+]` — total number of returned rows
+			* `[+col`_columnNumber_`+]` (e. g. `[+col0+]`, `[+col1+]`, etc) — column values, when _columnNumber_ is zero-based column number
+			* `[+`_columnKey_`+]` — column values, when _columnKey_ is original column key (see examples below)
+			* `[+`_columnKey_`.`_nestedProperty_`+]`, `[+col`_columnNumber_`.`_nestedProperty_`+]` — values of a nested properties, if a column value is an object
+			* `[+allColumnValues+]` — values of all columns combined by `colGlue`
+			* `[+allColumnValuesObjectJson+]` — values of all columns as a JSON object, where keys are original column keys, values are values
 	* Valid values:
 		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
 	* Default value: —
 	
 * `colTpl`
-	* Desctription: The comma-separated list of templates for column rendering (`outputFormat` has to be == `'html'`).  
-		If the number of templates is lesser than the number of columns then the last passed template will be used to render the rest of the columns.
+	* Description: The comma-separated list of templates for column rendering (`outputFormat` has to be == `'html'`).
+		* If the number of templates is lesser than the number of columns then the last passed template will be used to render the rest of the columns.
 	* Valid values:
 		* `stringCommaSeparated`
 		* `array`
 	* Default value: —
 	
 * `colTpl[$i]`
-	* Desctription: The template for column rendering.  
-		Available placeholders:
-		* `[+val+]` — value of the column
-		* `[+columnIndex+]` — index of the column, starts at `0`
-		* `[+columnKey+]` — key of the column, it is usefull for objects or associative arrays in `inputString`, for indexed arrays the placeholder is equal to `[+columnIndex+]`
-		* `[+rowNumber+]` — index of current row, starts at `1`
-		* `[+rowNumber.zeroBased+]` — index of current row, starts at `0`
-		* `[+rowKey+]` — key of current row, it is usefull for objects or associative arrays in `inputString`, for indexed arrays the placeholder is equal to `[+rowNumber.zeroBased+]`
-		* `[+total+]` — total number of rows
-		* `[+resultTotal+]` — total number of returned rows
+	* Description: The template for column rendering.
+		* Available placeholders:
+			* `[+val+]` — value of the column
+			* `[+columnIndex+]` — index of the column, starts at `0`
+			* `[+columnKey+]` — key of the column, it is usefull for objects or associative arrays in `inputString`, for indexed arrays the placeholder is equal to `[+columnIndex+]`
+			* `[+rowNumber+]` — index of current row, starts at `1`
+			* `[+rowNumber.zeroBased+]` — index of current row, starts at `0`
+			* `[+rowKey+]` — key of current row, it is usefull for objects or associative arrays in `inputString`, for indexed arrays the placeholder is equal to `[+rowNumber.zeroBased+]`
+			* `[+total+]` — total number of rows
+			* `[+resultTotal+]` — total number of returned rows
 	* Valid values:
 		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
@@ -264,36 +266,35 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Default value: `'null'`
 	
 * `outerTpl`
-	* Desctription: Wrapper template (`outputFormat` has to be != `'array'`).  
-		Available placeholders:
-		* `[+result+]` — snippet result
-		* `[+total+]` — total number of rows
-		* `[+resultTotal+]` — total number of returned rows
-		* `[+rowY.colX+]` — value (`Y` — row number, `X` — column number)
-		* `[+rowKey.colX+]` — value (`Key` — row key, `X` — column number)
+	* Description: Wrapper template (`outputFormat` has to be != `'array'`).
+		* Available placeholders:
+			* `[+result+]` — snippet result
+			* `[+total+]` — total number of rows
+			* `[+resultTotal+]` — total number of returned rows
+			* `[+rowY.colX+]` — value (`Y` — row number, `X` — column number)
+			* `[+rowKey.colX+]` — value (`Key` — row key, `X` — column number)
 	* Valid values:
 		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
 	* Default value: —
 	
 * `placeholders`
-	* Desctription:
-		Additional data has to be passed into the `outerTpl`, `rowTpl` and `colTpl` templates.  
-		Nested objects and arrays are supported too:
-		* `{"someOne": "1", "someTwo": "test" }` => `[+someOne+], [+someTwo+]`.
-		* `{"some": {"a": "one", "b": "two"} }` => `[+some.a+]`, `[+some.b+]`.
-		* `{"some": ["one", "two"] }` => `[+some.0+]`, `[+some.1+]`.
+	* Description: Additional data has to be passed into the `outerTpl`, `rowTpl` and `colTpl` templates.
+		* Nested objects and arrays are supported too:
+			* `{"someOne": "1", "someTwo": "test" }` => `[+someOne+], [+someTwo+]`.
+			* `{"some": {"a": "one", "b": "two"} }` => `[+some.a+]`, `[+some.b+]`.
+			* `{"some": ["one", "two"] }` => `[+some.0+]`, `[+some.1+]`.
 	* Valid values:
 		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
 		* `stringHjsonObject` — as [HJSON](https://hjson.github.io/)
-		* `stringQueryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
+		* `stringQueryFormatted` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
 		* It can also be set as a native PHP object or array (e. g. for calls through `$modx->runSnippet`):
 			* `arrayAssociative`
 			* `object`
 	* Default value: —
 	
 * `urlencode`
-	* Desctription: Is it required to URL encode the result?  
+	* Description: Is it required to URL encode the result?
 		* `outputFormat` has to be != `'array'`.
 		* URL encoding is used according to RFC 3986.
 	* Valid values:
@@ -302,14 +303,14 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Default value: `0`
 	
 * `totalRowsToPlaceholder`
-	* Desctription: The name of the global (MODX)Evolution placeholder that holds the total number of rows.  
-		The placeholder won't be set if `totalRowsToPlaceholder` is empty.
+	* Description: The name of the global (MODX)Evolution placeholder that holds the total number of rows.
+		* The placeholder won't be set if `totalRowsToPlaceholder` is empty.
 	* Valid values: `string`
 	* Default value: —
 	
 * `resultToPlaceholder`
-	* Desctription: The name of the global (MODX)Evolution placeholder that holds the snippet result.  
-		The result will be returned in a regular manner if the parameter is empty.
+	* Description: The name of the global (MODX)Evolution placeholder that holds the snippet result.
+		* The result will be returned in a regular manner if the parameter is empty.
 	* Valid values: `string`
 	* Default value: —
 
@@ -478,7 +479,7 @@ Returns:
 
 ### Return document tags separated by commas using a regular expression in `inputString_rowDelimiter`
 
-[(MODX)EvolutionCMS.plugins.ManagerManager.mm_widget_tags](https://code.divandesign.biz/modx/mm_widget_tags) is applied to `tags` TV where document tags are stored in `tags`.
+[(MODX)EvolutionCMS.plugins.ManagerManager.mm_widget_tags](https://code.divandesign.ru/modx/mm_widget_tags) is applied to `tags` TV where document tags are stored in `tags`.
 User fills in the tags separated by commas, while the field may be filled both with spaces on the sides and without them.
 
 `tags` TV value:
@@ -699,13 +700,13 @@ Returns:
 ### Run the snippet through `\DDTools\Snippet::runSnippet` without DB and eval
 
 ```php
-//Include (MODX)EvolutionCMS.libraries.ddTools
+// Include (MODX)EvolutionCMS.libraries.ddTools
 require_once(
 	$modx->getConfig('base_path') .
 	'assets/libs/ddTools/modx.ddtools.class.php'
 );
 
-//Run (MODX)EvolutionCMS.snippets.ddGetMultipleField
+// Run (MODX)EvolutionCMS.snippets.ddGetMultipleField
 \DDTools\Snippet::runSnippet([
 	'name' => 'ddGetMultipleField',
 	'params' => [
@@ -719,8 +720,8 @@ require_once(
 				"Example image 2"
 			]
 		]',
-		'rowTpl' => '@CODE:<img src="[+col0+]" alt="[+col1+]" />'
-	]
+		'rowTpl' => '@CODE:<img src="[+col0+]" alt="[+col1+]" />',
+	],
 ]);
 ```
 
@@ -730,9 +731,10 @@ _It is hard to write here all possible examples so if here is something that you
 
 ## Links
 
-* [Home page](https://code.divandesign.biz/modx/ddgetmultiplefield)
+* [Home page](https://code.divandesign.ru/modx/ddgetmultiplefield)
 * [Telegram chat](https://t.me/dd_code)
 * [Packagist](https://packagist.org/packages/dd/evolutioncms-snippets-ddgetmultiplefield)
+* [GitHub](https://github.com/DivanDesign/EvolutionCMS.snippets.ddGetMultipleField)
 
 
-<link rel="stylesheet" type="text/css" href="https://DivanDesign.ru/assets/files/ddMarkdown.css" />
+<link rel="stylesheet" type="text/css" href="https://raw.githack.com/DivanDesign/CSS.ddMarkdown/master/style.min.css" />
