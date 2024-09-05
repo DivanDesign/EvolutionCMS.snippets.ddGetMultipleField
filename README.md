@@ -73,8 +73,8 @@ require_once(
 From the pair of `inputString` / `inputString_docField` parameters one is required.
 
 * `inputString`
-	* Description: The input string containing values.  
-		Also supports JSON with any nesting level.
+	* Description: The input string containing values.
+		* Also supports JSON with any nesting level.
 	* Valid values:
 		* `stringJsonArray` — [JSON](https://en.wikipedia.org/wiki/JSON) array
 		* `stringJsonObject` — [JSON](https://en.wikipedia.org/wiki/JSON) object
@@ -85,8 +85,8 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* **Required**
 	
 * `inputString_docField`
-	* Description: The name of the document field/TV which value is required to get.  
-		If the parameter is passed then the input string will be taken from the field / TV and `inputString` will be ignored.
+	* Description: The name of the document field/TV which value is required to get.
+		* If the parameter is passed then the input string will be taken from the field / TV and `inputString` will be ignored.
 	* Valid values: `string`
 	* Default value: —
 	
@@ -176,8 +176,8 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Default value: `1`
 	
 * `sortBy`
-	* Description: The index of the column to sort by (indexes start at `0`).  
-		The parameter also takes comma-separated values for multiple sort, e.g. `'0,1'`.
+	* Description: The index of the column to sort by (indexes start at `0`).
+		* The parameter also takes comma-separated values for multiple sort, e.g. `'0,1'`.
 	* Valid values:
 		* `stringCommaSeparated`
 		* `array`
@@ -194,8 +194,8 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Default value: `''`
 	
 * `typography`
-	* Description: The comma separated indexes of the columns which values have to be corrected (indexes start at `0`).  
-		If unset, there will be no correction.
+	* Description: The comma separated indexes of the columns which values have to be corrected (indexes start at `0`).
+		* If unset, there will be no correction.
 	* Valid values:
 		* `stringCommaSeparated`
 		* `array`
@@ -211,54 +211,54 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Default value: `'html'`
 	
 * `rowGlue`
-	* Description: The string that combines rows while rendering.  
-		It can be used along with `rowTpl`.
+	* Description: The string that combines rows while rendering.
+		* It can be used along with `rowTpl`.
 	* Valid values: `string`
 	* Default value: `''`
 	
 * `colGlue`
-	* Description: The string that combines columns while rendering.  
-		It can be used along with `colTpl` and `rowTpl`.
+	* Description: The string that combines columns while rendering.
+		* It can be used along with `colTpl` and `rowTpl`.
 	* Valid values: `string`
 	* Default value: `''`
 	
 * `rowTpl`
-	* Description: The template for row rendering (`outputFormat` has to be == `'html'`).  
-		Available placeholders:
-		* `[+rowNumber+]` — index of current row, starts at `1`
-		* `[+rowNumber.zeroBased+]` — index of current row, starts at `0`
-		* `[+rowKey+]` — key of current row, it is usefull for objects or associative arrays in `inputString`, for indexed arrays the placeholder is equal to `[+rowNumber.zeroBased+]`
-		* `[+total+]` — total number of rows
-		* `[+resultTotal+]` — total number of returned rows
-		* `[+col`_columnNumber_`+]` (e. g. `[+col0+]`, `[+col1+]`, etc) — column values, when _columnNumber_ is zero-based column number
-		* `[+`_columnKey_`+]` — column values, when _columnKey_ is original column key (see examples below)
-		* `[+`_columnKey_`.`_nestedProperty_`+]`, `[+col`_columnNumber_`.`_nestedProperty_`+]` — values of a nested properties, if a column value is an object
-		* `[+allColumnValues+]` — values of all columns combined by `colGlue`
-		* `[+allColumnValuesObjectJson+]` — values of all columns as a JSON object, where keys are original column keys, values are values
+	* Description: The template for row rendering (`outputFormat` has to be == `'html'`).
+		* Available placeholders:
+			* `[+rowNumber+]` — index of current row, starts at `1`
+			* `[+rowNumber.zeroBased+]` — index of current row, starts at `0`
+			* `[+rowKey+]` — key of current row, it is usefull for objects or associative arrays in `inputString`, for indexed arrays the placeholder is equal to `[+rowNumber.zeroBased+]`
+			* `[+total+]` — total number of rows
+			* `[+resultTotal+]` — total number of returned rows
+			* `[+col`_columnNumber_`+]` (e. g. `[+col0+]`, `[+col1+]`, etc) — column values, when _columnNumber_ is zero-based column number
+			* `[+`_columnKey_`+]` — column values, when _columnKey_ is original column key (see examples below)
+			* `[+`_columnKey_`.`_nestedProperty_`+]`, `[+col`_columnNumber_`.`_nestedProperty_`+]` — values of a nested properties, if a column value is an object
+			* `[+allColumnValues+]` — values of all columns combined by `colGlue`
+			* `[+allColumnValuesObjectJson+]` — values of all columns as a JSON object, where keys are original column keys, values are values
 	* Valid values:
 		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
 	* Default value: —
 	
 * `colTpl`
-	* Description: The comma-separated list of templates for column rendering (`outputFormat` has to be == `'html'`).  
-		If the number of templates is lesser than the number of columns then the last passed template will be used to render the rest of the columns.
+	* Description: The comma-separated list of templates for column rendering (`outputFormat` has to be == `'html'`).
+		* If the number of templates is lesser than the number of columns then the last passed template will be used to render the rest of the columns.
 	* Valid values:
 		* `stringCommaSeparated`
 		* `array`
 	* Default value: —
 	
 * `colTpl[$i]`
-	* Description: The template for column rendering.  
-		Available placeholders:
-		* `[+val+]` — value of the column
-		* `[+columnIndex+]` — index of the column, starts at `0`
-		* `[+columnKey+]` — key of the column, it is usefull for objects or associative arrays in `inputString`, for indexed arrays the placeholder is equal to `[+columnIndex+]`
-		* `[+rowNumber+]` — index of current row, starts at `1`
-		* `[+rowNumber.zeroBased+]` — index of current row, starts at `0`
-		* `[+rowKey+]` — key of current row, it is usefull for objects or associative arrays in `inputString`, for indexed arrays the placeholder is equal to `[+rowNumber.zeroBased+]`
-		* `[+total+]` — total number of rows
-		* `[+resultTotal+]` — total number of returned rows
+	* Description: The template for column rendering.
+		* Available placeholders:
+			* `[+val+]` — value of the column
+			* `[+columnIndex+]` — index of the column, starts at `0`
+			* `[+columnKey+]` — key of the column, it is usefull for objects or associative arrays in `inputString`, for indexed arrays the placeholder is equal to `[+columnIndex+]`
+			* `[+rowNumber+]` — index of current row, starts at `1`
+			* `[+rowNumber.zeroBased+]` — index of current row, starts at `0`
+			* `[+rowKey+]` — key of current row, it is usefull for objects or associative arrays in `inputString`, for indexed arrays the placeholder is equal to `[+rowNumber.zeroBased+]`
+			* `[+total+]` — total number of rows
+			* `[+resultTotal+]` — total number of returned rows
 	* Valid values:
 		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
@@ -266,25 +266,24 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Default value: `'null'`
 	
 * `outerTpl`
-	* Description: Wrapper template (`outputFormat` has to be != `'array'`).  
-		Available placeholders:
-		* `[+result+]` — snippet result
-		* `[+total+]` — total number of rows
-		* `[+resultTotal+]` — total number of returned rows
-		* `[+rowY.colX+]` — value (`Y` — row number, `X` — column number)
-		* `[+rowKey.colX+]` — value (`Key` — row key, `X` — column number)
+	* Description: Wrapper template (`outputFormat` has to be != `'array'`).
+		* Available placeholders:
+			* `[+result+]` — snippet result
+			* `[+total+]` — total number of rows
+			* `[+resultTotal+]` — total number of returned rows
+			* `[+rowY.colX+]` — value (`Y` — row number, `X` — column number)
+			* `[+rowKey.colX+]` — value (`Key` — row key, `X` — column number)
 	* Valid values:
 		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
 	* Default value: —
 	
 * `placeholders`
-	* Description:
-		Additional data has to be passed into the `outerTpl`, `rowTpl` and `colTpl` templates.  
-		Nested objects and arrays are supported too:
-		* `{"someOne": "1", "someTwo": "test" }` => `[+someOne+], [+someTwo+]`.
-		* `{"some": {"a": "one", "b": "two"} }` => `[+some.a+]`, `[+some.b+]`.
-		* `{"some": ["one", "two"] }` => `[+some.0+]`, `[+some.1+]`.
+	* Description: Additional data has to be passed into the `outerTpl`, `rowTpl` and `colTpl` templates.
+		* Nested objects and arrays are supported too:
+			* `{"someOne": "1", "someTwo": "test" }` => `[+someOne+], [+someTwo+]`.
+			* `{"some": {"a": "one", "b": "two"} }` => `[+some.a+]`, `[+some.b+]`.
+			* `{"some": ["one", "two"] }` => `[+some.0+]`, `[+some.1+]`.
 	* Valid values:
 		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
 		* `stringHjsonObject` — as [HJSON](https://hjson.github.io/)
@@ -295,7 +294,7 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Default value: —
 	
 * `urlencode`
-	* Description: Is it required to URL encode the result?  
+	* Description: Is it required to URL encode the result?
 		* `outputFormat` has to be != `'array'`.
 		* URL encoding is used according to RFC 3986.
 	* Valid values:
@@ -304,14 +303,14 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Default value: `0`
 	
 * `totalRowsToPlaceholder`
-	* Description: The name of the global (MODX)Evolution placeholder that holds the total number of rows.  
-		The placeholder won't be set if `totalRowsToPlaceholder` is empty.
+	* Description: The name of the global (MODX)Evolution placeholder that holds the total number of rows.
+		* The placeholder won't be set if `totalRowsToPlaceholder` is empty.
 	* Valid values: `string`
 	* Default value: —
 	
 * `resultToPlaceholder`
-	* Description: The name of the global (MODX)Evolution placeholder that holds the snippet result.  
-		The result will be returned in a regular manner if the parameter is empty.
+	* Description: The name of the global (MODX)Evolution placeholder that holds the snippet result.
+		* The result will be returned in a regular manner if the parameter is empty.
 	* Valid values: `string`
 	* Default value: —
 
@@ -721,8 +720,8 @@ require_once(
 				"Example image 2"
 			]
 		]',
-		'rowTpl' => '@CODE:<img src="[+col0+]" alt="[+col1+]" />'
-	]
+		'rowTpl' => '@CODE:<img src="[+col0+]" alt="[+col1+]" />',
+	],
 ]);
 ```
 
