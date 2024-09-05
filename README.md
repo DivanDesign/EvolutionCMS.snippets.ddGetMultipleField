@@ -73,7 +73,7 @@ require_once(
 From the pair of `inputString` / `inputString_docField` parameters one is required.
 
 * `inputString`
-	* Desctription: The input string containing values.  
+	* Description: The input string containing values.  
 		Also supports JSON with any nesting level.
 	* Valid values:
 		* `stringJsonArray` — [JSON](https://en.wikipedia.org/wiki/JSON) array
@@ -85,44 +85,44 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* **Required**
 	
 * `inputString_docField`
-	* Desctription: The name of the document field/TV which value is required to get.  
+	* Description: The name of the document field/TV which value is required to get.  
 		If the parameter is passed then the input string will be taken from the field / TV and `inputString` will be ignored.
 	* Valid values: `string`
 	* Default value: —
 	
 * `inputString_docId`
-	* Desctription: ID of the document which field/TV value is required to get.  
+	* Description: ID of the document which field/TV value is required to get.  
 	* Valid values: `integer`
 	* Default value: `$modx->documentIdentifier` (the current document ID)
 	
 * `inputString_rowDelimiter`
-	* Desctription: The input string row delimiter (when `inputString` is not JSON).
+	* Description: The input string row delimiter (when `inputString` is not JSON).
 	* Valid values:
 		* `string`
 		* `regexp`
 	* Default value: `'||'`
 	
 * `inputString_colDelimiter`
-	* Desctription: The input string column delimiter (when `inputString` is not JSON).
+	* Description: The input string column delimiter (when `inputString` is not JSON).
 	* Valid values:
 		* `string`
 		* `regexp`
 	* Default value: `'::'`
 	
 * `startRow`
-	* Desctription: The index of the initial row (indexes start at `0`).
+	* Description: The index of the initial row (indexes start at `0`).
 	* Valid values: `integer`
 	* Default value: `0`
 	
 * `totalRows`
-	* Desctription: The maximum number of rows to return.
+	* Description: The maximum number of rows to return.
 	* Valid values:
 		* `integer`
 		* `'all'` — all rows will be returned
 	* Default value: `'all'`
 	
 * `columns`
-	* Desctription: The indexes of columns to return (indexes start at `0`).
+	* Description: The indexes of columns to return (indexes start at `0`).
 	* Valid values:
 		* `stringCommaSeparated`
 		* `array`
@@ -130,7 +130,7 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Default value: `'all'`
 	
 * `filter`
-	* Desctription: Filter clause for columns.  
+	* Description: Filter clause for columns.  
 		* Thus,
 			```
 			0 == 'a' ||
@@ -162,21 +162,21 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Default value: —
 	
 * `removeEmptyRows`
-	* Desctription: Is it required to remove empty rows?
+	* Description: Is it required to remove empty rows?
 	* Valid values:
 		* `0`
 		* `1`
 	* Default value: `1`
 	
 * `removeEmptyCols`
-	* Desctription: Is it required to remove empty columns?
+	* Description: Is it required to remove empty columns?
 	* Valid values:
 		* `0`
 		* `1`
 	* Default value: `1`
 	
 * `sortBy`
-	* Desctription: The index of the column to sort by (indexes start at `0`).  
+	* Description: The index of the column to sort by (indexes start at `0`).  
 		The parameter also takes comma-separated values for multiple sort, e.g. `'0,1'`.
 	* Valid values:
 		* `stringCommaSeparated`
@@ -184,7 +184,7 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Default value: `'0'`
 	
 * `sortDir`
-	* Desctription: Rows sorting direction (case insensitive).
+	* Description: Rows sorting direction (case insensitive).
 	* Valid values:
 		* `'ASC'` — the rows will be returned in ascending order
 		* `'DESC'` — the rows will be returned in descending order
@@ -194,7 +194,7 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Default value: `''`
 	
 * `typography`
-	* Desctription: The comma separated indexes of the columns which values have to be corrected (indexes start at `0`).  
+	* Description: The comma separated indexes of the columns which values have to be corrected (indexes start at `0`).  
 		If unset, there will be no correction.
 	* Valid values:
 		* `stringCommaSeparated`
@@ -202,7 +202,7 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Default value: —
 	
 * `outputFormat`
-	* Desctription: Result output format (case insensitive).
+	* Description: Result output format (case insensitive).
 	* Valid values:
 		* `'html'`
 		* `'json'`
@@ -211,19 +211,19 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Default value: `'html'`
 	
 * `rowGlue`
-	* Desctription: The string that combines rows while rendering.  
+	* Description: The string that combines rows while rendering.  
 		It can be used along with `rowTpl`.
 	* Valid values: `string`
 	* Default value: `''`
 	
 * `colGlue`
-	* Desctription: The string that combines columns while rendering.  
+	* Description: The string that combines columns while rendering.  
 		It can be used along with `colTpl` and `rowTpl`.
 	* Valid values: `string`
 	* Default value: `''`
 	
 * `rowTpl`
-	* Desctription: The template for row rendering (`outputFormat` has to be == `'html'`).  
+	* Description: The template for row rendering (`outputFormat` has to be == `'html'`).  
 		Available placeholders:
 		* `[+rowNumber+]` — index of current row, starts at `1`
 		* `[+rowNumber.zeroBased+]` — index of current row, starts at `0`
@@ -241,7 +241,7 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Default value: —
 	
 * `colTpl`
-	* Desctription: The comma-separated list of templates for column rendering (`outputFormat` has to be == `'html'`).  
+	* Description: The comma-separated list of templates for column rendering (`outputFormat` has to be == `'html'`).  
 		If the number of templates is lesser than the number of columns then the last passed template will be used to render the rest of the columns.
 	* Valid values:
 		* `stringCommaSeparated`
@@ -249,7 +249,7 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Default value: —
 	
 * `colTpl[$i]`
-	* Desctription: The template for column rendering.  
+	* Description: The template for column rendering.  
 		Available placeholders:
 		* `[+val+]` — value of the column
 		* `[+columnIndex+]` — index of the column, starts at `0`
@@ -266,7 +266,7 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Default value: `'null'`
 	
 * `outerTpl`
-	* Desctription: Wrapper template (`outputFormat` has to be != `'array'`).  
+	* Description: Wrapper template (`outputFormat` has to be != `'array'`).  
 		Available placeholders:
 		* `[+result+]` — snippet result
 		* `[+total+]` — total number of rows
@@ -279,7 +279,7 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Default value: —
 	
 * `placeholders`
-	* Desctription:
+	* Description:
 		Additional data has to be passed into the `outerTpl`, `rowTpl` and `colTpl` templates.  
 		Nested objects and arrays are supported too:
 		* `{"someOne": "1", "someTwo": "test" }` => `[+someOne+], [+someTwo+]`.
@@ -288,14 +288,14 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Valid values:
 		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
 		* `stringHjsonObject` — as [HJSON](https://hjson.github.io/)
-		* `stringQueryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
+		* `stringQueryFormatted` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
 		* It can also be set as a native PHP object or array (e. g. for calls through `$modx->runSnippet`):
 			* `arrayAssociative`
 			* `object`
 	* Default value: —
 	
 * `urlencode`
-	* Desctription: Is it required to URL encode the result?  
+	* Description: Is it required to URL encode the result?  
 		* `outputFormat` has to be != `'array'`.
 		* URL encoding is used according to RFC 3986.
 	* Valid values:
@@ -304,13 +304,13 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 	* Default value: `0`
 	
 * `totalRowsToPlaceholder`
-	* Desctription: The name of the global (MODX)Evolution placeholder that holds the total number of rows.  
+	* Description: The name of the global (MODX)Evolution placeholder that holds the total number of rows.  
 		The placeholder won't be set if `totalRowsToPlaceholder` is empty.
 	* Valid values: `string`
 	* Default value: —
 	
 * `resultToPlaceholder`
-	* Desctription: The name of the global (MODX)Evolution placeholder that holds the snippet result.  
+	* Description: The name of the global (MODX)Evolution placeholder that holds the snippet result.  
 		The result will be returned in a regular manner if the parameter is empty.
 	* Valid values: `string`
 	* Default value: —
