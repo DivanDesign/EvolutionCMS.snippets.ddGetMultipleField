@@ -732,6 +732,7 @@ _Примеров здесь можно напридумывать велико�
 * [Home page](https://code.divandesign.ru/modx/ddgetmultiplefield)
 * [Telegram chat](https://t.me/dd_code)
 * [Packagist](https://packagist.org/packages/dd/evolutioncms-snippets-ddgetmultiplefield)
+* [GitHub](https://github.com/DivanDesign/EvolutionCMS.snippets.ddGetMultipleField)
 
 
 <link rel="stylesheet" type="text/css" href="https://raw.githack.com/DivanDesign/CSS.ddMarkdown/master/style.min.css" />
