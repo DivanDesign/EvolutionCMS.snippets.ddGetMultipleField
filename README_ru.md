@@ -1,7 +1,7 @@
 # (MODX)EvolutionCMS.snippets.ddGetMultipleField
 
 Сниппет для обработки, изменения и произвольного вывода структурированных данных (JSON или разделённых через определённые разделители).
-Удобно использовать для вывода значений полей документов, сформированных виджетом [mm_ddMultipleFields](https://code.divandesign.biz/modx/mm_ddmultiplefields).
+Удобно использовать для вывода значений полей документов, сформированных виджетом [mm_ddMultipleFields](https://code.divandesign.ru/modx/mm_ddmultiplefields).
 
 Возможности:
 * Получение необходимого поля документа / TV по его ID. Параметры `inputString_docField` и `inputString_docId`.
@@ -21,8 +21,8 @@
 
 * PHP >= 5.6
 * [(MODX)EvolutionCMS](https://github.com/evolution-cms/evolution) >= 1.1
-* [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.biz/modx/ddtools) >= 0.62
-* [(MODX)EvolutionCMS.snippets.ddTypograph](https://code.divandesign.biz/modx/ddtypograph) >= 2.5 (if typography is required)
+* [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.ru/modx/ddtools) >= 0.62
+* [(MODX)EvolutionCMS.snippets.ddTypograph](https://code.divandesign.ru/modx/ddtypograph) >= 2.5 (if typography is required)
 
 
 ## Установка
@@ -477,7 +477,7 @@ assets/images/some_img1.jpg::Изображение 1||assets/images/some_img2.j
 
 ### Вывод тегов документа через запятую с использованием регулярного выражения в `inputString_rowDelimiter`
 
-Пусть теги документа у нас хранятся в TV `tags` и к этой TV у нас применён виджет [(MODX)EvolutionCMS.plugins.ManagerManager.mm_widget_tags](https://code.divandesign.biz/modx/mm_widget_tags).
+Пусть теги документа у нас хранятся в TV `tags` и к этой TV у нас применён виджет [(MODX)EvolutionCMS.plugins.ManagerManager.mm_widget_tags](https://code.divandesign.ru/modx/mm_widget_tags).
 Пользователь заполняет теги через запятую, при этом, может заполняться как с пробелами по краям, так и без них.
 
 Значение TV `tags`:

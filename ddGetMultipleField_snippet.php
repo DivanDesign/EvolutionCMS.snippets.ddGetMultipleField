@@ -5,9 +5,9 @@
  * 
  * @see README.md
  * 
- * @link https://code.divandesign.biz/modx/ddgetmultiplefield
+ * @link https://code.divandesign.ru/modx/ddgetmultiplefield
  * 
- * @copyright 2009–2023 DD Group {@link https://DivanDesign.biz }
+ * @copyright 2009–2023 Ronef {@link https://Ronef.me }
  */
 
 // Include (MODX)EvolutionCMS.libraries.ddTools

@@ -1,7 +1,7 @@
 # (MODX)EvolutionCMS.snippets.ddGetMultipleField
 
 A snippet for processing, manipulations and custom output structured data (JSON or separated by delimiters strings).
-The fields formed by the [mm_ddMultipleFields](https://code.divandesign.biz/modx/mm_ddmultiplefields) widget values output gets more convinient with the snippet.
+The fields formed by the [mm_ddMultipleFields](https://code.divandesign.ru/modx/mm_ddmultiplefields) widget values output gets more convinient with the snippet.
 
 Features:
 * Field value getting of a required document (TV) by its ID. The `inputString_docField` and `inputString_docId` parameters.
@@ -21,8 +21,8 @@ Features:
 
 * PHP >= 5.6
 * [(MODX)EvolutionCMS](https://github.com/evolution-cms/evolution) >= 1.1
-* [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.biz/modx/ddtools) >= 0.62
-* [(MODX)EvolutionCMS.snippets.ddTypograph](https://code.divandesign.biz/modx/ddtypograph) >= 2.5 (if typography is required)
+* [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.ru/modx/ddtools) >= 0.62
+* [(MODX)EvolutionCMS.snippets.ddTypograph](https://code.divandesign.ru/modx/ddtypograph) >= 2.5 (if typography is required)
 
 
 ## Installation
@@ -480,7 +480,7 @@ Returns:
 
 ### Return document tags separated by commas using a regular expression in `inputString_rowDelimiter`
 
-[(MODX)EvolutionCMS.plugins.ManagerManager.mm_widget_tags](https://code.divandesign.biz/modx/mm_widget_tags) is applied to `tags` TV where document tags are stored in `tags`.
+[(MODX)EvolutionCMS.plugins.ManagerManager.mm_widget_tags](https://code.divandesign.ru/modx/mm_widget_tags) is applied to `tags` TV where document tags are stored in `tags`.
 User fills in the tags separated by commas, while the field may be filled both with spaces on the sides and without them.
 
 `tags` TV value:
@@ -732,7 +732,7 @@ _It is hard to write here all possible examples so if here is something that you
 
 ## Links
 
-* [Home page](https://code.divandesign.biz/modx/ddgetmultiplefield)
+* [Home page](https://code.divandesign.ru/modx/ddgetmultiplefield)
 * [Telegram chat](https://t.me/dd_code)
 * [Packagist](https://packagist.org/packages/dd/evolutioncms-snippets-ddgetmultiplefield)
 
