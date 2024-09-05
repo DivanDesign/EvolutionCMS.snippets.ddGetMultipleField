@@ -230,7 +230,7 @@ From the pair of `inputString` / `inputString_docField` parameters one is requir
 		* `[+rowKey+]` — key of current row, it is usefull for objects or associative arrays in `inputString`, for indexed arrays the placeholder is equal to `[+rowNumber.zeroBased+]`
 		* `[+total+]` — total number of rows
 		* `[+resultTotal+]` — total number of returned rows
-		* `[+col0+]`, `[+col1+]`, etc — column values
+		* `[+col`_columnNumber_`+]` (e. g. `[+col0+]`, `[+col1+]`, etc) — column values, when _columnNumber_ is zero-based column number
 		* `[+`_columnKey_`+]` — column values, when _columnKey_ is original column key (see examples below)
 		* `[+`_columnKey_`.`_nestedProperty_`+]`, `[+col`_columnNumber_`.`_nestedProperty_`+]` — values of a nested properties, if a column value is an object
 		* `[+allColumnValues+]` — values of all columns combined by `colGlue`
