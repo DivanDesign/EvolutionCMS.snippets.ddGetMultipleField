@@ -734,4 +734,4 @@ _Примеров здесь можно напридумывать велико�
 * [Packagist](https://packagist.org/packages/dd/evolutioncms-snippets-ddgetmultiplefield)
 
 
-<link rel="stylesheet" type="text/css" href="https://DivanDesign.ru/assets/files/ddMarkdown.css" />
+<link rel="stylesheet" type="text/css" href="https://raw.githack.com/DivanDesign/CSS.ddMarkdown/master/style.min.css" />

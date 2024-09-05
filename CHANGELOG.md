@@ -206,5 +206,5 @@
 * \+ Parameters → `sortDir`: The `'REVERSE'` value of the parameter has been added. Values would be returned in reverse order if the parameter equaled `'REVERSE'`.
 
 
-<link rel="stylesheet" type="text/css" href="https://DivanDesign.ru/assets/files/ddMarkdown.css" />
+<link rel="stylesheet" type="text/css" href="https://raw.githack.com/DivanDesign/CSS.ddMarkdown/master/style.min.css" />
 <style>ul{list-style:none;}</style>
